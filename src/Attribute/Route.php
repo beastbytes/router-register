@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Attribute;
 
-use BeastBytes\Router\Routes\Attribute\Method\Method;
-use BeastBytes\Router\Routes\RouteInterface;
+use BeastBytes\Router\Register\Attribute\Method\Method;
+use BeastBytes\Router\Register\RouteInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]

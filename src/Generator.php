@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Routes\Attribute\Group;
-use BeastBytes\Router\Routes\Attribute\Route;
+use BeastBytes\Router\Register\Attribute\Group;
+use BeastBytes\Router\Register\Attribute\Route;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;

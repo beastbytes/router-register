@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Routes\Attribute\DefaultValue;
-use BeastBytes\Router\Routes\Attribute\Host;
-use BeastBytes\Router\Routes\Attribute\Middleware;
-use BeastBytes\Router\Routes\Attribute\Prefix;
-use BeastBytes\Router\Routes\Attribute\RouteAttributeInterface;
+use BeastBytes\Router\Register\Attribute\DefaultValue;
+use BeastBytes\Router\Register\Attribute\Host;
+use BeastBytes\Router\Register\Attribute\Middleware;
+use BeastBytes\Router\Register\Attribute\Prefix;
+use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use ReflectionAttribute;
 use ReflectionClass;
 

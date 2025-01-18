@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Routes\Attribute\DefaultValue;
-use BeastBytes\Router\Routes\Attribute\Fallback;
-use BeastBytes\Router\Routes\Attribute\Override;
-use BeastBytes\Router\Routes\Attribute\Parameter\Parameter;
-use BeastBytes\Router\Routes\Attribute\Route;
-use BeastBytes\Router\Routes\Attribute\RouteAttributeInterface;
+use BeastBytes\Router\Register\Attribute\DefaultValue;
+use BeastBytes\Router\Register\Attribute\Fallback;
+use BeastBytes\Router\Register\Attribute\Override;
+use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
+use BeastBytes\Router\Register\Attribute\Route;
+use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use ReflectionAttribute;
 use ReflectionMethod;
 
