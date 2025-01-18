@@ -1,6 +1,6 @@
 {
   "name": "beastbytes/router-routes",
-  "description": "Console command to creates routes configuration from attributes",
+  "description": "Console command to create and register routes from attributes",
   "keywords": [
     "attributes",
     "router",

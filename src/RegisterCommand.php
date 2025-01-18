@@ -14,8 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Yiisoft\Files\FileHelper;
 use Yiisoft\Files\PathMatcher\PathMatcher;
 
-#[AsCommand(name: 'route:register', description: 'Register routes defined in attributes')]
-final class RoutesCommand extends Command
+#[AsCommand(name: 'router:register', description: 'Register routes defined in attributes')]
+final class RegisterCommand extends Command
 {
     /** @var list<string> */
     private array $except = ['./config/**', './resources/**', './tests/**', './vendor/**'];
@@ -59,7 +59,7 @@ final class RoutesCommand extends Command
                 InputArgument::OPTIONAL,
                 'Path for source files.'
             )
-            ->setHelp('This command Registers routes specified by attributes in files within a given path.')
+            ->setHelp('Registers routes specified by attributes in files within a given path.')
         ;
     }
 
@@ -115,7 +115,7 @@ final class RoutesCommand extends Command
             $io->error($result);
             return Command::FAILURE;
         } else {
-            $io->success('Routes successfully created');
+            $io->success('Routes successfully registered');
             return Command::SUCCESS;
         }
     }
