@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes\Attribute;
+namespace BeastBytes\Router\Register\Attribute;
 
 use BeastBytes\Router\Routes\Attribute\Method\Method;
 use BeastBytes\Router\Routes\RouteInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes\Attribute;
+namespace BeastBytes\Router\Register\Attribute;
 
 use Attribute;
 
@@ -10,7 +10,7 @@ use Attribute;
  * Adds a prefix to the route and optionally the name of all routes in a class
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-readonly class Prefix implements ClassAttributeInterface
+final class Prefix implements ClassAttributeInterface
 {
     public function __construct(
         private string $routePrefix,

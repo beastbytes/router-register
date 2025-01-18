@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes;
+namespace BeastBytes\Router\Register;
 
 use BeastBytes\Router\Routes\Attribute\DefaultValue;
 use BeastBytes\Router\Routes\Attribute\Fallback;

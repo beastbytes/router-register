@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes;
+namespace BeastBytes\Router\Register;
 
 trait RouteTrait
 {

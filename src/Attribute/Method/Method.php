@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes\Attribute\Method;
+namespace BeastBytes\Router\Register\Attribute\Method;
 
 /**
  * HTTP request methods

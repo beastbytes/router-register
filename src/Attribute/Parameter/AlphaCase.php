@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Routes\Attribute\Parameter;
+namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 enum AlphaCase
 {
