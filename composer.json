@@ -1,6 +1,6 @@
 {
-  "name": "beastbytes/router-routes",
-  "description": "Console command to create and register routes from attributes",
+  "name": "beastbytes/router-register",
+  "description": "Console command to create and register routes defined by attributes",
   "keywords": [
     "attributes",
     "router",
@@ -33,12 +33,12 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src"
+      "BeastBytes\\Router\\Register\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "UnitTests\\": "tests\\unit"
+      "BeastBytes\\Router\\Register\\Tests\\": "tests\\unit"
     }
   },
   "extra": {
