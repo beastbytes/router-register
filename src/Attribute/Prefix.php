@@ -13,8 +13,8 @@ use Attribute;
 final class Prefix implements ClassAttributeInterface
 {
     public function __construct(
-        private string $routePrefix,
-        private ?string $namePrefix,
+        private readonly string $routePrefix,
+        private readonly ?string $namePrefix,
     )
     {
     }

@@ -13,7 +13,7 @@ use Attribute;
 final class Middleware implements ClassAttributeInterface
 {
     public function __construct(
-        private array|string $middleware
+        private readonly array|string $middleware
     )
     {
     }

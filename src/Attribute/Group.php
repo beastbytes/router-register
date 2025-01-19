@@ -10,12 +10,12 @@ use Attribute;
 final class Group implements RouteAttributeInterface
 {
     public function __construct(
-        private ?string $prefix = null,
-        private array $hosts = [],
-        private array|string|null $cors = null,
-        private array $middleware = [],
-        private array $disabledMiddleware = [],
-        private ?string $namePrefix = null,
+        private readonly ?string $prefix = null,
+        private readonly array $hosts = [],
+        private readonly array|string|null $cors = null,
+        private readonly array $middleware = [],
+        private readonly array $disabledMiddleware = [],
+        private readonly ?string $namePrefix = null,
     )
     {
     }

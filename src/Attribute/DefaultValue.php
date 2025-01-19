@@ -14,8 +14,8 @@ use Attribute;
 final class DefaultValue implements ClassAttributeInterface
 {
     public function __construct(
-        private string $parameter,
-        private string $value,
+        private readonly string $parameter,
+        private readonly string $value,
     )
     {
     }

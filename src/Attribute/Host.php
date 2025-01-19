@@ -13,7 +13,7 @@ use Attribute;
 final class Host implements ClassAttributeInterface
 {
     public function __construct(
-        private string $host
+        private readonly string $host
     )
     {
     }
