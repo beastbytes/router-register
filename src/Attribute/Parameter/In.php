@@ -9,7 +9,10 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 final class In extends Parameter
 {
-    public function __construct(string $name, ...$option)
+    public function __construct(
+        string $name,
+        string ...$option
+    )
     {
         parent::__construct(
             name: $name,

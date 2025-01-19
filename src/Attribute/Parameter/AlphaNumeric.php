@@ -9,18 +9,21 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class AlphaNumeric extends Parameter
 {
-    use AlphaTrait;
-
     public function __construct(
         string $name,
         int $length = 0,
-        bool $underscore = true,
-        AlphaCase $case = AlphaCase::Insensitive
+        AlphaCase $case = AlphaCase::insensitive
     )
     {
+        $alpha = match($case) {
+            AlphaCase::insensitive => 'a-zA-Z',
+            AlphaCase::lower => 'a-z',
+            AlphaCase::upper => 'A-Z',
+        };
+
         parent::__construct(
             name: $name,
-            pattern: '[\d' . $this->getAlpha($case, $underscore) . ']'
+            pattern: '[\d' . $alpha . ']'
                 . (
                     $length === 0
                         ? '+'

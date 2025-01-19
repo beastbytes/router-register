@@ -9,11 +9,20 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Uuid extends Parameter
 {
-    public function __construct(string $name)
+    public function __construct(
+        string $name,
+        AlphaCase $case = AlphaCase::insensitive
+    )
     {
+        $alpha = match($case) {
+            AlphaCase::insensitive => 'a-fA-F',
+            AlphaCase::lower => 'a-f',
+            AlphaCase::upper => 'A-F',
+        };
+
         parent::__construct(
             name: $name,
-            pattern: '[\da-zA-Z]{8}-[\da-zA-Z]{4}-[\da-zA-Z]{4}-[\da-zA-Z]{4}-[\da-zA-Z]{12}'
+            pattern: "[\d$alpha]{8}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{12}"
         );
     }
 }

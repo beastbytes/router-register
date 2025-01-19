@@ -6,7 +6,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 enum AlphaCase
 {
-    case Insensitive;
-    case Lower;
-    case Upper;
+    case insensitive;
+    case lower;
+    case upper;
 }

@@ -13,20 +13,20 @@ final class Hex extends Parameter
         string $name,
         int $length = 0,
         bool $nonZero = false,
-        AlphaCase $case = AlphaCase::Insensitive
+        AlphaCase $case = AlphaCase::insensitive
     )
     {
         $alpha = match($case) {
-            AlphaCase::Insensitive => 'a-fA-F',
-            AlphaCase::Lower => 'a-f',
-            AlphaCase::Upper => 'A-F',
+            AlphaCase::insensitive => 'a-fA-F',
+            AlphaCase::lower => 'a-f',
+            AlphaCase::upper => 'A-F',
         };
 
         if ($nonZero) {
-            $pattern = '[1-9' . $alpha . '][\d' . $alpha . ']'
+            $pattern = "[1-9$alpha][\d$alpha]'"
                 . ($length === 0 ? '*' : '{' . (string) (abs($length) - 1) . '}');
         } else {
-            $pattern = '[\d' . $alpha . ']' . ($length === 0 ? '+' : '{' . abs($length) . '}');
+            $pattern = "[\d$alpha]" . ($length === 0 ? '+' : '{' . abs($length) . '}');
         }
 
         parent::__construct(
