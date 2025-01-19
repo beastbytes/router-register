@@ -13,6 +13,7 @@ final class All extends Route
 {
     public function __construct(
         RouteInterface $route,
+        array|string $hosts = [],
         array|callable|string $middleware = [],
         array|callable|string $disableMiddleware = [],
     )
@@ -29,6 +30,7 @@ final class All extends Route
                 Method::PUT,
             ],
             route: $route,
+            hosts: $hosts,
             middleware: $middleware,
             disableMiddleware: $disableMiddleware
         );

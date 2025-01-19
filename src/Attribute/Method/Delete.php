@@ -13,6 +13,7 @@ final class Delete extends Route
 {
     public function __construct(
         RouteInterface $route,
+        array|string $hosts = [],
         array|callable|string $middleware = [],
         array|callable|string $disableMiddleware = [],
     )
@@ -20,6 +21,7 @@ final class Delete extends Route
         parent::__construct(
             methods: [Method::DELETE],
             route: $route,
+            hosts: $hosts,
             middleware: $middleware,
             disableMiddleware: $disableMiddleware
         );

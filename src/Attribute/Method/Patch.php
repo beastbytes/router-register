@@ -13,6 +13,7 @@ final class Patch extends Route
 {
     public function __construct(
         RouteInterface $route,
+        array|string $hosts = [],
         array|callable|string $middleware = [],
         array|callable|string $disableMiddleware = [],
     )
@@ -20,6 +21,7 @@ final class Patch extends Route
         parent::__construct(
             methods: [Method::PATCH],
             route: $route,
+            hosts: $hosts,
             middleware: $middleware,
             disableMiddleware: $disableMiddleware
         );
