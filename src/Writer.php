@@ -6,7 +6,15 @@ namespace BeastBytes\Router\Register;
 
 class Writer
 {
-    public function write(string $path, array $groups): string
+    private string $path;
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    public function write(array $groups): string
     {
         $content = <<<'GROUP'
 <?php
@@ -19,7 +27,7 @@ return [
 GROUP;
 
         foreach ($groups as $name => $group) {
-            $result = $this->writeRoutes($path, $name, $group['routes']);
+            $result = $this->writeRoutes($name, $group['routes']);
 
             if (strlen($result) > 0) {
                 return $result;
@@ -28,7 +36,7 @@ GROUP;
             $content .= "\n    " . join("\n        ->", $group['group']) . "\n    ,";
         }
 
-        $filename = $path . DIRECTORY_SEPARATOR . 'groups.php';
+        $filename = $this->path . DIRECTORY_SEPARATOR . 'groups.php';
         $result = file_put_contents(
             $filename,
             $content . "\n];",
@@ -42,9 +50,8 @@ GROUP;
         return '';
     }
 
-    private function writeRoutes(string $path, string $groupName, array $routes): string
+    private function writeRoutes(string $groupName, array $routes): string
     {
-        $path .= DIRECTORY_SEPARATOR . 'routes';
         $fallback = null;
 
         $content = <<<'ROUTE'
@@ -74,7 +81,7 @@ ROUTE;
             $content .= "\n    " . join("\n        ->", $fallback) . "\n    ,";
         }
 
-        $filename = $path  . DIRECTORY_SEPARATOR . $groupName . '.php';
+        $filename = $this->path . DIRECTORY_SEPARATOR . 'routes'  . DIRECTORY_SEPARATOR . $groupName . '.php';
         $result = file_put_contents(
             $filename,
             $content . "\n];",

@@ -15,7 +15,7 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
 
 final class Generator
 {
-    private const string DEFAULT_GROUP = 'default';
+    private string $defaultGroup;
 
     public function processFile(string $file): ?array
     {
@@ -40,6 +40,12 @@ final class Generator
         }
 
         return [$name, $group, $routes];
+    }
+
+    public function setDefaultGroup(string $defaultGroup): self
+    {
+        $this->defaultGroup = $defaultGroup;
+        return $this;
     }
 
     private function getClassName(string $file): string
@@ -69,7 +75,7 @@ final class Generator
         ;
 
         if (count($groupAttributes) === 0) {
-            $name = self::DEFAULT_GROUP;
+            $name = $this->defaultGroup;
             $prefix = null;
             $groupAttribute = null;
         } else {
@@ -77,7 +83,7 @@ final class Generator
 
             $name = $groupAttribute->getName();
             if ($name === null) {
-                $name = self::DEFAULT_GROUP;
+                $name = $this->defaultGroup;
             }
 
             $prefix = $groupAttribute->getPrefix();
@@ -203,9 +209,9 @@ final class Generator
         $defaultValues = [];
 
         foreach ([
-            $classAttributes->getDefaults(),
-            $methodAttributes->getDefaults()
-        ] as $defaultAttributes) {
+                     $classAttributes->getDefaults(),
+                     $methodAttributes->getDefaults()
+                 ] as $defaultAttributes) {
             foreach ($defaultAttributes as $defaultAttribute) {
                 $defaultValues[$defaultAttribute->getParameter()] = $defaultAttribute->getValue();
             }
@@ -358,7 +364,7 @@ final class Generator
     ): void
     {
         if ($methodAttributes->getOverride() !== null) {
-            $route[] = "override()";
+            $route[] = 'override()';
         }
     }
 }

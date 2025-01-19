@@ -17,6 +17,8 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
 #[AsCommand(name: 'router:register', description: 'Register routes defined in attributes')]
 final class RegisterCommand extends Command
 {
+    private const string DEFAULT_GROUP = 'default';
+
     /** @var list<string> */
     private array $except = ['./config/**', './resources/**', './tests/**', './vendor/**'];
     /** @var list<string> */
@@ -33,6 +35,13 @@ final class RegisterCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addOption(
+                'default-group',
+                'D',
+                InputOption::VALUE_OPTIONAL,
+                'Default group name.',
+                self::DEFAULT_GROUP
+            )
             ->addOption(
                 'except',
                 'E',
@@ -84,6 +93,13 @@ final class RegisterCommand extends Command
             $this->only = $only;
         }
 
+        $this
+            ->generator
+            ->setDefaultGroup(
+                $input->getOption('default-group')
+            )
+        ;
+
         $files = FileHelper::findFiles($src, [
             'filter' => (new PathMatcher())
                 ->only(...$this->only)
@@ -99,7 +115,10 @@ final class RegisterCommand extends Command
         $groups = [];
 
         foreach ($files as $file) {
-            [$name, $group, $routes] = $this->generator->processFile($file);
+            [$name, $group, $routes] = $this
+                ->generator
+                ->processFile($file)
+            ;
 
             if (!array_key_exists($name, $groups)) {
                 $groups[$name]['group'] = $group;
@@ -109,7 +128,11 @@ final class RegisterCommand extends Command
             }
         }
 
-        $result = $this->writer->write($writePath, $groups);
+        $result = $this
+            ->writer
+            ->setPath($writePath)
+            ->write($groups)
+        ;
 
         if (strlen($result) > 0) {
             $io->error($result);
