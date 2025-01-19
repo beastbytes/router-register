@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final readonly class Group implements RouteAttributeInterface
+final class Group implements RouteAttributeInterface
 {
     public function __construct(
         private ?string $prefix = null,

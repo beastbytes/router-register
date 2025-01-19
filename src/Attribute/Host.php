@@ -10,7 +10,7 @@ use Attribute;
  * Define a host for all routes in class
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final readonly class Host implements ClassAttributeInterface
+final class Host implements ClassAttributeInterface
 {
     public function __construct(
         private string $host
