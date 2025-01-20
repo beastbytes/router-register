@@ -7,6 +7,7 @@
                  start-page="Router-Register.md">
 
     <toc-element topic="Router-Register.md"/>
+    <toc-element topic="Yii-Router-Configuration.md"/>
     <toc-element topic="Defining-Routes-and-Groups.md">
         <toc-element topic="Route-Enumeration.md"/>
         <toc-element topic="Assigning-Routes-in-the-Controller.md"/>
