@@ -1,9 +1,8 @@
-# Defining Routes in the Controller
+# Assigning Routes in the Controller
 
-Routes are defined in the controller using PHP Attributes.
+Routes are assigned in the controller using PHP Attributes.
 
 ```php
-
 <?php
 
 declare(strict_types=1);
@@ -18,7 +17,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
-final class Product Controller
+final class ProductController
 {
     // -- class constants, class parameters, constructor, etc
     

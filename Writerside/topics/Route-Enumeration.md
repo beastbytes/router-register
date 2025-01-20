@@ -13,10 +13,10 @@ If the URI has parameters enclose each parameter name in braces.
 {style="note"}
 
 Defining routes this way means that there is a single point of truth in the application with all the benefits
-that brings for code maintenance, and we get code completion in our IDE.
+that brings for code development and maintenance, and we get code completion in our IDE.
 
 ## Route Enumeration Example
-Our application has a unique product  that is managed using the productController. We define a productRoute enumeration
+Our application shows products to users using the ProductController. We define a ProductRoute enumeration
 that defines the routes and provides them to the application.
 
 ```php

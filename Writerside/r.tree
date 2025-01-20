@@ -9,7 +9,7 @@
     <toc-element topic="Router-Register.md"/>
     <toc-element topic="Defining-Routes-and-Groups.md">
         <toc-element topic="Route-Enumeration.md"/>
-        <toc-element topic="Defining-Routes-in-the-Controller.md"/>
+        <toc-element topic="Assigning-Routes-in-the-Controller.md"/>
         <toc-element topic="Defining-Groups.md"/>
     </toc-element>
     <toc-element topic="Attributes.md">
