@@ -1,6 +1,7 @@
 # HTTP Methods
 
 Every route must define the HTTP method(s) it responds to.
+This is done using on of the HTTP Method attributes or the [Route attribute](Other-Attributes.md#route).
 
 **Use On:** Action Methods
 

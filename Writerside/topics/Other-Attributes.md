@@ -179,7 +179,7 @@ Defines a route
 
 **Cardinality**: ?
 
-> If Route is not used, one of the HTTP Methods attributes _must_ be used
+> Either Route or one of the [HTTP Methods attributes](HTTP-Methods.md) _must_ be used
 {style="note"}
 <table>
     <thead>
