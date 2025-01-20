@@ -37,3 +37,16 @@ enum ProductRoute: string implements RouteInterface
     case product_view = '/product/{productId}';
 }
 ```
+
+## RouteInterface & RouteTrait
+RouteInterface allows Routes to be type checked and defines two methods that can be used in your application:
+
+```php
+ // returns the route name
+public function getName(): string;
+
+ // returns the route URI. This will include parameter placeholders
+public function getUri(): string;
+```
+
+RouteTrait implements RouteInterface.
