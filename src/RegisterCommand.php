@@ -17,7 +17,7 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
 #[AsCommand(name: 'router:register', description: 'Register routes defined in attributes')]
 final class RegisterCommand extends Command
 {
-    private const string DEFAULT_GROUP = 'default';
+    private const DEFAULT_GROUP = 'default';
 
     /** @var list<string> */
     private array $except = ['./config/**', './resources/**', './tests/**', './vendor/**'];
@@ -37,30 +37,30 @@ final class RegisterCommand extends Command
         $this
             ->addOption(
                 'default-group',
-                'D',
+                'd',
                 InputOption::VALUE_OPTIONAL,
                 'Default group name.',
                 self::DEFAULT_GROUP
             )
             ->addOption(
                 'except',
-                'E',
+                'e',
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Exclude path from source files.',
                 []
             )
             ->addOption(
                 'only',
-                'O',
+                'o',
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Use the Only specified pattern for matching source files.',
                 []
             )
             ->addOption(
                 'write',
-                'W',
+                'w',
                 InputOption::VALUE_OPTIONAL,
-                'Path to Write route files to.',
+                'Path to Write router configuration files to.',
                 '.' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'router'
             )
             ->addArgument(
