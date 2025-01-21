@@ -209,9 +209,9 @@ final class Generator
         $defaultValues = [];
 
         foreach ([
-                     $classAttributes->getDefaults(),
-                     $methodAttributes->getDefaults()
-                 ] as $defaultAttributes) {
+            $classAttributes->getDefaults(),
+            $methodAttributes->getDefaults()
+        ] as $defaultAttributes) {
             foreach ($defaultAttributes as $defaultAttribute) {
                 $defaultValues[$defaultAttribute->getParameter()] = $defaultAttribute->getValue();
             }
