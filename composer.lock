@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21aef201d2c4cd3deeb842ce19c206f2",
+    "content-hash": "68f9895caf96116aa921b5b679581925",
     "packages": [
         {
             "name": "psr/container",
@@ -1635,16 +1635,16 @@
         },
         {
             "name": "yiisoft/strings",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/strings.git",
-                "reference": "ff519d31e1c2518f42554fb5410e31bbb74b8108"
+                "reference": "5063d70af8b59907261c66a57349ef2c20f5cf2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/strings/zipball/ff519d31e1c2518f42554fb5410e31bbb74b8108",
-                "reference": "ff519d31e1c2518f42554fb5410e31bbb74b8108",
+                "url": "https://api.github.com/repos/yiisoft/strings/zipball/5063d70af8b59907261c66a57349ef2c20f5cf2e",
+                "reference": "5063d70af8b59907261c66a57349ef2c20f5cf2e",
                 "shasum": ""
             },
             "require": {
@@ -1654,10 +1654,10 @@
             "require-dev": {
                 "maglnet/composer-require-checker": "^4.2",
                 "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.18.3",
+                "rector/rector": "^2.0.3",
                 "roave/infection-static-analysis-plugin": "^1.16",
                 "spatie/phpunit-watcher": "^1.23",
-                "vimeo/psalm": "^4.30|^5.8"
+                "vimeo/psalm": "^4.30|^5.25"
             },
             "type": "library",
             "autoload": {
@@ -1679,22 +1679,22 @@
             "support": {
                 "chat": "https://t.me/yii3en",
                 "forum": "https://www.yiiframework.com/forum/",
-                "irc": "irc://irc.freenode.net/yii",
-                "issues": "https://github.com/yiisoft/strings/issues",
+                "irc": "ircs://irc.libera.chat:6697/yii",
+                "issues": "https://github.com/yiisoft/strings/issues?state=open",
                 "source": "https://github.com/yiisoft/strings",
                 "wiki": "https://www.yiiframework.com/wiki/"
             },
             "funding": [
                 {
-                    "url": "https://github.com/yiisoft",
+                    "url": "https://github.com/sponsors/yiisoft",
                     "type": "github"
                 },
                 {
                     "url": "https://opencollective.com/yiisoft",
-                    "type": "open_collective"
+                    "type": "opencollective"
                 }
             ],
-            "time": "2023-12-22T07:29:39+00:00"
+            "time": "2025-01-19T13:44:53+00:00"
         },
         {
             "name": "yiisoft/yii-console",
@@ -4774,6 +4774,77 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yiisoft/security",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/security.git",
+                "reference": "f1ad5d279722f162cfb0f720a3723ad762892de3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/security/zipball/f1ad5d279722f162cfb0f720a3723ad762892de3",
+                "reference": "f1ad5d279722f162cfb0f720a3723ad762892de3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-hash": "*",
+                "ext-openssl": "*",
+                "php": "^7.4|^8.0",
+                "yiisoft/strings": "^2.0"
+            },
+            "require-dev": {
+                "maglnet/composer-require-checker": "^3.8|^4.2",
+                "phpunit/phpunit": "^9.5",
+                "rector/rector": "^1.0.0",
+                "roave/infection-static-analysis-plugin": "^1.16",
+                "spatie/phpunit-watcher": "^1.23",
+                "vimeo/psalm": "^4.30|^5.23"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yiisoft\\Security\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Security utilities",
+            "homepage": "https://www.yiiframework.com/",
+            "keywords": [
+                "MAC",
+                "decryption",
+                "encryption",
+                "hash",
+                "password",
+                "random",
+                "security",
+                "signature",
+                "token masking"
+            ],
+            "support": {
+                "chat": "https://t.me/yii3en",
+                "forum": "https://www.yiiframework.com/forum/",
+                "irc": "ircs://irc.libera.chat:6697/yii",
+                "issues": "https://github.com/yiisoft/security/issues?state=open",
+                "source": "https://github.com/yiisoft/security",
+                "wiki": "https://www.yiiframework.com/wiki/"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/yiisoft",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/yiisoft",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2024-03-18T12:20:01+00:00"
         }
     ],
     "aliases": [],
