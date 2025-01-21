@@ -11,6 +11,15 @@ class Writer
     public function setPath(string $path): self
     {
         $this->path = $path;
+
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+
+        if (!is_dir($path . DIRECTORY_SEPARATOR . 'routes')) {
+            mkdir($path . DIRECTORY_SEPARATOR . 'routes');
+        }
+
         return $this;
     }
 

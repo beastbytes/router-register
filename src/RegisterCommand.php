@@ -107,11 +107,6 @@ final class RegisterCommand extends Command
             'recursive' => true,
         ]);
 
-        if (!is_dir($writePath)) {
-            mkdir($writePath);
-            mkdir($writePath . DIRECTORY_SEPARATOR . 'routes');
-        }
-
         $groups = [];
 
         foreach ($files as $file) {
