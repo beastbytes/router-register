@@ -158,7 +158,7 @@ Parameter must be on of the provided options
         </tr>
         <tr>
             <td>options</td>
-            <td>...string</td>
+            <td>string[]</td>
             <td>Options to match</td>
             <td>Yes</td>
             <td></td>
@@ -201,7 +201,7 @@ Parameter contains numeric digits
         </tr>
     </tbody>
 </table>
-## Pattern
+## Parameter
 Specifies the pattern the parameter must match
 <table>
     <thead>
