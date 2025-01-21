@@ -23,7 +23,6 @@ final class All extends Route
                 Method::DELETE,
                 Method::GET,
                 Method::HEAD,
-                Method::POST,
                 Method::OPTIONS,
                 Method::PATCH,
                 Method::POST,
