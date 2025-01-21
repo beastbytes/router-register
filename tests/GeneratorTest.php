@@ -3,13 +3,11 @@
 namespace BeastBytes\Router\Register\Tests;
 
 use BeastBytes\Router\Register\Generator as RouteGenerator;
-use BeastBytes\Router\Register\Tests\resources\Controller\TestController;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionProperty;
 
 class GeneratorTest extends TestCase
 {
