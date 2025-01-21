@@ -19,7 +19,7 @@ final class Post extends Route
     )
     {
         parent::__construct(
-            methods: [Method::PUT],
+            methods: [Method::POST],
             route: $route,
             hosts: $hosts,
             middleware: $middleware,
