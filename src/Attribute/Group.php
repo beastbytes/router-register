@@ -11,10 +11,10 @@ final class Group implements RouteAttributeInterface
 {
     public function __construct(
         private readonly ?string $prefix = null,
-        private readonly array $hosts = [],
+        private readonly array|string $hosts = [],
         private readonly array|string|null $cors = null,
-        private readonly array $middleware = [],
-        private readonly array $disabledMiddleware = [],
+        private readonly array|string $middleware = [],
+        private readonly array|string $disabledMiddleware = [],
         private readonly ?string $namePrefix = null,
     )
     {
@@ -27,17 +27,26 @@ final class Group implements RouteAttributeInterface
 
     public function getDisabledMiddleware(): array
     {
-        return $this->disabledMiddleware;
+        return is_array($this->disabledMiddleware)
+            ? $this->disabledMiddleware
+            : [$this->disabledMiddleware]
+        ;
     }
 
     public function getHosts(): array
     {
-        return $this->hosts;
+        return is_array($this->hosts)
+            ? $this->hosts
+            : [$this->hosts]
+        ;
     }
 
     public function getMiddleware(): array
     {
-        return $this->middleware;
+        return is_array($this->middleware)
+            ? $this->middleware
+            : [$this->middleware]
+        ;
     }
 
     public function getNamePrefix(): ?string
