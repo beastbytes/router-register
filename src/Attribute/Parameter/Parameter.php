@@ -6,11 +6,12 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Parameter {
     public function __construct(
         private readonly string $name,
         private readonly string $pattern,
+        private readonly bool $optional = false,
     )
     {
     }
@@ -23,5 +24,10 @@ class Parameter {
     public function getPattern(): string
     {
         return $this->pattern;
+    }
+
+    public function isOptional(): bool
+    {
+        return $this->optional;
     }
 }

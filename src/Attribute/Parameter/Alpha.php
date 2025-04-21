@@ -6,13 +6,14 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD)]
 final class Alpha extends Parameter
 {
     public function __construct(
         string $name,
         int $length = 0,
-        AlphaCase $case = AlphaCase::insensitive
+        AlphaCase $case = AlphaCase::insensitive,
+        bool $optional = false,
     )
     {
         $alpha = match($case) {
@@ -29,6 +30,8 @@ final class Alpha extends Parameter
                     ? '+'
                     : '{' . abs($length) . '}'
                 )
+            ,
+            optional: $optional
         );
     }
 }

@@ -11,12 +11,14 @@ final class In extends Parameter
 {
     public function __construct(
         string $name,
-        array $options
+        array $options,
+        bool $optional = false,
     )
     {
         parent::__construct(
             name: $name,
-            pattern: '[' . implode('|', $options) . ']'
+            pattern: '[' . implode('|', $options) . ']',
+            optional: $optional
         );
     }
 }

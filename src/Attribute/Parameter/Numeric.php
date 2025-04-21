@@ -6,13 +6,14 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD)]
 final class Numeric extends Parameter
 {
     public function __construct(
         string $name,
         int $length = 0,
         bool $nonZero = false,
+        bool $optional = false,
     )
     {
         if ($nonZero) {
@@ -21,10 +22,10 @@ final class Numeric extends Parameter
             $pattern = '\d' . ($length === 0 ? '+' : '{' . abs($length) . '}');
         }
 
-
         parent::__construct(
             name: $name,
-            pattern: $pattern
+            pattern: $pattern,
+            optional: $optional
         );
     }
 }

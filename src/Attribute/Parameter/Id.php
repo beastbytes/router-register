@@ -6,14 +6,15 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD)]
 final class Id extends Parameter
 {
-    public function __construct(string $name)
+    public function __construct(string $name, bool $optional)
     {
         parent::__construct(
             name: $name,
-            pattern: '[1-9]\d*'
+            pattern: '[1-9]\d*',
+            optional: $optional
         );
     }
 }

@@ -6,12 +6,13 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD)]
 final class Uuid extends Parameter
 {
     public function __construct(
         string $name,
-        AlphaCase $case = AlphaCase::insensitive
+        AlphaCase $case = AlphaCase::insensitive,
+        bool $optional = false,
     )
     {
         $alpha = match($case) {
@@ -22,7 +23,8 @@ final class Uuid extends Parameter
 
         parent::__construct(
             name: $name,
-            pattern: "[\d$alpha]{8}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{12}"
+            pattern: "[\d$alpha]{8}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{4}-[\d$alpha]{12}",
+            optional: $optional
         );
     }
 }
