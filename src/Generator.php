@@ -298,14 +298,29 @@ final class Generator
         $methods = $routeAttribute->getMethods();
         $uri = $routeAttribute->getUri();
 
-        if (count($parameters) > 0) {
+        $parameterCount = count($parameters);
+        if ($parameterCount > 0) {
             $replacements = [];
 
-            foreach ($parameters as $parameter) {
+            foreach ($parameters as $n => $parameter) {
                 $name = $parameter->getName();
                 $pattern = $parameter->getPattern();
 
-                $replacements['{' . $name . '}'] = '{' . $name . ':' . $pattern . '}';
+                if ($parameter->isOptional()) {
+                    if (($n + 1) < $parameterCount) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                "Invalid `optional` on %s route\n"
+                                . '`optional` can only be TRUE on the last parameter of a route',
+                                $name
+                            )
+                        );
+                    }
+
+                    $replacements['/{' . $name . '}'] = '[/{' . $name . ':' . $pattern . '}]';
+                } else {
+                    $replacements['{' . $name . '}'] = '{' . $name . ':' . $pattern . '}';
+                }
             }
 
             $uri = ($prefix === null ? '' : $prefix->getRoutePrefix()) . strtr($uri, $replacements);
