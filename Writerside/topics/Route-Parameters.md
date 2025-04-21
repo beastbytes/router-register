@@ -40,13 +40,6 @@ Parameter contains alphabetic characters
             <td>No</td>
             <td>AlphaCase::insensitive</td>
         </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
-        </tr>
     </tbody>
 </table>
 ## AlphaNumeric
@@ -82,13 +75,6 @@ Parameter contains alphabetic characters and digits
             <td>Whether the characters must be lowercase, uppercase, or can be either</td>
             <td>No</td>
             <td>AlphaCase::insensitive</td>
-        </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
         </tr>
     </tbody>
 </table>
@@ -126,13 +112,6 @@ Parameter contains hexadecimal characters
             <td>No</td>
             <td>AlphaCase::insensitive</td>
         </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
-        </tr>
     </tbody>
 </table>
 ## Id
@@ -154,13 +133,6 @@ Parameter is number with a minimum value of 1; e.g. database autoincrement value
             <td>Parameter name</td>
             <td>Yes</td>
             <td></td>
-        </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
         </tr>
     </tbody>
 </table>
@@ -190,13 +162,6 @@ Parameter must be on of the provided options
             <td>Options to match</td>
             <td>Yes</td>
             <td></td>
-        </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
         </tr>
     </tbody>
 </table>
@@ -234,13 +199,6 @@ Parameter contains numeric digits
             <td>No</td>
             <td>false (zero is allowed)</td>
         </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
-        </tr>
     </tbody>
 </table>
 ## Parameter
@@ -270,13 +228,6 @@ Specifies the pattern the parameter must match
             <td>Yes</td>
             <td></td>
         </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
-        </tr>
     </tbody>
 </table>
 ## Uuid
@@ -305,13 +256,6 @@ Parameter is a Universally Unique Identifier (aka Globally Unique Identifier (GU
             <td>Whether the characters must be lowercase, uppercase, or can be either</td>
             <td>No</td>
             <td>AlphaCase::insensitive</td>
-        </tr>
-        <tr>
-            <td>optional</td>
-            <td>bool</td>
-            <td>Whether the parameter is optional<br>Can only be <em>true</em> for the last parameter of a route</td>
-            <td>No</td>
-            <td>false</td>
         </tr>
     </tbody>
 </table>

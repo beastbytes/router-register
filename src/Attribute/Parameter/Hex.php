@@ -13,8 +13,7 @@ final class Hex extends Parameter
         string $name,
         int $length = 0,
         bool $nonZero = false,
-        AlphaCase $case = AlphaCase::insensitive,
-        bool $optional = false,
+        AlphaCase $case = AlphaCase::insensitive
     )
     {
         $alpha = match($case) {
@@ -32,8 +31,7 @@ final class Hex extends Parameter
 
         parent::__construct(
             name: $name,
-            pattern: $pattern,
-            optional: $optional
+            pattern: $pattern
         );
     }
 }

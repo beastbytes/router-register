@@ -4,10 +4,12 @@ Routes in RouterRegister are defined using string backed
 [enumerations](https://www.php.net/manual/en/language.enumerations.php)
 that implement RouteInterface and use RouteTrait (both are part of the RouterRegister package).
 
-Each route is a case where the name is the route name
+Each route is a case where the name is the route name, 
 and the string value is the URI.
 
-If the URI has parameters enclose each parameter name in braces.
+If the URI has parameters, enclose each parameter name in braces.
+
+If the route has optional parameters, define them in the URI as normal.  
 
 > The URI is relative to the group it is in; do not include any group prefix.
 {style="note"}
@@ -34,7 +36,10 @@ enum ProductRoute: string implements RouteInterface
     use RouteTrait;
 
     case product_index = '/products';
-    case product_view = '/product/{productId}';
+    // with required parameter
+    case product_category = '/products/{categoryId}';
+    // with required parameter and optional parameter
+    case product_view = '/product/{productId}[/{featureId}]';
 }
 ```
 

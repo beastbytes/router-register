@@ -30,7 +30,7 @@ class TestController
 
     #[Get(route: TestRoute::test_method4)]
     #[Id(name: 'testId')]
-    #[Uuid(name: 'userId', optional: true)]
+    #[Uuid(name: 'userId')]
     public function method4(): void
     {
     }

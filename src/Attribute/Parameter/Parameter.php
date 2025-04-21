@@ -10,8 +10,7 @@ use Attribute;
 class Parameter {
     public function __construct(
         private readonly string $name,
-        private readonly string $pattern,
-        private readonly bool $optional = false,
+        private readonly string $pattern
     )
     {
     }

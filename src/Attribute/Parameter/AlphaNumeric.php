@@ -12,8 +12,7 @@ final class AlphaNumeric extends Parameter
     public function __construct(
         string $name,
         int $length = 0,
-        AlphaCase $case = AlphaCase::insensitive,
-        bool $optional = false,
+        AlphaCase $case = AlphaCase::insensitive
     )
     {
         $alpha = match($case) {
@@ -30,8 +29,6 @@ final class AlphaNumeric extends Parameter
                         ? '+'
                         : '{' . abs($length) . '}'
                 )
-            ,
-            optional: $optional
         );
     }
 }

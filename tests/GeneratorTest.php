@@ -69,7 +69,7 @@ class GeneratorTest extends TestCase
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method3'])",
                     ],
                     [
-                        "Route::methods(['GET'], '/test/method4/{testId:[1-9]\d*}[/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')]",
+                        "Route::methods(['GET'], '/test/method4/{testId:[1-9]\d*}[/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}]')",
                         "name('test_method4')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method4'])",
                     ],

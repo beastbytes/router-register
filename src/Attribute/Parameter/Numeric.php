@@ -12,8 +12,7 @@ final class Numeric extends Parameter
     public function __construct(
         string $name,
         int $length = 0,
-        bool $nonZero = false,
-        bool $optional = false,
+        bool $nonZero = false
     )
     {
         if ($nonZero) {
@@ -24,8 +23,7 @@ final class Numeric extends Parameter
 
         parent::__construct(
             name: $name,
-            pattern: $pattern,
-            optional: $optional
+            pattern: $pattern
         );
     }
 }
