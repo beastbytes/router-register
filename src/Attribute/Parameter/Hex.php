@@ -6,7 +6,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Hex extends Parameter
 {
     public function __construct(
