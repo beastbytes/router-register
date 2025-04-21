@@ -10,21 +10,28 @@ use BeastBytes\Router\Register\Attribute\Parameter\Uuid;
 
 class TestController
 {
-    #[Get(route: TestRoute::test_index)]
-    public function index(): void
+    #[Get(route: TestRoute::test_method1)]
+    public function method1(): void
     {
     }
 
-    #[Get(route: TestRoute::test_user)]
+    #[Get(route: TestRoute::test_method2)]
+    #[Id(name: 'testId')]
+    public function method2(): void
+    {
+    }
+
+    #[Get(route: TestRoute::test_method3)]
     #[Id(name: 'testId')]
     #[Uuid(name: 'userId')]
-    public function user(): void
+    public function method3(): void
     {
     }
 
-    #[Get(route: TestRoute::test_view)]
+    #[Get(route: TestRoute::test_method4)]
     #[Id(name: 'testId')]
-    public function view(): void
+    #[Uuid(name: 'userId', optional: true)]
+    public function method4(): void
     {
     }
 }

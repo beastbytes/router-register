@@ -54,19 +54,24 @@ class GeneratorTest extends TestCase
                 ],
                 [
                     [
-                        "Route::methods(['GET'], '/index')",
-                        "name('test_index')",
-                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'index'])",
+                        "Route::methods(['GET'], '/test')",
+                        "name('test_method1')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method1'])",
                     ],
                     [
-                        "Route::methods(['GET'], '/test/{testId:[1-9]\d*}/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
-                        "name('test_user')",
-                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'user'])",
+                        "Route::methods(['GET'], '/test/method2/{testId:[1-9]\d*}')",
+                        "name('test_method2')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method2'])",
                     ],
                     [
-                        "Route::methods(['GET'], '/test/{testId:[1-9]\d*}')",
-                        "name('test_view')",
-                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'view'])",
+                        "Route::methods(['GET'], '/test/method3/{testId:[1-9]\d*}/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "name('test_method3')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method3'])",
+                    ],
+                    [
+                        "Route::methods(['GET'], '/test/method4/{testId:[1-9]\d*}[/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')]",
+                        "name('test_method4')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method4'])",
                     ],
                 ]
             ],
