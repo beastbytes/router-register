@@ -9,7 +9,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Id extends Parameter
 {
-    public function __construct(string $name, bool $optional)
+    public function __construct(string $name, bool $optional = false)
     {
         parent::__construct(
             name: $name,
