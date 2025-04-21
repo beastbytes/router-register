@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-class Writer
+final class Writer
 {
     private string $path;
 

@@ -13,7 +13,7 @@ use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use ReflectionAttribute;
 use ReflectionMethod;
 
-readonly class MethodAttributes
+final class MethodAttributes
 {
     public function __construct(private ReflectionMethod $reflector)
     {
