@@ -154,7 +154,7 @@ final class Generator
         $namePrefix = $groupAttribute->getNamePrefix();
 
         if (is_string($namePrefix)) {
-            $group[] = "namePrefix($namePrefix)";
+            $group[] = "namePrefix('$namePrefix')";
         }
     }
 
