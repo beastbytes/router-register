@@ -18,8 +18,8 @@ final class Middleware implements ClassAttributeInterface
     {
     }
 
-    public function getMiddleware(): array|string
+    public function getMiddleware(): array
     {
-        return $this->middleware;
+        return is_array($this->middleware) ? $this->middleware : [$this->middleware];
     }
 }
