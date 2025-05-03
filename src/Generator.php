@@ -327,10 +327,10 @@ final class Generator
         $middlewares = [];
 
         foreach ($classAttributes->getMiddleware() as $middleware) {
-            $middlewares[] = $middleware->getMiddleware();
+            $middlewares = [...$middlewares, ...$middleware->getMiddleware()];
         }
 
-        $middlewares = array_merge($middlewares, $routeAttribute->getMiddleware());
+        $middlewares = [...$middlewares, ...$routeAttribute->getMiddleware()];
 
         if (count($middlewares) > 0) {
             foreach ($middlewares as $middleware) {
