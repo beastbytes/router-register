@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace BeastBytes\Router\Register\Attribute;
 
 use Attribute;
+use BeastBytes\Router\Register\GroupInterface;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Group implements RouteAttributeInterface
 {
     public function __construct(
+        private readonly GroupInterface $group,
         private readonly ?string $prefix = null,
         private readonly array|string $hosts = [],
         private readonly array|string|null $cors = null,
@@ -49,22 +51,18 @@ final class Group implements RouteAttributeInterface
         ;
     }
 
+    public function getName(): string
+    {
+        return $this->group->getName();
+    }
+
     public function getNamePrefix(): ?string
     {
-        return $this->namePrefix;
+        return $this->namePrefix ?? $this->group->getNamePrefix();
     }
 
-    public function getName(): ?string
+    public function getPrefix(): ?string
     {
-        if (is_string($this->prefix)) {
-            return trim($this->prefix, '/');
-        }
-
-        return null;
-    }
-
-    public function getPrefix(): string
-    {
-        return $this->prefix ?? '';
+        return $this->prefix ?? $this->group->getprefix();
     }
 }
