@@ -69,7 +69,6 @@ final class Generator
 
     private function processGroupAttribute(ReflectionClass $reflectionClass): array
     {
-
         $groupAttributes = $reflectionClass
             ->getAttributes(Group::class, ReflectionAttribute::IS_INSTANCEOF)
         ;
@@ -307,7 +306,7 @@ final class Generator
                 $replacements['{' . $name . '}'] = '{' . $name . ':' . $pattern . '}';
             }
 
-            $uri = ($prefix === null ? '' : $prefix->getRoutePrefix()) . strtr($uri, $replacements);
+            $uri = ($prefix === null ? '' : $prefix->getPrefix()) . strtr($uri, $replacements);
         }
 
         $route[] = "Route::methods(['" . join("','", $methods) . "'], '" . $uri . "')";
