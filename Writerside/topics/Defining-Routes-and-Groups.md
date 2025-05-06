@@ -2,6 +2,6 @@
 
 This section describes how to:
 
-* [Define routes using enumerations](Route-Enumeration.md)
-* [Assign routes to controller methods](Assigning-Routes-in-the-Controller.md)
+* [Define routes](Defining-Routes.md)
 * [Define groups](Defining-Groups.md)
+* [Assign routes to controller methods](Assigning-Routes-and-Groups-in-Source-Code.md)

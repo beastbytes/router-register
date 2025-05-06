@@ -67,6 +67,19 @@ Multiple controllers can belong to the same group by using the same group defini
     </thead>
     <tbody>
         <tr>
+            <td>group</td>
+            <td>GroupInterface</td>
+            <td>
+                <p>The group</p>
+                <p>
+                    Defines the prefixes applied to routes and names in the group; 
+                    both can be overridden by the attribute parameters
+                </p>
+            </td>
+            <td>Yes</td>
+            <td></td>
+        </tr>
+        <tr>
             <td>prefix</td>
             <td>string</td>
             <td>The prefix applied to all routes in the group</td>
@@ -97,7 +110,7 @@ Multiple controllers can belong to the same group by using the same group defini
         <tr>
             <td>disabledMiddleware</td>
             <td>array|callable|string</td>
-            <td>Middleware not to apply to the route</td>
+            <td>Parent Middleware not to apply to the route</td>
             <td>No</td>
             <td>[]</td>
         </tr>
@@ -202,7 +215,10 @@ Defines a route
         <tr>
             <td>route</td>
             <td>RouteInterface</td>
-            <td>The route</td>
+            <td>
+                <p>The route</p>
+                <p>Defines the route name and URI pattern</p>
+            </td>
             <td>Yes</td>
             <td></td>
         </tr>
@@ -223,7 +239,7 @@ Defines a route
         <tr>
             <td>disabledMiddleware</td>
             <td>array|callable|string</td>
-            <td>Middleware not to apply to the route</td>
+            <td>Parent Middleware not to apply to the route</td>
             <td>No</td>
             <td>[]</td>
         </tr>

@@ -35,8 +35,9 @@ php composer.phar require -dev "beastbytes/router-register:*"
 ## Usage
 Using RouterRegister involves:
 * [Configure the router](Yii-Router-Configuration.md)
-* [Defining routes in Route enumerations](Route-Enumeration.md)
-* [Adding Attributes to source code](Assigning-Routes-in-the-Controller.md)
+* [Defining routes](Defining-Routes.md)
+* [Defining groups](Defining-Groups.md) (if required)
+* [Assigning groups and routes in source code](Assigning-Routes-and-Groups-in-Source-Code.md)
 * [Run the Yii console command](Yii-Console-router-register-Command.md)
 
 > File watchers can automatically generate the groups and routes as you develop your application.

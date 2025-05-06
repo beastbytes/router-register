@@ -9,9 +9,9 @@
     <toc-element topic="Router-Register.md"/>
     <toc-element topic="Yii-Router-Configuration.md"/>
     <toc-element topic="Defining-Routes-and-Groups.md">
-        <toc-element topic="Route-Enumeration.md"/>
-        <toc-element topic="Assigning-Routes-in-the-Controller.md"/>
+        <toc-element topic="Defining-Routes.md"/>
         <toc-element topic="Defining-Groups.md"/>
+        <toc-element topic="Assigning-Routes-and-Groups-in-Source-Code.md"/>
     </toc-element>
     <toc-element topic="Attributes.md">
         <toc-element topic="HTTP-Methods.md"/>

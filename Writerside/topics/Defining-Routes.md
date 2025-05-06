@@ -1,11 +1,10 @@
-# Route Enumeration
+# Defining Routes
 
-Routes in RouterRegister are defined using string backed
-[enumerations](https://www.php.net/manual/en/language.enumerations.php)
-that implement RouteInterface and use RouteTrait (both are part of the RouterRegister package).
+Routes are defined using string-backed [enumerations](https://www.php.net/manual/en/language.enumerations.php)
+that implement RouteInterface; RouteTrait provides an implementation of RouteTrait
+(both are part of the RouterRegister package).
 
-Each route is a case where the name is the route name, 
-and the string value is the URI.
+Each route is a case where the name is the route name, and the string value is the URI.
 
 If the URI has parameters, enclose each parameter name in braces.
 
@@ -44,7 +43,7 @@ enum ProductRoute: string implements RouteInterface
 ```
 
 ## RouteInterface & RouteTrait
-RouteInterface allows Routes to be type checked and defines two methods that can be used in your application:
+RouteInterface allows Routes to be type-checked and defines two methods that can be used in your application:
 
 ```php
  // returns the route name
