@@ -11,7 +11,7 @@ enum ItemRoute: string implements RouteInterface
 {
     use RouteTrait;
 
-    case item_index = '/index';
-    case item_update = '/item/update/{itemId}';
-    case item_view = '/item/{itemId}';
+    case index = '/index';
+    case update = '/item/update/{itemId}';
+    case view = '/item/{itemId}';
 }

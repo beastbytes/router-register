@@ -8,6 +8,7 @@ use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware1;
 use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware2;
 use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware3;
 use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware4;
+use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,6 +20,7 @@ class GroupTest extends TestCase
     #[Test]
     #[DataProvider('groupProvider')]
     public function group(
+        TestGroup $group,
         ?string $prefix,
         array|string $hosts,
         array|string $cors,
@@ -28,6 +30,7 @@ class GroupTest extends TestCase
     ): void
     {
         $attribute = new Group(
+            group: $group,
             prefix: $prefix,
             hosts: $hosts,
             cors: $cors,
@@ -35,7 +38,8 @@ class GroupTest extends TestCase
             disabledMiddleware: $disabledMiddleware,
             namePrefix: $namePrefix
         );
-        self::assertSame($prefix, $attribute->getPrefix());
+
+        self::assertSame($prefix ?? $group->getPrefix(), $attribute->getPrefix());
         self::assertSame(
             is_array($hosts) ? $hosts : [$hosts],
             $attribute->getHosts()
@@ -49,13 +53,7 @@ class GroupTest extends TestCase
             is_array($disabledMiddleware) ? $disabledMiddleware : [$disabledMiddleware],
             $attribute->getDisabledMiddleware()
         );
-        self::assertSame($namePrefix, $attribute->getNamePrefix());
-
-        if (is_string($prefix)) {
-            self::assertSame(trim($prefix, '/'), $attribute->getName());
-        } else {
-            self::assertNull($attribute->getName());
-        }
+        self::assertSame($namePrefix ?? $group->getNamePrefix(), $attribute->getNamePrefix());
     }
 
     public static function groupProvider(): Generator
@@ -66,14 +64,16 @@ class GroupTest extends TestCase
         $disabledMiddlewares = [[], Middleware3::class, [Middleware3::class, Middleware4::class, ]];
 
         for ($i = 0; $i < 10; $i++) {
-            $prefix = Random::string(random_int(5, 10));
-            $namePrefix = Random::string(random_int(5, 10));
+            $prefix = $i % 2 ? Random::string(random_int(5, 10)) : null;
+            $namePrefix = $i % 2 ? Random::string(random_int(5, 10)) : null;
 
-            foreach ($hosts as $host) {
-                foreach ($corsMiddlewares as $cors) {
-                    foreach ($middlewares as $middleware) {
-                        foreach ($disabledMiddlewares as $disabledMiddleware) {
-                            yield [$prefix, $host, $cors, $middleware, $disabledMiddleware, $namePrefix];
+            foreach (TestGroup::cases() as $group) {
+                foreach ($hosts as $host) {
+                    foreach ($corsMiddlewares as $cors) {
+                        foreach ($middlewares as $middleware) {
+                            foreach ($disabledMiddlewares as $disabledMiddleware) {
+                                yield [$group, $prefix, $host, $cors, $middleware, $disabledMiddleware, $namePrefix];
+                            }
                         }
                     }
                 }

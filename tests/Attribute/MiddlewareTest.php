@@ -16,7 +16,7 @@ class MiddlewareTest extends TestCase
     public function middleware(string $middleware): void
     {
         $attribute = new Middleware($middleware);
-        self::assertSame($middleware, $attribute->getMiddleware());
+        self::assertSame([$middleware], $attribute->getMiddleware());
     }
 
     public static function middlewareProvider(): Generator

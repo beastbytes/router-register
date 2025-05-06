@@ -8,23 +8,27 @@ use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Method\Method;
 use BeastBytes\Router\Register\Attribute\Parameter\Uuid;
+use BeastBytes\Router\Register\Attribute\Prefix;
 use BeastBytes\Router\Register\Attribute\Route;
+use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware1;
+use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
 
-#[Group(prefix: '/admin')]
+#[Group(group: TestGroup::group1, middleware: Middleware1::class)]
+#[Prefix(namePrefix: 'item_')]
 class ItemController
 {
-    #[Get(route: ItemRoute::item_index)]
+    #[Get(route: ItemRoute::index)]
     public function index(): void
     {
     }
 
-    #[Route(methods: [Method::GET, Method::POST],route: ItemRoute::item_update)]
+    #[Route(methods: [Method::GET, Method::POST],route: ItemRoute::update)]
     #[Uuid(name: 'itemId')]
     public function update(): void
     {
     }
 
-    #[Get(route: ItemRoute::item_view)]
+    #[Get(route: ItemRoute::view)]
     #[Uuid(name: 'itemId')]
     public function view(): void
     {

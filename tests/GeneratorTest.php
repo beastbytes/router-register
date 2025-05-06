@@ -80,10 +80,12 @@ class GeneratorTest extends TestCase
                 . DIRECTORY_SEPARATOR . 'resources'
                 . DIRECTORY_SEPARATOR . 'Controller'
                 . DIRECTORY_SEPARATOR . 'ItemController.php',
-                'admin',
+                'group1',
                 [
-                    "Group::create('/admin')",
-                    "routes(...(require __DIR__ . '/routes/admin.php'))"
+                    "Group::create('/group1')",
+                    "namePrefix('group1_')",
+                    "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\Middleware1')",
+                    "routes(...(require __DIR__ . '/routes/group1.php'))"
                 ],
                 [
                     [

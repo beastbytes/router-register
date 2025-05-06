@@ -16,7 +16,7 @@ class PrefixTest extends TestCase
     public function prefix(string $routePrefix, ?string $namePrefix): void
     {
         $attribute = new Prefix($routePrefix, $namePrefix);
-        self::assertSame($routePrefix, $attribute->getRoutePrefix());
+        self::assertSame($routePrefix, $attribute->getPrefix());
         self::assertSame($namePrefix, $attribute->getNamePrefix());
     }
 
