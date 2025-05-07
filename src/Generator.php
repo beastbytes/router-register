@@ -295,7 +295,7 @@ final class Generator
         $parameters = $methodAttributes->getParameters();
         $prefix = $classAttributes->getPrefix();
         $methods = $routeAttribute->getMethods();
-        $uri = $routeAttribute->getUri();
+        $uri = ($prefix === null ? '' : $prefix->getPrefix()) . $routeAttribute->getUri();
 
         if (count($parameters) > 0) {
             $replacements = [];
@@ -306,7 +306,7 @@ final class Generator
                 $replacements['{' . $name . '}'] = '{' . $name . ':' . $pattern . '}';
             }
 
-            $uri = ($prefix === null ? '' : $prefix->getPrefix()) . strtr($uri, $replacements);
+            $uri = strtr($uri, $replacements);
         }
 
         $route[] = "Route::methods(['" . join("','", $methods) . "'], '" . $uri . "')";
