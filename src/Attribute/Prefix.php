@@ -13,6 +13,7 @@ use Attribute;
 final class Prefix implements ClassAttributeInterface
 {
     public function __construct(
+        private readonly ?string $name = null,
         private readonly ?string $prefix = null,
         private readonly ?string $namePrefix = null,
     )
@@ -21,11 +22,11 @@ final class Prefix implements ClassAttributeInterface
 
     public function getNamePrefix(): ?string
     {
-        return $this->namePrefix;
+        return $this->namePrefix ?? $this->name . '_';
     }
 
     public function getPrefix(): ?string
     {
-        return $this->prefix;
+        return $this->prefix ?? '/' . $this->name;
     }
 }
