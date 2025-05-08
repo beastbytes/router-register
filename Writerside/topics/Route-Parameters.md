@@ -42,6 +42,7 @@ Parameter contains alphabetic characters
         </tr>
     </tbody>
 </table>
+
 ## AlphaNumeric
 Parameter contains alphabetic characters and digits
 <table>
@@ -78,6 +79,7 @@ Parameter contains alphabetic characters and digits
         </tr>
     </tbody>
 </table>
+
 ## Hex
 Parameter contains hexadecimal characters
 <table>
@@ -114,6 +116,7 @@ Parameter contains hexadecimal characters
         </tr>
     </tbody>
 </table>
+
 ## Id
 Parameter is number with a minimum value of 1; e.g. database autoincrement value
 <table>
@@ -136,6 +139,7 @@ Parameter is number with a minimum value of 1; e.g. database autoincrement value
         </tr>
     </tbody>
 </table>
+
 ## In
 Parameter must be on of the provided options
 <table>
@@ -165,6 +169,7 @@ Parameter must be on of the provided options
         </tr>
     </tbody>
 </table>
+
 ## Numeric
 Parameter contains numeric digits
 <table>
@@ -201,6 +206,7 @@ Parameter contains numeric digits
         </tr>
     </tbody>
 </table>
+
 ## Parameter
 Specifies the pattern the parameter must match
 <table>
@@ -230,6 +236,7 @@ Specifies the pattern the parameter must match
         </tr>
     </tbody>
 </table>
+
 ## Uuid
 Parameter is a Universally Unique Identifier (aka Globally Unique Identifier (GUID))
 <table>
@@ -260,7 +267,7 @@ Parameter is a Universally Unique Identifier (aka Globally Unique Identifier (GU
     </tbody>
 </table>
 
-### AlphaCase
+# AlphaCase
 AlphaCase is an enum that specifies the case of alphabetic characters; the enumerations are:
 
 * AlphaCase::insensitive — characters can be lowercase or uppercase
