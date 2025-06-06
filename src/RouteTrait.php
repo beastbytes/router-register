@@ -10,6 +10,7 @@ trait RouteTrait
     {
         return $this->name;
     }
+
     public function getUri(): string
     {
         return $this->value;
