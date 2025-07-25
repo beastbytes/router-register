@@ -473,6 +473,10 @@ return [
 ];
 ```
 
+>Note the difference between the Route names for the CategoryController where
+> the Route enum defines route names and URIs directly, and the ItemController whose Route enum defines a prefix.
+{style="note"}
+
 #### /routes/default.php
 ```php
 ?php
