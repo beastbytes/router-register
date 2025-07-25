@@ -6,11 +6,19 @@ namespace BeastBytes\Router\Register;
 
 trait RouteTrait
 {
-    public function getName(?string $prefix = null, ?GroupInterface $group = null): string
+    public function getName(): string
     {
-        $name = $group instanceof GroupInterface ? $group->getNamePrefix() : '';
-        $name .= $prefix !== null ? $prefix . '_' : '';
-        return $name . $this->name;
+        $name = [];
+
+        if (defined(self::GROUP)) {
+            $name[] = self::GROUP;
+        }
+        if (defined(self::PREFIX)) {
+            $name[] = self::PREFIX;
+        }
+        $name[] = $this->name;
+
+        return implode(defined(self::SEPARATOR) ? self::SEPARATOR : '.', $name);
     }
 
     public function getUri(): string
