@@ -10,13 +10,13 @@ Install RouterRegister using [Composer](https://getcomposer.org/)
 Add the following to the require-dev section of your composer.json:
 
 ```json
-"beastbytes/router-register": "*",
+"beastbytes/router-register": "<version-constraint>",
 ```
 
 or run
 
 ```PHP
-php composer.phar require -dev "beastbytes/router-register:*"
+php composer.phar require -dev "beastbytes/router-register:<version-constraint>"
 ```
 
 ## Documentation

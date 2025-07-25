@@ -16,6 +16,8 @@ RouterRegister supports grouping routes.
 > RouterRegister does not currently support nested groups
 {style="note"}
 
+Using RouterRegister helps with generating URLs in application code as the IDE can provide code completion and checking.
+
 ## Installation
 
 Install RouterRegister using [Composer](https://getcomposer.org/)
@@ -23,13 +25,13 @@ Install RouterRegister using [Composer](https://getcomposer.org/)
 Add the following to the require-dev section of your composer.json:
 
 ```json
-"beastbytes/router-register": "*",
+"beastbytes/router-register": "<version-constraint>",
 ```
 
 or run
 
 ```PHP
-php composer.phar require -dev "beastbytes/router-register:*"
+php composer.phar require -dev "beastbytes/router-register:<version-constraint>"
 ```
 
 ## Usage
@@ -39,5 +41,6 @@ Using RouterRegister involves:
 * [Defining groups](Defining-Groups.md) (if required)
 * [Assigning groups and routes in source code](Assigning-Routes-and-Groups-in-Source-Code.md)
 * [Run the Yii console command](Yii-Console-router-register-Command.md)
+* [UrlGenerator](UrlGenerator.md)
 
 > File watchers can automatically generate the groups and routes as you develop your application.

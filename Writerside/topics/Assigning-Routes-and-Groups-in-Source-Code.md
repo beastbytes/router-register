@@ -21,6 +21,27 @@ The [Parameter attribute](Route-Parameters.md#parameter) defines the pattern to 
 If a Route attribute parameter applies to all routes in a controller, e,g, middleware to be applied,
 a class level attribute, e.g. `Middleware` can be used to save having to define it for each route.
 
+Similarly, if a controller's route names have a common prefix - often the case - the prefix can be defined as a class
+level attribute that references ```public const PREFIX``` in the Route enum.
+
+```php
+#[Prefix(ProductRoute::PREFIX)]
+class ProductController
+{
+    // methods
+}
+```
+```php
+enum ProductRoute: string implements RouteInterface
+{
+    use RouteTrait;
+    
+    public const PREFIX = 'product';
+    
+    // enum cases
+}
+```
+
 ## Groups
 Routes can be grouped, e.g. by API endpoint or version, frontend/backend, etc.
 In RouterRegister, a Controller is assigned to a group.
@@ -73,12 +94,15 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\RouteGroup;
 use BeastBytes\Router\Register\RouteInterface;
 use BeastBytes\Router\Register\RouteTrait;
 
 enum AdminRoute: string implements RouteInterface
 {
     use RouteTrait;
+    
+    private const GROUP = RouteGroup::admin->name;
 
     case dashboard => '/';
 }
@@ -92,17 +116,21 @@ declare(strict_types=1);
 
 namespace App\Admin\Category;
 
+use App\RouteGroup;
 use BeastBytes\Router\Register\RouteInterface;
 use BeastBytes\Router\Register\RouteTrait;
 
 enum CategoryRoute: string implements RouteInterface
 {
     use RouteTrait;
+    
+    private const GROUP = RouteGroup::admin->name;
 
-    case index => '/categories';
-    case create => '/category/create';
-    case update => '/category/update/{id}';
-    case delete => '/category/delete/{id}';
+    case category_index => '/categories';
+    case category_create => '/category/create';
+    case category_delete => '/category/delete/{id}';
+    case category_update => '/category/update/{id}';
+    case category_view => '/category/{id}';
 }
 ```
 
@@ -114,17 +142,22 @@ declare(strict_types=1);
 
 namespace App\Admin\Item;
 
+use App\RouteGroup;
 use BeastBytes\Router\Register\RouteInterface;
 use BeastBytes\Router\Register\RouteTrait;
 
 enum ItemRoute: string implements RouteInterface
 {
     use RouteTrait;
+    
+    private const GROUP = RouteGroup::admin->name;
+    public const PREFIX = 'item';
 
-    case index => '/items';
-    case create => '/item/create';
-    case update => '/item/update/{id}';
-    case delete => '/item/delete/{id}';
+    case index => '';
+    case create => '/create';
+    case delete => '/delete/{id}';
+    case update => '/update/{id}';
+    case view => '/{id}';
 }
 ```
 
@@ -193,6 +226,7 @@ use App\Admin\RouteGroup;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Method\Method;
 use BeastBytes\Router\Register\Attribute\Method\Post;
+use BeastBytes\Router\Register\Attribute\Method\Prefix;
 use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
@@ -202,7 +236,7 @@ final class CategoryController
 {
     // -- class constants, class parameters, constructor, etc
     
-    #[Get(route: CategoryRoute::index)]
+    #[Get(route: CategoryRoute::category_index)]
     public function index(
         // Method parameters
     ): ResponseInterface
@@ -210,18 +244,9 @@ final class CategoryController
         // Method implementation
     }
     
-    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::create)]
+    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::category_create)]
     #[Id(name: 'id')]
     public function create(
-        // Method parameters
-    ): ResponseInterface
-    {
-        // Method implementation
-    }
-    
-    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::update)]
-    #[Id(name: 'id')]
-    public function update(
         // Method parameters
     ): ResponseInterface
     {
@@ -231,6 +256,24 @@ final class CategoryController
     #[Post(route: CategoryRoute::delete)]
     #[Id(name: 'id')]
     public function delete(
+        // Method parameters
+    ): ResponseInterface
+    {
+        // Method implementation
+    }
+    
+    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::category_update)]
+    #[Id(name: 'id')]
+    public function update(
+        // Method parameters
+    ): ResponseInterface
+    {
+        // Method implementation
+    }
+    
+    #[Get(route: CategoryRoute::category_view)]
+    #[Id(name: 'id')]
+    public function view(
         // Method parameters
     ): ResponseInterface
     {
@@ -251,11 +294,13 @@ use App\Admin\RouteGroup;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Method\Method;
 use BeastBytes\Router\Register\Attribute\Method\Post;
+use BeastBytes\Router\Register\Attribute\Method\Prefix;
 use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
 #[Group(group: RouteGroup::admin)]
+#[Prefix(ItemRoute::PREFIX)]
 final class ItemController
 {
     // -- class constants, class parameters, constructor, etc
@@ -277,6 +322,15 @@ final class ItemController
         // Method implementation
     }
     
+    #[Post(route: ItemRoute::delete)]
+    #[Id(name: 'id')]
+    public function delete(
+        // Method parameters
+    ): ResponseInterface
+    {
+        // Method implementation
+    }
+    
     #[Route(methods: [Method::GET, Method::POST] , route: ItemRoute::update)]
     #[Id(name: 'id')]
     public function update(
@@ -286,9 +340,9 @@ final class ItemController
         // Method implementation
     }
     
-    #[Post(route: ItemRoute::delete)]
+    #[Get(route: ItemRoute::view)]
     #[Id(name: 'id')]
-    public function delete(
+    public function update(
         // Method parameters
     ): ResponseInterface
     {
@@ -384,33 +438,40 @@ return [
         ->name('category_create')
         ->action([App\Admin\CategoryController::class, 'create'])
     ,
-    Route::methods(['GET', 'POST'], '/category/update/{id:[1-9]\d*}')
-        ->name('category_update')
-        ->action([App\Admin\CategoryController::class, 'update'])
-    ,
     Route::methods(['POST'], '/category/delete/{id:[1-9]\d*}')
         ->name('category_delete')
         ->action([App\Admin\CategoryController::class, 'delete'])
     ,
+    Route::methods(['GET', 'POST'], '/category/update/{id:[1-9]\d*}')
+        ->name('category_update')
+        ->action([App\Admin\CategoryController::class, 'update'])
+    ,
+    Route::methods(['GET'], '/category/{id:[1-9]\d*}')
+        ->name('category_view')
+        ->action([App\Admin\CategoryController::class, 'view'])
+    ,
     Route::methods(['GET'], '/items')
-        ->name('item_index')
+        ->name('item.index')
         ->action([App\Admin\ItemController::class, 'index'])
     ,
     Route::methods(['GET', 'POST'], '/item/create/{id:[1-9]\d*}')
-        ->name('item_create')
+        ->name('item.create')
         ->action([App\Admin\ItemController::class, 'create'])
     ,
+    Route::methods(['POST'], '/item/delete/{id:[1-9]\d*}')
+        ->name('item.delete')
+        ->action([App\Admin\ItemController::class, 'delete'])
+    ,
     Route::methods(['GET', 'POST'], '/item/update/{id:[1-9]\d*}')
-        ->name('item_update')
+        ->name('item.update')
         ->action([App\Admin\ItemController::class, 'update'])
     ,
-    Route::methods(['POST'], '/item/delete/{id:[1-9]\d*}')
-        ->name('item_delete')
-        ->action([App\Admin\ItemController::class, 'delete'])
+    Route::methods(['GET'], '/item/{id:[1-9]\d*}')
+        ->name('item.view')
+        ->action([App\Admin\ItemController::class, 'view'])
     ,
 ];
 ```
-
 
 #### /routes/default.php
 ```php
@@ -431,3 +492,4 @@ return [
     ,
 ];
 ```
+

@@ -8,7 +8,9 @@ Each route is a case where the name is the route name, and the string value is t
 
 If the URI has parameters, enclose each parameter name in braces.
 
-If the route has optional parameters, define them in the URI as normal.  
+If the route has optional parameters, define them in the URI as normal.
+
+If all routes have a common prefix, define the ```public constant PREFIX``` with the prefix value.
 
 > The URI is relative to the group it is in; do not include any group prefix.
 {style="note"}
@@ -33,12 +35,14 @@ use BeastBytes\Router\Register\RouteTrait;
 enum ProductRoute: string implements RouteInterface
 {
     use RouteTrait;
+    
+    public const PREFIX = 'product';
 
-    case product_index = '/products';
+    case index = '/products';
     // with required parameter
-    case product_category = '/products/{categoryId}';
+    case category = '/products/{categoryId}';
     // with required parameter and optional parameter
-    case product_view = '/product/{productId}[/{featureId}]';
+    case view = '/product/{productId}[/{featureId}]';
 }
 ```
 
@@ -46,8 +50,8 @@ enum ProductRoute: string implements RouteInterface
 RouteInterface allows Routes to be type-checked and defines two methods that can be used in your application:
 
 ```php
- // returns the route name
-public function getName(): string;
+ // returns the route name in the form group.prefix.name; group and prefix are optional, and the separator can be defined
+public function getName(?GroupInterface $group = null, string $separator = '.'): string;
 
  // returns the route URI. This will include parameter placeholders
 public function getUri(): string;
