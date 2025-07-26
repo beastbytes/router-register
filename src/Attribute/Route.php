@@ -81,6 +81,14 @@ class Route implements RouteAttributeInterface
         return $this->route->getName();
     }
 
+    public function getPrefix(): ?string
+    {
+        return defined($this->route::class . '::PREFIX')
+            ? $this->route::PREFIX
+            : null
+        ;
+    }
+
     public function getUri(): string
     {
         return $this->route->getUri();

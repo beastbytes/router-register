@@ -7,11 +7,9 @@ namespace BeastBytes\Router\Register\Tests\resources\Controller;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Parameter\Uuid;
-use BeastBytes\Router\Register\Attribute\Prefix;
 
 class TestController
 {
-    #[Prefix('test')]
     #[Get(route: TestRoute::method1)]
     public function method1(): void
     {

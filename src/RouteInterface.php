@@ -7,5 +7,4 @@ namespace BeastBytes\Router\Register;
 interface RouteInterface
 {
     public function getRouteName(): string;
-    public function getUri(): string;
 }

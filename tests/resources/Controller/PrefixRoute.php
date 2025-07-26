@@ -7,11 +7,13 @@ namespace BeastBytes\Router\Register\Tests\resources\Controller;
 use BeastBytes\Router\Register\RouteInterface;
 use BeastBytes\Router\Register\RouteTrait;
 
-enum ItemRoute: string implements RouteInterface
+enum PrefixRoute: string implements RouteInterface
 {
     use RouteTrait;
 
-    case item_index = '/items';
-    case item_update = '/item/update/{id}';
-    case item_view = '/item/{id}';
+    public const PREFIX = 'prefix';
+
+    case index = '';
+    case update = '/update/{id}';
+    case view = '/{id}';
 }

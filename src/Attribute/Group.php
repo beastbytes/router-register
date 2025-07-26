@@ -17,7 +17,6 @@ final class Group implements RouteAttributeInterface
         private readonly array|string|null $cors = null,
         private readonly array|string $middleware = [],
         private readonly array|string $disabledMiddleware = [],
-        private readonly ?string $namePrefix = null,
     )
     {
     }
@@ -53,12 +52,7 @@ final class Group implements RouteAttributeInterface
 
     public function getName(): string
     {
-        return $this->group->getName();
-    }
-
-    public function getNamePrefix(): ?string
-    {
-        return $this->namePrefix ?? $this->group->getNamePrefix();
+        return $this->group->name;
     }
 
     public function getPrefix(): ?string

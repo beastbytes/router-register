@@ -55,22 +55,22 @@ class GeneratorTest extends TestCase
                 [
                     [
                         "Route::methods(['GET'], '/test')",
-                        "name('test_method1')",
+                        "name('test.method1')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method1'])",
                     ],
                     [
                         "Route::methods(['GET'], '/test/method2/{testId:[1-9]\d*}')",
-                        "name('test_method2')",
+                        "name('test.method2')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method2'])",
                     ],
                     [
                         "Route::methods(['GET'], '/test/method3/{testId:[1-9]\d*}/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
-                        "name('test_method3')",
+                        "name('test.method3')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method3'])",
                     ],
                     [
                         "Route::methods(['GET'], '/test/method4/{testId:[1-9]\d*}[/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}]')",
-                        "name('test_method4')",
+                        "name('test.method4')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\TestController::class, 'method4'])",
                     ],
                 ]
@@ -83,25 +83,55 @@ class GeneratorTest extends TestCase
                 'group1',
                 [
                     "Group::create('/group1')",
-                    "namePrefix('group1_')",
+                    "namePrefix('group1')",
                     "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\Middleware1')",
                     "routes(...(require __DIR__ . '/routes/group1.php'))"
                 ],
                 [
                     [
-                        "Route::methods(['GET'], '/index')",
+                        "Route::methods(['GET'], '/items')",
                         "name('item_index')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\ItemController::class, 'index'])",
                     ],
                     [
-                        "Route::methods(['GET','POST'], '/item/update/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "Route::methods(['GET','POST'], '/item/update/{id:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
                         "name('item_update')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\ItemController::class, 'update'])",
                     ],
                     [
-                        "Route::methods(['GET'], '/item/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "Route::methods(['GET'], '/item/{id:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
                         "name('item_view')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\ItemController::class, 'view'])",
+                    ],
+                ]
+            ],
+            [
+                __DIR__
+                . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . 'Controller'
+                . DIRECTORY_SEPARATOR . 'PrefixController.php',
+                'group1',
+                [
+                    "Group::create('/group1')",
+                    "namePrefix('group1')",
+                    "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\Middleware1')",
+                    "routes(...(require __DIR__ . '/routes/group1.php'))"
+                ],
+                [
+                    [
+                        "Route::methods(['GET'], '/prefix')",
+                        "name('prefix.index')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\PrefixController::class, 'index'])",
+                    ],
+                    [
+                        "Route::methods(['GET','POST'], '/prefix/update/{id:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "name('prefix.update')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\PrefixController::class, 'update'])",
+                    ],
+                    [
+                        "Route::methods(['GET'], '/prefix/{id:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "name('prefix.view')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\PrefixController::class, 'view'])",
                     ],
                 ]
             ],

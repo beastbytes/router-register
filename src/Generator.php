@@ -88,7 +88,7 @@ final class Generator
             $prefix = $groupAttribute->getPrefix();
         }
 
-        $group = ['Group::create(' . (is_string($prefix) ? "'$prefix'" : null) . ')'];
+        $group = ['Group::create(' . (is_string($prefix) ? "'/$prefix'" : null) . ')'];
 
         if ($groupAttribute) {
             $this->groupNamePrefix($group, $groupAttribute);
@@ -150,7 +150,7 @@ final class Generator
 
     private function groupNamePrefix(array &$group, Group $groupAttribute): void
     {
-        $namePrefix = $groupAttribute->getNamePrefix();
+        $namePrefix = $groupAttribute->getPrefix();
 
         if (is_string($namePrefix)) {
             $group[] = "namePrefix('$namePrefix')";
@@ -172,7 +172,7 @@ final class Generator
 
         $classAttributes = new ClassAttributes($reflectionClass);
 
-        $this->routeMethods($route, $routeAttribute, $classAttributes, $methodAttributes);
+        $this->routeMethods($route, $routeAttribute, $methodAttributes);
         $this->routeDefaults($route, $classAttributes, $methodAttributes);
         $this->routeName($route, $routeAttribute, $classAttributes);
         $this->routeOverride($route, $methodAttributes);
@@ -288,14 +288,13 @@ final class Generator
     private function routeMethods(
         array &$route,
         Route $routeAttribute,
-        ClassAttributes $classAttributes,
         MethodAttributes $methodAttributes
     ): void
     {
         $parameters = $methodAttributes->getParameters();
-        $prefix = $classAttributes->getPrefix();
+        $prefix = $routeAttribute->getPrefix();
         $methods = $routeAttribute->getMethods();
-        $uri = ($prefix === null ? '' : $prefix->getPrefix()) . $routeAttribute->getUri();
+        $uri = (is_string($prefix) ? '/' . $prefix : '') . $routeAttribute->getUri();
 
         if (count($parameters) > 0) {
             $replacements = [];
@@ -345,15 +344,10 @@ final class Generator
      */
     private function routeName(
         array &$route,
-        Route $routeAttribute,
-        ClassAttributes $classAttributes,
+        Route $routeAttribute
     ): void
     {
-        $prefix = $classAttributes->getPrefix();
-
-        $name = ($prefix === null ? '' : $prefix->getNamePrefix()) . $routeAttribute->getName();
-
-        $route[] = "name('" . $name . "')";
+        $route[] = "name('" . $routeAttribute->getName() . "')";
     }
 
     private function routeOverride(

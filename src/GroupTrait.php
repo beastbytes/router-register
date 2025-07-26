@@ -8,6 +8,6 @@ trait GroupTrait
 {
     public function getPrefix(): string
     {
-        return '/' . $this->name;
+        return $this->name;
     }
 }

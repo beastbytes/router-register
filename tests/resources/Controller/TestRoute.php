@@ -13,8 +13,8 @@ enum TestRoute: string implements RouteInterface
 
     public const PREFIX = 'test';
 
-    case method1 = '/test';
-    case method2 = '/test/method2/{testId}';
-    case method3 = '/test/method3/{testId}/{userId}';
-    case method4 = '/test/method4/{testId}[/{userId}]';
+    case method1 = '';
+    case method2 = '/method2/{testId}';
+    case method3 = '/method3/{testId}/{userId}';
+    case method4 = '/method4/{testId}[/{userId}]';
 }

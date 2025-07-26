@@ -26,7 +26,6 @@ class GroupTest extends TestCase
         array|string $cors,
         array|string $middleware,
         array|string $disabledMiddleware,
-        ?string $namePrefix,
     ): void
     {
         $attribute = new Group(
@@ -36,7 +35,6 @@ class GroupTest extends TestCase
             cors: $cors,
             middleware: $middleware,
             disabledMiddleware: $disabledMiddleware,
-            namePrefix: $namePrefix
         );
 
         self::assertSame($prefix ?? $group->getPrefix(), $attribute->getPrefix());
@@ -53,7 +51,7 @@ class GroupTest extends TestCase
             is_array($disabledMiddleware) ? $disabledMiddleware : [$disabledMiddleware],
             $attribute->getDisabledMiddleware()
         );
-        self::assertSame($namePrefix ?? $group->getNamePrefix(), $attribute->getNamePrefix());
+        self::assertSame($namePrefix ?? $group->name, $attribute->getName());
     }
 
     public static function groupProvider(): Generator
@@ -65,14 +63,13 @@ class GroupTest extends TestCase
 
         for ($i = 0; $i < 10; $i++) {
             $prefix = $i % 2 ? Random::string(random_int(5, 10)) : null;
-            $namePrefix = $i % 2 ? Random::string(random_int(5, 10)) : null;
 
             foreach (TestGroup::cases() as $group) {
                 foreach ($hosts as $host) {
                     foreach ($corsMiddlewares as $cors) {
                         foreach ($middlewares as $middleware) {
                             foreach ($disabledMiddlewares as $disabledMiddleware) {
-                                yield [$group, $prefix, $host, $cors, $middleware, $disabledMiddleware, $namePrefix];
+                                yield [$group, $prefix, $host, $cors, $middleware, $disabledMiddleware];
                             }
                         }
                     }

@@ -47,14 +47,7 @@ enum ProductRoute: string implements RouteInterface
 ```
 
 ## RouteInterface & RouteTrait
-RouteInterface allows Routes to be type-checked and defines two methods that can be used in your application:
-
-```php
- // returns the route name in the form group.prefix.name; group and prefix are optional, and the separator can be defined
-public function getName(?GroupInterface $group = null, string $separator = '.'): string;
-
- // returns the route URI. This will include parameter placeholders
-public function getUri(): string;
-```
+RouteInterface allows Routes to be type-checked and defines the ```getRouteName()``` method
+that can be used in the application for generating URLs.
 
 RouteTrait implements RouteInterface.

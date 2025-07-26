@@ -3,16 +3,15 @@
 RouterRegister helps with Url generation as URL name generation gets code completion and checking from the IDE.
 
 ## Setting Up Url Name Generation
-Generated URL names have the format (without the spaces) ```group separator prefix separator name``` where:
+Generated URL names have the format (without the spaces) ```group.prefix.name``` where:
 
 * ```group``` - optional - the name of the group the route belongs to
 * ```prefix``` - optional - route prefix
 * ```name``` route name
-* ```separator``` required if ```group``` or ```prefix``` are defined. Defaults to dot(.)
 
 ### Defining the Group
 To generate route names for routes in a given group, define ```private const GROUP``` in the route enum.
-This can be defined using Group enum.
+This can be defined using the Group enum.
 
 The example below defines the RouteGroup enum,
 and the AdminRoute enum will generate route names in the ```admin``` group.
@@ -56,7 +55,7 @@ enum AdminRoute: string implements RouteInterface
 ```
 
 ### Defining the Prefix
-To generate route names with q common prefix, define ```public const PREFIX``` in the route enum.
+To generate route names with a common prefix, define ```public const PREFIX``` in the route enum.
 
 The example below will generate route names in the ```admin``` group with the prefix ```item```.
 ```php

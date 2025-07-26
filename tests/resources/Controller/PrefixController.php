@@ -13,20 +13,20 @@ use BeastBytes\Router\Register\Tests\resources\Middleware\Middleware1;
 use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
 
 #[Group(group: TestGroup::group1, middleware: Middleware1::class)]
-class ItemController
+class PrefixController
 {
-    #[Get(route: ItemRoute::item_index)]
+    #[Get(route: PrefixRoute::index)]
     public function index(): void
     {
     }
 
-    #[Route(methods: [Method::GET, Method::POST],route: ItemRoute::item_update)]
+    #[Route(methods: [Method::GET, Method::POST],route: PrefixRoute::update)]
     #[Uuid(name: 'id')]
     public function update(): void
     {
     }
 
-    #[Get(route: ItemRoute::item_view)]
+    #[Get(route: PrefixRoute::view)]
     #[Uuid(name: 'id')]
     public function view(): void
     {

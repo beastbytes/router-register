@@ -18,27 +18,13 @@ There are Route Parameters to cover most use cases:
 The [Parameter attribute](Route-Parameters.md#parameter) defines the pattern to match for all other cases.
 
 ### Class Level Attributes
-If a Route attribute parameter applies to all routes in a controller, e,g, middleware to be applied,
+If a Route attribute parameter applies to all routes in a controller, e.g. middleware to be applied,
 a class level attribute, e.g. `Middleware` can be used to save having to define it for each route.
 
-Similarly, if a controller's route names have a common prefix - often the case - the prefix can be defined as a class
-level attribute that references ```public const PREFIX``` in the Route enum.
-
 ```php
-#[Prefix(ProductRoute::PREFIX)]
 class ProductController
 {
     // methods
-}
-```
-```php
-enum ProductRoute: string implements RouteInterface
-{
-    use RouteTrait;
-    
-    public const PREFIX = 'product';
-    
-    // enum cases
 }
 ```
 
@@ -300,7 +286,6 @@ use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
 #[Group(group: RouteGroup::admin)]
-#[Prefix(ItemRoute::PREFIX)]
 final class ItemController
 {
     // -- class constants, class parameters, constructor, etc
@@ -496,4 +481,3 @@ return [
     ,
 ];
 ```
-

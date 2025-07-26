@@ -6,21 +6,30 @@ namespace BeastBytes\Router\Register;
 
 trait RouteTrait
 {
-    public function getRouteName(): string
+    /** @internal */
+    public function getName(): string
     {
-        $name = [];
+        $name = '';
 
-        if (defined(self::GROUP)) {
-            $name[] = self::GROUP;
+        if (defined(self::class . '::PREFIX')) {
+            $name .= self::PREFIX . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
         }
-        if (defined(self::PREFIX)) {
-            $name[] = self::PREFIX;
-        }
-        $name[] = $this->name;
 
-        return implode(defined(self::SEPARATOR) ? self::SEPARATOR : '.', $name);
+        return $name .= $this->name;
     }
 
+    public function getRouteName(): string
+    {
+        $name = '';
+
+        if (defined( self::class . '::GROUP')) {
+            $name .= self::GROUP . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
+        }
+
+        return $name . $this->getName();
+    }
+
+    /** @internal */
     public function getUri(): string
     {
         return $this->value;

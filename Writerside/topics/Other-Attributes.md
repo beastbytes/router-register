@@ -185,54 +185,6 @@ Overrides another route with the same name.
 
 **Cardinality**: ?
 
-## Prefix
-Defines a prefix and a name-prefix that are applied to all routes in a class.
-
-**Use On**: Class
-
-**Cardinality**: ?
-<table>
-    <thead>
-        <tr>
-            <th>Parameter</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Required</th>
-            <th>Default</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>name</td>
-            <td>?string</td>
-            <td>
-                <p>The prefix name.</p>
-                <p>A shortcut for setting the prefix and name prefix at the same time.</p>
-                <p>prefix = '/' . {name}</p>
-                <p>namePrefix = {name} . '_'</p>
-                <p>The prefix and namePrefix parameters override the shortcut values.</p>
-            </td>
-            <td>No</td>
-            <td>null</td>
-        </tr>
-        <tr>
-            <td>prefix</td>
-            <td>?string</td>
-            <td>The prefix</td>
-            <td>No</td>
-            <td>null</td>
-        </tr>
-        <tr>
-            <td>namePrefix</td>
-            <td>?string</td>
-            <td>The name prefix</td>
-            <td>No</td>
-            <td>null</td>
-        </tr>
-    </tbody>
-</table>
-
-
 ## Route
 Defines a route
 

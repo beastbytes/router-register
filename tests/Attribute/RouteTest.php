@@ -159,7 +159,7 @@ class RouteTest extends TestCase
     private function assertions($route, $methods, $hosts, $middleware, $disabledMiddleware): void
     {
         self::assertSame($methods, $route->getMethods());
-        self::assertSame(TestRoute::route_1->getName(), $route->getName());
+        self::assertSame(TestRoute::route_1->name, $route->getName());
         self::assertSame(
             is_array($hosts)
                 ? $hosts
