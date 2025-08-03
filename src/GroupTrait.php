@@ -6,15 +6,13 @@ namespace BeastBytes\Router\Register;
 
 trait GroupTrait
 {
-    /** @internal */
+    public function getNamePrefix(): string
+    {
+        return $this->name . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
+    }
+
     public function getPrefix(): string
     {
         return $this->name;
-    }
-
-    /** @internal */
-    public function getSeparator(): string
-    {
-        return defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.';
     }
 }

@@ -34,5 +34,9 @@ The default separator between the group and route name is `.` (dot). If a differ
 
 ## GroupTrait
 GroupTrait implements GroupInterface; it is used to generate routes and names in groups.
+
+GroupTrait expose two methods:
+* `getNamePrefix()` - returns the name prefix of the group
+* `getPrefix()` - returns the route prefix of the group
 > If prefix and/or namePrefix are defined by the `Group` attribute, the `Group` attribute values take precedence.
 {style="note"}
