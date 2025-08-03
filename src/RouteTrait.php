@@ -6,7 +6,6 @@ namespace BeastBytes\Router\Register;
 
 trait RouteTrait
 {
-    /** @internal */
     public function getName(): string
     {
         $name = '';
