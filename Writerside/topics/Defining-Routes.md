@@ -1,5 +1,4 @@
 # Defining Routes
-
 Routes are defined using string-backed [enumerations](https://www.php.net/manual/en/language.enumerations.php)
 that implement RouteInterface; RouteTrait provides an implementation of RouteTrait
 (both are part of the RouterRegister package).

@@ -83,7 +83,7 @@ class GeneratorTest extends TestCase
                 'group1',
                 [
                     "Group::create('/group1')",
-                    "namePrefix('group1')",
+                    "namePrefix('group1.')",
                     "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\Middleware1')",
                     "routes(...(require __DIR__ . '/routes/group1.php'))"
                 ],
@@ -113,7 +113,7 @@ class GeneratorTest extends TestCase
                 'group1',
                 [
                     "Group::create('/group1')",
-                    "namePrefix('group1')",
+                    "namePrefix('group1.')",
                     "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\Middleware1')",
                     "routes(...(require __DIR__ . '/routes/group1.php'))"
                 ],

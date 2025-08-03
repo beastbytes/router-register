@@ -1,5 +1,4 @@
 # UrlGenerator
-
 RouterRegister helps with Url generation as URL name generation gets code completion and checking from the IDE.
 
 ## Setting Up Url Name Generation

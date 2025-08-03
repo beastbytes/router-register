@@ -16,6 +16,7 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
 final class Generator
 {
     private string $defaultGroup;
+    private string $separator;
 
     public function processFile(string $file): ?array
     {
@@ -150,7 +151,7 @@ final class Generator
 
     private function groupNamePrefix(array &$group, Group $groupAttribute): void
     {
-        $namePrefix = $groupAttribute->getPrefix();
+        $namePrefix = $groupAttribute->getNamePrefix();
 
         if (is_string($namePrefix)) {
             $group[] = "namePrefix('$namePrefix')";

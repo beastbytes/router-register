@@ -1,5 +1,4 @@
 # Attributes
-
 This section provides the full definition of all the attributes in RouterRegister
 
 * [HTTP Methods](HTTP-Methods.md)

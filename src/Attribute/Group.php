@@ -57,6 +57,11 @@ final class Group implements RouteAttributeInterface
 
     public function getPrefix(): ?string
     {
-        return $this->prefix ?? $this->group->getprefix();
+        return $this->prefix ?? $this->group->getPrefix();
+    }
+
+    public function getNamePrefix(): ?string
+    {
+        return $this->getPrefix() . $this->group->getSeparator();
     }
 }

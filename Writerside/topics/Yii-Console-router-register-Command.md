@@ -1,5 +1,4 @@
 # Yii Console router::register Command
-
 ## NAME
 router::register - Register routes to configuration
 

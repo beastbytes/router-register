@@ -1,5 +1,4 @@
 # Yii Router Configuration
-
 RouterRegister generates group and route configuration files for use by the Router. 
 To use them in your configuration simply require and unpack the groups.php file in the ```AddGroup()``` method of your
 route collector; the RouteCollectionInterface configuration should look something like:
