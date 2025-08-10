@@ -124,7 +124,10 @@ final class Generator
 
         if (count($middlewares) > 0) {
             foreach ($middlewares as $middleware) {
-                $group[] = "disabledMiddleware('$middleware')";
+                $group[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
+                    ? "disableMiddleware($middleware)"
+                    : "disableMiddleware('$middleware')"
+                ;
             }
         }
     }
@@ -144,7 +147,10 @@ final class Generator
 
         if (count($middlewares) > 0) {
             foreach ($middlewares as $middleware) {
-                $group[] = "middleware('$middleware')";
+                $group[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
+                    ? "middleware($middleware)"
+                    : "middleware('$middleware')"
+                ;;
             }
         }
     }
@@ -275,7 +281,10 @@ final class Generator
 
         if (count($middlewares) > 0) {
             foreach ($middlewares as $middleware) {
-                $route[] = "disableMiddleware('$middleware')";
+                $route[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
+                    ? "disableMiddleware($middleware)"
+                    : "disableMiddleware('$middleware')"
+                ;
             }
         }
     }
@@ -333,7 +342,10 @@ final class Generator
 
         if (count($middlewares) > 0) {
             foreach ($middlewares as $middleware) {
-                $route[] = "middleware('$middleware')";
+                $route[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
+                    ? "middleware($middleware)"
+                    : "middleware('$middleware')"
+                ;
             }
         }
     }
