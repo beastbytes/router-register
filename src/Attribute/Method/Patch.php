@@ -11,19 +11,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 final class Patch extends Route
 {
-    public function __construct(
-        RouteInterface $route,
-        array|string $hosts = [],
-        array|callable|string $middleware = [],
-        array|callable|string $disableMiddleware = [],
-    )
+    public function __construct(RouteInterface $route)
     {
-        parent::__construct(
-            methods: [Method::PATCH],
-            route: $route,
-            hosts: $hosts,
-            middleware: $middleware,
-            disableMiddleware: $disableMiddleware
-        );
+        parent::__construct([Method::PATCH], $route);
     }
 }
