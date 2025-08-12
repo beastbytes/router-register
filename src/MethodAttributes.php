@@ -6,6 +6,8 @@ namespace BeastBytes\Router\Register;
 
 use BeastBytes\Router\Register\Attribute\DefaultValue;
 use BeastBytes\Router\Register\Attribute\Fallback;
+use BeastBytes\Router\Register\Attribute\Host;
+use BeastBytes\Router\Register\Attribute\Middleware;
 use BeastBytes\Router\Register\Attribute\Override;
 use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
 use BeastBytes\Router\Register\Attribute\Route;
@@ -30,6 +32,16 @@ final class MethodAttributes
         return $this->getAttribute(Fallback::class);
     }
 
+    public function getHosts(): array
+    {
+        return $this->getAttributes(Host::class);
+    }
+
+    public function getMiddlewares(): array
+    {
+        return $this->getAttributes(Middleware::class);
+    }
+
     public function getOverride(): ?Override
     {
         return $this->getAttribute(Override::class);
@@ -46,14 +58,14 @@ final class MethodAttributes
         return $this->getAttribute(Route::class);
     }
 
-    private function getAttribute(string $attributeClass): ?RouteAttributeInterface
+    private function getAttribute(string $attributeClass): null|DefaultValue|Fallback|Host|Middleware|Parameter|Override|Route
     {
         $attributes = $this->getAttributes($attributeClass);
 
         return count($attributes) === 0 ? null : $attributes[0];
     }
 
-    /** @return list<RouteAttributeInterface> */
+    /** @return list<DefaultValue|Fallback|Host|Middleware|Parameter|Override|Route> */
     private function getAttributes(string $attributeClass): array
     {
         $attributes = $this

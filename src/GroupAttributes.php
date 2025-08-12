@@ -4,46 +4,51 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Register\Attribute\DefaultValue;
-use BeastBytes\Router\Register\Attribute\Host;
-use BeastBytes\Router\Register\Attribute\Middleware;
-use BeastBytes\Router\Register\Attribute\Prefix;
+use BeastBytes\Router\Register\Attribute\Group;
+use BeastBytes\Router\Register\Attribute\GroupCors;
+use BeastBytes\Router\Register\Attribute\GroupHost;
+use BeastBytes\Router\Register\Attribute\GroupMiddleware;
+use BeastBytes\Router\Register\Attribute\GroupNamePrefix;
 use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use ReflectionAttribute;
 use ReflectionClass;
 
-final class ClassAttributes
+final class GroupAttributes
 {
     public function __construct(private ReflectionClass $reflector)
     {
     }
 
-    /** @return list<DefaultValue> */
-    public function getDefaults(): array
+    public function getGroup(): ?Group
     {
-        return $this->getAttributes(DefaultValue::class);
+        return $this->getAttribute(Group::class);
     }
 
-    /** @return list<Host> */
+    public function getCors(): ?GroupCors
+    {
+        return $this->getAttribute(GroupCors::class);
+    }
+
+    /** @return list<GroupHost> */
     public function getHosts(): array
     {
-        return $this->getAttributes(Host::class);
+        return $this->getAttributes(GroupHost::class);
     }
 
-    public function getPrefix(): ?Prefix
+    public function getPrefix(): ?GroupNamePrefix
     {
-        return $this->getAttribute(Prefix::class);
+        return $this->getAttribute(GroupNamePrefix::class);
     }
 
     /**
-     * @return list<Middleware>
+     * @return list<GroupMiddleware>
      */
     public function getMiddlewares(): array
     {
-        return $this->getAttributes(Middleware::class);
+        return $this->getAttributes(GroupMiddleware::class);
     }
 
-    private function getAttribute(string $attributeClass): ?RouteAttributeInterface
+    private function getAttribute(string $attributeClass): null|Group|GroupCors|GroupNamePrefix|RouteAttributeInterface
     {
         $attributes = $this->getAttributes($attributeClass);
 
