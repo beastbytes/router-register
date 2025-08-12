@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\Route;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Yiisoft\Files\FileHelper;
-use Yiisoft\Files\PathMatcher\PathMatcher;
 
 final class Generator
 {
     private string $defaultGroup;
-    private string $separator;
 
     public function processFile(string $file): ?array
     {
@@ -30,7 +25,7 @@ final class Generator
 
         $reflectionClass = new ReflectionClass($className);
 
-        [$name, $group] = $this->processGroupAttribute($reflectionClass);
+        [$name, $group] = $this->processGroupAttributes($reflectionClass);
 
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             $route = $this->processMethod($reflectionClass, $reflectionMethod);
@@ -68,19 +63,16 @@ final class Generator
         return $namespace . '\\' . $class;
     }
 
-    private function processGroupAttribute(ReflectionClass $reflectionClass): array
+    private function processGroupAttributes(ReflectionClass $reflectionClass): array
     {
-        $groupAttributes = $reflectionClass
-            ->getAttributes(Group::class, ReflectionAttribute::IS_INSTANCEOF)
-        ;
+        $groupAttributes = new GroupAttributes($reflectionClass);
 
-        if (count($groupAttributes) === 0) {
+        $groupAttribute = $groupAttributes->getGroup();
+
+        if ($groupAttribute === null) {
             $name = $this->defaultGroup;
             $prefix = null;
-            $groupAttribute = null;
         } else {
-            $groupAttribute = $groupAttributes[0]->newInstance();
-
             $name = $groupAttribute->getName();
             if ($name === null) {
                 $name = $this->defaultGroup;
@@ -89,14 +81,13 @@ final class Generator
             $prefix = $groupAttribute->getPrefix();
         }
 
-        $group = ['Group::create(' . (is_string($prefix) ? "'/$prefix'" : null) . ')'];
+        $group = ['Group::create(' . (is_string($prefix) ? "'$prefix'" : null) . ')'];
 
-        if ($groupAttribute) {
-            $this->groupNamePrefix($group, $groupAttribute);
-            $this->groupHosts($group, $groupAttribute);
-            $this->groupCors($group, $groupAttribute);
-            $this->groupMiddleware($group, $groupAttribute);
-            $this->groupDisabledMiddleware($group, $groupAttribute);
+        if ($groupAttribute !== null) {
+            $this->groupNamePrefix($group, $groupAttributes);
+            $this->hosts($group, [$groupAttributes]);
+            $this->groupCors($group, $groupAttributes);
+            $this->middleware($group, [$groupAttributes]);
         }
 
         $this->groupRoutes($group, $name);
@@ -109,59 +100,34 @@ final class Generator
         $group[] = "routes(...(require __DIR__ . '/routes/" . $name . ".php'))";
     }
 
-    private function groupCors(array &$group, Group $groupAttribute): void
+    private function groupCors(array &$group, GroupAttributes $groupAttributes): void
     {
-        $cors = $groupAttribute->getCors();
+        $corsAttribute = $groupAttributes->getCors();
 
-        if ($cors !== null) {
-            $group[] = "withCors('$cors')";
-        }
-    }
+        if ($corsAttribute !== null) {
+            $middleware = $corsAttribute->getMiddleware();
 
-    private function groupDisabledMiddleware(array &$group, Group $groupAttribute): void
-    {
-        $middlewares = $groupAttribute->getDisabledMiddleware();
-
-        if (count($middlewares) > 0) {
-            foreach ($middlewares as $middleware) {
-                $group[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
-                    ? "disableMiddleware($middleware)"
-                    : "disableMiddleware('$middleware')"
-                ;
+            if (is_array($middleware)) {
+                $group[] = 'withCors(' . $this->array2String($middleware) . ')';
+            } elseif (str_starts_with($middleware, 'fn') || str_starts_with($middleware, 'function')) {
+                $group[] = "withCors($middleware)";
+            } else {
+                $group[] = "withCors('$middleware')";
             }
         }
     }
 
-    private function groupHosts(array &$group, Group $groupAttribute): void
+    private function groupNamePrefix(array &$group, GroupAttributes $groupAttributes): void
     {
-        $hosts = $groupAttribute->getHosts();
+        $namePrefixAttribute = $groupAttributes->getPrefix();
 
-        if (count($hosts) > 0) {
-            $group[] = "hosts('" . join("', '", $hosts) . "')";
+        if ($namePrefixAttribute === null) {
+            $namePrefix = $groupAttributes->getGroup()->getNamePrefix();
+        } else {
+            $namePrefix = $namePrefixAttribute->getNamePrefix();
         }
-    }
 
-    private function groupMiddleware(array &$group, Group $groupAttribute): void
-    {
-        $middlewares = $groupAttribute->getMiddleware();
-
-        if (count($middlewares) > 0) {
-            foreach ($middlewares as $middleware) {
-                $group[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
-                    ? "middleware($middleware)"
-                    : "middleware('$middleware')"
-                ;;
-            }
-        }
-    }
-
-    private function groupNamePrefix(array &$group, Group $groupAttribute): void
-    {
-        $namePrefix = $groupAttribute->getNamePrefix();
-
-        if (is_string($namePrefix)) {
-            $group[] = "namePrefix('$namePrefix')";
-        }
+        $group[] = "namePrefix('$namePrefix')";
     }
 
     private function processMethod(ReflectionClass $reflectionClass, ReflectionMethod $reflectionMethod): ?array
@@ -180,12 +146,11 @@ final class Generator
         $classAttributes = new ClassAttributes($reflectionClass);
 
         $this->routeMethods($route, $routeAttribute, $methodAttributes);
-        $this->routeDefaults($route, $classAttributes, $methodAttributes);
-        $this->routeName($route, $routeAttribute, $classAttributes);
+        $this->defaultValues($route, [$classAttributes, $methodAttributes]);
+        $this->routeName($route, $routeAttribute);
         $this->routeOverride($route, $methodAttributes);
-        $this->routeHosts($route, $routeAttribute, $classAttributes);
-        $this->routeMiddleware($route, $routeAttribute, $classAttributes);
-        $this->routeDisabledMiddleware($route, $routeAttribute);
+        $this->hosts($route, [$classAttributes, $methodAttributes]);
+        $this->middleware($route, [$classAttributes, $methodAttributes]);
         $this->routeAction($route, $reflectionClass, $reflectionMethod);
         $this->routeFallback($route, $methodAttributes);
 
@@ -206,31 +171,23 @@ final class Generator
         $route[] = 'action([' . $reflectionClass->getName() . "::class, '" . $reflectionMethod->getName() . "'])";
     }
 
-    private function routeDefaults(
-        array &$route,
-        ClassAttributes $classAttributes,
-        MethodAttributes $methodAttributes
-    ): void
+    private function defaultValues(array &$route, array $attributeObjects): void
     {
         $defaultValues = [];
 
-        foreach ([
-            $classAttributes->getDefaults(),
-            $methodAttributes->getDefaults()
-        ] as $defaultAttributes) {
-            foreach ($defaultAttributes as $defaultAttribute) {
-                $defaultValues[$defaultAttribute->getParameter()] = $defaultAttribute->getValue();
+        foreach ($attributeObjects as $attributeObject) {
+            foreach ($attributeObject->getDefaults() as $defaultAttribute) {
+                $defaultValues[] = "'"
+                    . $defaultAttribute->getParameter()
+                    . "' => '"
+                    . $defaultAttribute->getValue() .
+                    "'"
+                ;
             }
         }
 
         if (count($defaultValues) > 0) {
-            $default = "default([\n";
-
-            foreach ($defaultValues as $parameter => $value) {
-                $default .= "'" . $parameter . "' => '" . $value . "',\n";
-            }
-
-            $route[] = $default . '])';
+            $route[] = 'defaults([' . implode(', ', $defaultValues) . '])';;
         }
     }
 
@@ -244,57 +201,23 @@ final class Generator
         }
     }
 
-    /**
-     * @param list<string> $route
-     * @param Route $routeAttribute
-     * @param ClassAttributes $classAttributes
-     */
-    private function routeHosts(
-        array &$route,
-        Route $routeAttribute,
-        ClassAttributes $classAttributes,
-    ): void
+    private function hosts(array &$groute, array $attributeObjects): void
     {
         $hosts = [];
 
-        foreach ($classAttributes->getHosts() as $host) {
-            $hosts[] = $host->getHost();
-        }
-
-        $hosts = array_merge($hosts, $routeAttribute->getHosts());
-
-        if (count($hosts) > 0) {
-            $route[] = "hosts('" . join("', '", $hosts) . "')";
-        }
-    }
-
-    /**
-     * @param list<string> $route
-     * @param Route $routeAttribute
-     */
-    private function routeDisabledMiddleware(
-        array &$route,
-        Route $routeAttribute
-    ): void
-    {
-        $middlewares = $routeAttribute->getDisableMiddleware();
-
-        if (count($middlewares) > 0) {
-            foreach ($middlewares as $middleware) {
-                $route[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
-                    ? "disableMiddleware($middleware)"
-                    : "disableMiddleware('$middleware')"
-                ;
+        foreach ($attributeObjects as $attributeObject) {
+            foreach ($attributeObject->getHosts() as $hostAttribute) {
+                $hosts[] = $hostAttribute->getHost();
             }
         }
+
+        if (count($hosts) === 1) {
+            $groute[] = "host('" . $hosts[0] . "')";
+        } elseif (count($hosts) > 1) {
+            $groute[] = "hosts('" . implode("', '", $hosts) . "')";
+        }
     }
 
-    /**
-     * @param list<string> $route
-     * @param Route $routeAttribute
-     * @param ClassAttributes $classAttributes
-     * @param MethodAttributes $methodAttributes
-     */
     private function routeMethods(
         array &$route,
         Route $routeAttribute,
@@ -318,43 +241,44 @@ final class Generator
             $uri = strtr($uri, $replacements);
         }
 
-        $route[] = "Route::methods(['" . join("','", $methods) . "'], '" . $uri . "')";
+        $route[] = "Route::methods(['" . join("', '", $methods) . "'], '" . $uri . "')";
     }
 
-    /**
-     * @param list<string> $route
-     * @param Route $routeAttribute
-     * @param ClassAttributes $classAttributes
-     */
-    private function routeMiddleware(
-        array &$route,
-        Route $routeAttribute,
-        ClassAttributes $classAttributes,
-    ): void
+    private function middleware(array &$groute, array $attributeObjects): void
     {
         $middlewares = [];
+        $disabledMiddlewares = [];
 
-        foreach ($classAttributes->getMiddleware() as $middleware) {
-            $middlewares = [...$middlewares, ...$middleware->getMiddleware()];
-        }
+        foreach ($attributeObjects as $attributeObject) {
+            foreach ($attributeObject->getMiddlewares() as $middlewareAttribute) {
+                $middleware = $middlewareAttribute->getMiddleware();
 
-        $middlewares = [...$middlewares, ...$routeAttribute->getMiddleware()];
-
-        if (count($middlewares) > 0) {
-            foreach ($middlewares as $middleware) {
-                $route[] = str_starts_with($middleware, 'fn ') || str_starts_with($middleware, 'function ')
-                    ? "middleware($middleware)"
-                    : "middleware('$middleware')"
-                ;
+                if (is_array($middleware)) {
+                    $middleware = $this->array2String($middleware);
+                    if ($middlewareAttribute->disable()) {
+                        $disabledMiddlewares[] = "disableMiddleware($middleware)";
+                    } else {
+                        $middlewares[] = "middleware($middleware)";
+                    }
+                } elseif (str_starts_with($middleware, 'fn') || str_starts_with($middleware, 'function')) {
+                    if ($middlewareAttribute->disable()) {
+                        $disabledMiddlewares[] = "disableMiddleware($middleware)";
+                    } else {
+                        $middlewares[] = "middleware($middleware)";
+                    }
+                } else {
+                    if ($middlewareAttribute->disable()) {
+                        $disabledMiddlewares[] = "disableMiddleware('$middleware')";
+                    } else {
+                        $middlewares[] = "middleware('$middleware')";
+                    }
+                }
             }
         }
+
+        $groute = [...$groute, ...$middlewares, ...$disabledMiddlewares];
     }
 
-    /**
-     * @param list<string> $route
-     * @param Route $routeAttribute
-     * @param ClassAttributes $classAttributes
-     */
     private function routeName(
         array &$route,
         Route $routeAttribute
@@ -371,5 +295,27 @@ final class Generator
         if ($methodAttributes->getOverride() !== null) {
             $route[] = 'override()';
         }
+    }
+
+    private function array2String(array $ary): string
+    {
+        $string = '[';
+
+        foreach ($ary as $k => $v) {
+            if (is_string($k)) {
+                $string .= "'$k' => ";
+
+                if (is_array($v)) {
+                    $string .= $this->array2String($v);
+                } elseif (is_string($v)) {
+                    $string .= "'$v'";
+                } else {
+                    $string .= "$v";
+                }
+            }
+            $string .= ', ';
+        }
+
+        return $string . ']';
     }
 }
