@@ -6,6 +6,6 @@ namespace BeastBytes\Router\Register;
 
 interface GroupInterface
 {
+    public function getName(): string;
     public function getNamePrefix(): string;
-    public function getPrefix(): string;
 }
