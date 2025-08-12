@@ -1,5 +1,4 @@
-# Route Parameters
-
+# Parameter Attributes
 If a route has parameters, use parameter attributes to specify the matching patterns.
 
 **Use On:** Action Methods
@@ -263,6 +262,41 @@ Parameter is a Universally Unique Identifier (aka Globally Unique Identifier (GU
             <td>Whether the characters must be lowercase, uppercase, or can be either</td>
             <td>No</td>
             <td>AlphaCase::insensitive</td>
+        </tr>
+    </tbody>
+</table>
+
+# DefaultValue
+Specifies a default value to use if a parameter is not specified in the URL
+
+**Use On:** Action Methods
+
+**Cardinality:** *
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+            <th>Default</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>Parameter name</td>
+            <td>Yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>value</td>
+            <td>int|string</td>
+            <td>The default value</td>
+            <td>Yes</td>
+            <td></td>
         </tr>
     </tbody>
 </table>

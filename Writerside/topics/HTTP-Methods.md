@@ -1,6 +1,6 @@
 # HTTP Method Attributes
 Every route must define the HTTP method(s) it responds to.
-This is done using on of the HTTP Method attributes or the [Route attribute](Other-Attributes.md#route).
+This is done using on of the HTTP Method attributes or the [Route attribute](Other-Route-Attributes.md#route).
 
 There is an attribute for each HTTP method, and two convenience attributes:
 `All` for all HTTP methods

@@ -16,7 +16,8 @@
     <toc-element topic="Attributes.md">
         <toc-element topic="HTTP-Methods.md"/>
         <toc-element topic="Route-Parameters.md"/>
-        <toc-element topic="Other-Attributes.md"/>
+        <toc-element topic="Other-Route-Attributes.md"/>
+        <toc-element topic="Group-Attributes.md"/>
     </toc-element>
     <toc-element topic="Yii-Console-router-register-Command.md"/>
     <toc-element topic="UrlGenerator.md"/>

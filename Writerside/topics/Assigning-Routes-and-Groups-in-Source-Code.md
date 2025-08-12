@@ -3,8 +3,9 @@ Routes and Groups are assigned in controllers using PHP Attributes.
 
 ## Routes
 Routes are assigned to methods using either one of the [HTTP Method attributes](HTTP-Methods.md)
-or the [Route attribute](Other-Attributes.md#route) when multiple Methods are needed.
+or the [Route attribute](Other-Route-Attributes.md#route) when multiple Methods are needed.
 
+### Route Parameters
 If the route has parameters, each parameter is defined by one of the [Route Parameters](Route-Parameters.md).
 There are Route Parameters to cover most use cases:
 * [Alpha](Route-Parameters.md#alpha) — alphabetic string; length and case can be specified
@@ -17,16 +18,26 @@ There are Route Parameters to cover most use cases:
 
 The [Parameter attribute](Route-Parameters.md#parameter) defines the pattern to match for all other cases.
 
-### Class Level Attributes
+The [DefaultValue attribute](Route-Parameters.md#defaultvalue) can be used to define a default value for a parameter.
+
+## Other Method Level Attributes
+Other attributes can be used to define the route, e.g. middleware to be applied. These are:
+* [Fallback](Other-Route-Attributes.md#fallback) — Defines a fallback route that is attempted if
+no other routes in a group match. Only one fallback route is permitted in a group.
+* [Host](Other-Route-Attributes.md#host) — Defines the host(s) the route applies to.
+* [Middleware](Other-Route-Attributes.md#middleware) — Defines the middleware(s) to apply the route.
+Can also disable group or class level middleware by setting the `disable` parameter to `false`.
+* [Override](Other-Route-Attributes.md#override) — Overrides (replaces) a route with the same name.
+
+## Class Level Attributes
 If a Route attribute parameter applies to all routes in a controller, e.g. middleware to be applied,
 a class level attribute, e.g. `Middleware` can be used to save having to define it for each route.
 
-```php
-class ProductController
-{
-    // methods
-}
-```
+Class level attributes are:
+* [DefaultValue](Route-Parameters.md#defaultvalue) — Defines the default value to all routes in the class that use the parameter.
+* [Host](Other-Route-Attributes.md#host) — Defines the host(s) the routes apply to.
+* [Middleware](Other-Route-Attributes.md#middleware) — Defines the middleware(s) to apply to all routes in the class.
+Can also disable group level middleware by setting the `disable` parameter to `false`.
 
 ## Groups
 Routes can be grouped, e.g. by API endpoint or version, frontend/backend, etc.
@@ -39,10 +50,9 @@ A group can assign a prefix to route URIs, route name, specify hosts, and middle
 to be applied, or middleware not to be applied, to all routes in the group.
 
 If a group requires more than just the route and name prefixes, 
-e.g. a middleware applies to controller methods in the group,
+e.g. a middleware that applies to controller methods in the group,
 one of the controllers must specify all the required parameters; 
-other controllers in the group need only specify the group,
-though they can also specify all the required parameters.
+other controllers in the group need only specify the group.
 
 > If specifying required group parameters in one controller, it is best do so in the _root_ controller of the group,
 
@@ -230,7 +240,7 @@ final class CategoryController
         // Method implementation
     }
     
-    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::category_create)]
+    #[GetPost(route: CategoryRoute::category_create)]
     #[Id(name: 'id')]
     public function create(
         // Method parameters
@@ -248,7 +258,7 @@ final class CategoryController
         // Method implementation
     }
     
-    #[Route(methods: [Method::GET, Method::POST] , route: CategoryRoute::category_update)]
+    #[GetPost(route: CategoryRoute::category_update)]
     #[Id(name: 'id')]
     public function update(
         // Method parameters
@@ -298,7 +308,7 @@ final class ItemController
         // Method implementation
     }
     
-    #[Route(methods: [Method::GET, Method::POST] , route: ItemRoute::create)]
+    #[GetPost(route: ItemRoute::create)]
     #[Id(name: 'id')]
     public function create(
         // Method parameters
@@ -316,7 +326,7 @@ final class ItemController
         // Method implementation
     }
     
-    #[Route(methods: [Method::GET, Method::POST] , route: ItemRoute::update)]
+    #[GetPost(route: ItemRoute::update)]
     #[Id(name: 'id')]
     public function update(
         // Method parameters

@@ -1,10 +1,10 @@
 # Other Attributes
-Other attributes that can be applied to a route or group.
+Other attributes that can be applied to a route.
 
 ## DefaultValue
 Defines a default value for a parameter when the route does not contain a value.
 
-When used on a class it applies to all routes specified in the class.
+When used at the class level, it applies to all routes specified in the class.
 
 **Use On**: Class | Action method
 
@@ -38,7 +38,7 @@ When used on a class it applies to all routes specified in the class.
 </table>
 
 ## Fallback
-Defines a fallback route that is attempted if no other routes in a group matches.
+Defines a fallback route that is attempted if no other routes in a group match.
 
 Only one fallback route is permitted in a group.
 
@@ -114,20 +114,15 @@ Multiple controllers can belong to the same group by using the same group defini
             <td>No</td>
             <td>[]</td>
         </tr>
-        <tr>
-            <td>namePrefix</td>
-            <td>string</td>
-            <td>The prefix applied to all route names in the group</td>
-            <td>No</td>
-            <td>null</td>
-        </tr>
     </tbody>
 </table>
 
 ## Host
 Defines a host that all routes in a class are valid for.
 
-**Use On**: Class
+When used at the class level, it applies to all routes specified in the class.
+
+**Use On**: Class | Action method
 
 **Cardinality**: *
 <table>
@@ -152,9 +147,12 @@ Defines a host that all routes in a class are valid for.
 </table>
 
 ## Middleware
-Defines a middleware that is applied to all routes in a class.
+Defines a middleware to apply the route or,
+if  the `disable` parameter is `true`, a parent group middleware that should not be invoked.
 
-**Use On**: Class
+When used at the class level, it applies to all routes specified in the class.
+
+**Use On**: Class | Action method
 
 **Cardinality**: *
 <table>
@@ -171,9 +169,36 @@ Defines a middleware that is applied to all routes in a class.
         <tr>
             <td>middleware</td>
             <td>array|string</td>
-            <td>The middleware</td>
+            <td>
+                <p>The middleware(s)</p>
+                <p>
+                    An array definition of middleware must use the
+                    <a
+                        href="https://github.com/yiisoft/definitions#arraydefinition"
+                        target="_blank"
+                    >
+                        Yiisoft\Definitions\ArrayDefinition syntax
+                    </a>.
+                </p>
+                <p>
+                    To use a closure as middleware, define it as a string; 
+                    strings starting with 'fn' or 'function' are treated as closures.
+                </p>
+                <p>Example:</p>
+                <p><code>
+                    'fn (' . MyMiddleware::class . ' $middleware) => $middleware->setValue("' . ValueEnum::acase->value . '")'
+                </code></p>
+                <p>All other strings are treated "as is".</p>
+            </td>
             <td>Yes</td>
             <td></td>
+        </tr>
+        <tr>
+            <td>disable</td>
+            <td>bool</td>
+            <td>Disable the parent group middleware</td>
+            <td>No</td>
+            <td>false</td>
         </tr>
     </tbody>
 </table>
@@ -221,27 +246,6 @@ Defines a route
             </td>
             <td>Yes</td>
             <td></td>
-        </tr>
-        <tr>
-            <td>hosts</td>
-            <td>array|string</td>
-            <td>The host(s) that this route is valid for</td>
-            <td>No</td>
-            <td>[]</td>
-        </tr>
-        <tr>
-            <td>middleware</td>
-            <td>array|callable|string</td>
-            <td>Middleware to apply to the route</td>
-            <td>No</td>
-            <td>[]</td>
-        </tr>
-        <tr>
-            <td>disabledMiddleware</td>
-            <td>array|callable|string</td>
-            <td>Parent Middleware not to apply to the route</td>
-            <td>No</td>
-            <td>[]</td>
         </tr>
     </tbody>
 </table>
