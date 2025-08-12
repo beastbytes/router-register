@@ -12,5 +12,4 @@ enum TestGroup implements GroupInterface
     use GroupTrait;
 
     case group1;
-    case group2;
 }

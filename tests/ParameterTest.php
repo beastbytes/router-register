@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Register\Tests\Attribute;
+namespace BeastBytes\Router\Register\Tests;
 
 use BeastBytes\Router\Register\Attribute\Parameter\Alpha;
 use BeastBytes\Router\Register\Attribute\Parameter\AlphaCase;
@@ -13,7 +13,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\In;
 use BeastBytes\Router\Register\Attribute\Parameter\Numeric;
 use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
 use BeastBytes\Router\Register\Attribute\Parameter\Uuid;
-use \Generator;
+use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -6,5 +6,4 @@ namespace BeastBytes\Router\Register\Tests\resources\Middleware;
 
 class CorsMiddleware
 {
-
 }
