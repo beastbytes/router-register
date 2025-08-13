@@ -50,9 +50,10 @@ class WriterTest extends TestCase
                         "Route::methods(['GET'], '/index')",
                         "name('item_index')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\ItemController::class, 'index'])",
+                        "fallback" => true
                     ],
                     [
-                        "Route::methods(['GET','POST'], '/item/update/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
+                        "Route::methods(['GET', 'POST'], '/item/update/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')",
                         "name('item_update')",
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\ItemController::class, 'update'])",
                     ],
@@ -92,15 +93,15 @@ use Yiisoft\Router\Route;
 return [
     Route::methods(['GET'], '/index')
         ->name('test_index')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\MethodAttributesController::class, 'index'])
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'index'])
     ,
     Route::methods(['GET'], '/test/{testId:[1-9]\d*}/{userId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')
         ->name('test_user')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\MethodAttributesController::class, 'user'])
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'user'])
     ,
     Route::methods(['GET'], '/test/{testId:[1-9]\d*}')
         ->name('test_view')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\MethodAttributesController::class, 'view'])
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'view'])
     ,
 ];
 DEFAULT;
@@ -113,17 +114,17 @@ declare(strict_types=1);
 use Yiisoft\Router\Route;
 
 return [
-    Route::methods(['GET'], '/index')
-        ->name('item_index')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'index'])
-    ,
-    Route::methods(['GET','POST'], '/item/update/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')
+    Route::methods(['GET', 'POST'], '/item/update/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')
         ->name('item_update')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'update'])
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\ItemController::class, 'update'])
     ,
     Route::methods(['GET'], '/item/{itemId:[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}}')
         ->name('item_view')
-        ->action([BeastBytes\Router\Register\Tests\resources\Controller\TestController::class, 'view'])
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\ItemController::class, 'view'])
+    ,
+    Route::methods(['GET'], '/index')
+        ->name('item_index')
+        ->action([BeastBytes\Router\Register\Tests\resources\Controller\ItemController::class, 'index'])
     ,
 ];
 ADMIN;
