@@ -114,4 +114,10 @@ class MethodAttributesController
     public function method13(): void
     {
     }
+
+    #[Get(route: MethodAttributesRoute::method14)]
+    #[Id(name: 'testId')]
+    public function method14(): void
+    {
+    }
 }

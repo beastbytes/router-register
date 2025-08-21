@@ -26,4 +26,5 @@ enum MethodAttributesRoute: string implements RouteInterface
     case method11 = '/method11/{testId}';
     case method12 = '/method12/{testId}';
     case method13 = '/method13/{testId}';
+    case method14 = '//method14';
 }

@@ -132,8 +132,13 @@ class GeneratorTest extends TestCase
                     [
                         "Route::methods(['GET'], '/method-attributes/method13/{testId:[1-9]\d*}')",
                         "name('method-attributes.method13')",
-                        "override()",
+                        'override()',
                         "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\MethodAttributesController::class, 'method13'])",
+                    ],
+                    [
+                        "Route::methods(['GET'], '/method14')",
+                        "name('method-attributes.method14')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\MethodAttributesController::class, 'method14'])",
                     ],
                 ]
             ],
