@@ -9,13 +9,22 @@ If the URI has parameters, enclose each parameter name in braces.
 
 If the route has optional parameters, define them in the URI as normal.
 
-If all routes have a common prefix, define the ```public constant PREFIX``` with the prefix value.
-
 > The URI is relative to the group it is in; do not include any group prefix.
 {style="note"}
 
 Defining routes this way means that there is a single point of truth in the application with all the benefits
 that brings for code development and maintenance, and we get code completion in our IDE.
+
+## Route Prefix
+A Route enum can define a ```public constant PREFIX```. The value of this constant is used as the prefix
+for all route names. Example: if the prefix is ```product```,
+the route name for the case ```view``` is ```product.view```. The separator can be changed by setting
+the ```public constant SEPARATOR```.
+
+By default, the prefix also applies to the route URI. Example: if the prefix is ```product```,
+the URI for ```case view = /{productId};``` is ```/product/{productId}```.
+This behaviour can be overridden by starting the URI (case value) with ```//```.
+Example: the URI for ```case index = //products;``` is ```/products```.
 
 ## Route Enumeration Example
 Our application shows products to users using the ProductController. We define a ProductRoute enumeration
@@ -37,11 +46,11 @@ enum ProductRoute: string implements RouteInterface
     
     public const PREFIX = 'product';
 
-    case index = '/products';
+    case index = '//products';
     // with required parameter
-    case category = '/products/{categoryId}';
+    case category = '//products/{categoryId}';
     // with required parameter and optional parameter
-    case view = '/product/{productId}[/{featureId}]';
+    case view = '/{productId}[/{featureId}]';
 }
 ```
 

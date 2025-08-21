@@ -121,12 +121,14 @@ enum CategoryRoute: string implements RouteInterface
     use RouteTrait;
     
     private const GROUP = RouteGroup::admin->name;
+    public const PREFIX = 'category';
+    public const SEPARATOR = '_';
 
-    case category_index => '/categories';
-    case category_create => '/category/create';
-    case category_delete => '/category/delete/{id}';
-    case category_update => '/category/update/{id}';
-    case category_view => '/category/{id}';
+    case index => '//categories';
+    case create => '/create';
+    case delete => '/delete/{id}';
+    case update => '/update/{id}';
+    case view => '/{id}';
 }
 ```
 
@@ -149,7 +151,7 @@ enum ItemRoute: string implements RouteInterface
     private const GROUP = RouteGroup::admin->name;
     public const PREFIX = 'item';
 
-    case index => '';
+    case index => '//items';
     case create => '/create';
     case delete => '/delete/{id}';
     case update => '/update/{id}';
