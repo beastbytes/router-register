@@ -227,7 +227,13 @@ final class Generator
         $parameters = $methodAttributes->getParameters();
         $prefix = $routeAttribute->getPrefix();
         $methods = $routeAttribute->getMethods();
-        $uri = (is_string($prefix) ? '/' . $prefix : '') . $routeAttribute->getUri();
+        $uri = $routeAttribute->getUri();
+
+        if (str_starts_with($uri, '//')) {
+            $uri = mb_substr($uri, 1);
+        } else {
+            $uri = (is_string($prefix) ? '/' . $prefix : '') . $uri;
+        }
 
         if (count($parameters) > 0) {
             $replacements = [];
