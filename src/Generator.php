@@ -292,7 +292,7 @@ final class Generator
 
         array_walk(
             $disabledMiddlewares,
-            fn(&$disabledMiddleware, $key) => $disabledMiddleware = "disabledMiddleware($disabledMiddleware)"
+            fn(&$disabledMiddleware, $key) => $disabledMiddleware = "disableMiddleware($disabledMiddleware)"
         );
 
         array_walk(
