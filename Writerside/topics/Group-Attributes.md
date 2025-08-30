@@ -1,4 +1,4 @@
-# GroupAttributes
+# Group Attributes
 Attributes that define a group.
 
 ## Group

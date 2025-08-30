@@ -148,9 +148,12 @@ When used at the class level, it applies to all routes specified in the class.
 
 ## Middleware
 Defines a middleware to apply the route or,
-if  the `disable` parameter is `true`, a parent group middleware that should not be invoked.
+if the `disable` parameter is `true`, a parent group or class level middleware that should not be invoked.
 
 When used at the class level, it applies to all routes specified in the class.
+
+_**Note**_: When an action method disables a class level middleware,
+no output for the middleware is generated for the action method.
 
 **Use On**: Class | Action method
 

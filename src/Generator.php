@@ -250,7 +250,7 @@ final class Generator
         $route[] = "Route::methods(['" . join("', '", $methods) . "'], '" . $uri . "')";
     }
 
-    private function middleware(array &$groute, array $attributeObjects): void
+    private function middleware(array &$grpoute, array $attributeObjects): void
     {
         $middlewares = [];
         $disabledMiddlewares = [];
@@ -262,27 +262,45 @@ final class Generator
                 if (is_array($middleware)) {
                     $middleware = $this->array2String($middleware);
                     if ($middlewareAttribute->disable()) {
-                        $disabledMiddlewares[] = "disableMiddleware($middleware)";
+                        $disabledMiddlewares[] = "$middleware";
                     } else {
-                        $middlewares[] = "middleware($middleware)";
+                        $middlewares[] = "$middleware";
                     }
                 } elseif (str_starts_with($middleware, 'fn') || str_starts_with($middleware, 'function')) {
                     if ($middlewareAttribute->disable()) {
-                        $disabledMiddlewares[] = "disableMiddleware($middleware)";
+                        $disabledMiddlewares[] = "$middleware";
                     } else {
-                        $middlewares[] = "middleware($middleware)";
+                        $middlewares[] = "$middleware";
                     }
                 } else {
                     if ($middlewareAttribute->disable()) {
-                        $disabledMiddlewares[] = "disableMiddleware('$middleware')";
+                        $disabledMiddlewares[] = "'$middleware'";
                     } else {
-                        $middlewares[] = "middleware('$middleware')";
+                        $middlewares[] = "'$middleware'";
                     }
                 }
             }
         }
 
-        $groute = [...$groute, ...$middlewares, ...$disabledMiddlewares];
+        foreach ($disabledMiddlewares as $d => $disabledMiddleware) {
+            $m = array_search($disabledMiddleware, $middlewares);
+
+            if (is_int($m)) {
+                unset($disabledMiddlewares[$d], $middlewares[$m]);
+            }
+        }
+
+        array_walk(
+            $disabledMiddlewares,
+            fn(&$disabledMiddleware, $key) => $disabledMiddleware = "disabledMiddleware($disabledMiddleware)"
+        );
+
+        array_walk(
+            $middlewares,
+            fn(&$middleware, $key) => $middleware = "middleware($middleware)"
+        );
+
+        $grpoute = [...$grpoute, ...$middlewares, ...$disabledMiddlewares];
     }
 
     private function routeName(
