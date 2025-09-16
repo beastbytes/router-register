@@ -1,6 +1,6 @@
 # RouterRegister
-RouterRegister is primarily a Yii console command package that allows routes to be defined in the application
-source files using PHP Attributes; it generates router groups and routes configuration files from the attributes.
+RouterRegister is a Yii console command package that allows routes to be defined in the application source files
+using PHP Attributes; it generates router groups and routes configuration files from the attributes.
 
 There are a number of benefits of defining and registering routes using RouterRegister:
 
@@ -15,7 +15,15 @@ RouterRegister supports grouping routes.
 > RouterRegister does not currently support nested groups
 {style="note"}
 
-RouterRegister routes provide the ```getRouteName()``` method to get the route name when generating URLs.
+## RouteInterface
+RouteInterface routes provide the ```getRouteName()``` method
+to get the route name when generating URLs in application code.
+
+```PHP
+/** @var Yiisoft\Router\UrlGeneratorInterface $urlGenerator */
+/** ApplicationRoute implements BeastBytes\Router\Register\RouteInterface */
+$urlGenerator->generate(ApplicationRoute::home->getRouteName())
+```
 
 ## Installation
 

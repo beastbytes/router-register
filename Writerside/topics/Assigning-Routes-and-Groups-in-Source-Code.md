@@ -27,6 +27,9 @@ no other routes in a group match. Only one fallback route is permitted in a grou
 * [Host](Other-Route-Attributes.md#host) — Defines the host(s) the route applies to.
 * [Middleware](Other-Route-Attributes.md#middleware) — Defines the middleware(s) to apply the route.
 Can also disable group or class level middleware by setting the `disable` parameter to `false`.
+
+Application specific Middleware attributes can be defined;
+see [Defining Middleware Attributes](Defining-Middleware-Attributes.md)
 * [Override](Other-Route-Attributes.md#override) — Overrides (replaces) a route with the same name.
 
 ## Class Level Attributes
@@ -37,6 +40,9 @@ Class level attributes are:
 * [DefaultValue](Route-Parameters.md#defaultvalue) — Defines the default value to all routes in the class that use the parameter.
 * [Host](Other-Route-Attributes.md#host) — Defines the host(s) the routes apply to.
 * [Middleware](Other-Route-Attributes.md#middleware) — Defines the middleware(s) to apply to all routes in the class.
+
+Application specific Middleware attributes can be defined;
+see [Defining Middleware Attributes](Defining-Middleware-Attributes.md)
 Can also disable group level middleware by setting the `disable` parameter to `false`.
 
 ## Groups

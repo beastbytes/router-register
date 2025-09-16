@@ -12,6 +12,7 @@
         <toc-element topic="Defining-Routes.md"/>
         <toc-element topic="Defining-Groups.md"/>
         <toc-element topic="Assigning-Routes-and-Groups-in-Source-Code.md"/>
+        <toc-element topic="Defining-Middleware-Attributes.md"/>
     </toc-element>
     <toc-element topic="Attributes.md">
         <toc-element topic="HTTP-Methods.md"/>
