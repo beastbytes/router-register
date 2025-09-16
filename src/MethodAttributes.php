@@ -8,6 +8,7 @@ use BeastBytes\Router\Register\Attribute\DefaultValue;
 use BeastBytes\Router\Register\Attribute\Fallback;
 use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Middleware;
+use BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface;
 use BeastBytes\Router\Register\Attribute\Override;
 use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
 use BeastBytes\Router\Register\Attribute\Route;
@@ -37,9 +38,10 @@ final class MethodAttributes
         return $this->getAttributes(Host::class);
     }
 
+    /** @return list<MiddlewareAttributeInterface> */
     public function getMiddlewares(): array
     {
-        return $this->getAttributes(Middleware::class);
+        return $this->getAttributes(MiddlewareAttributeInterface::class);
     }
 
     public function getOverride(): ?Override

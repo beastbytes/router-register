@@ -6,8 +6,7 @@ namespace BeastBytes\Router\Register;
 
 use BeastBytes\Router\Register\Attribute\DefaultValue;
 use BeastBytes\Router\Register\Attribute\Host;
-use BeastBytes\Router\Register\Attribute\Middleware;
-use BeastBytes\Router\Register\Attribute\Prefix;
+use BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface;
 use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -30,17 +29,12 @@ final class ClassAttributes
         return $this->getAttributes(Host::class);
     }
 
-    public function getPrefix(): ?Prefix
-    {
-        return $this->getAttribute(Prefix::class);
-    }
-
     /**
-     * @return list<Middleware>
+     * @return list<MiddlewareAttributeInterface>
      */
     public function getMiddlewares(): array
     {
-        return $this->getAttributes(Middleware::class);
+        return $this->getAttributes(MiddlewareAttributeInterface::class);
     }
 
     private function getAttribute(string $attributeClass): ?RouteAttributeInterface
