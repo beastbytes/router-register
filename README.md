@@ -1,3 +1,4 @@
+![RouterRegister Logo](Writerside/images/logo.svg)
 # RouterRegister
 
 RouterRegister is a Yii console command package that allows routes to be defined in the 

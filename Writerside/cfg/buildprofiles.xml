@@ -4,8 +4,10 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <variables>
-        <custom-favicons>https://github.com/beastbytes/router-register/blob/master/logo.svg</custom-favicons>
-        <header-logo>https://github.com/beastbytes/router-register/blob/master/logo.svg</header-logo>
+        <custom-favicons>
+            https://github.com/beastbytes/router-register/blob/master/Writerside/images/logo.svg
+        </custom-favicons>
+        <header-logo>logo.svg</header-logo>
     </variables>
     <build-profile instance="r">
         <variables>
