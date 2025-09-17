@@ -5,7 +5,7 @@
 
     <variables>
         <custom-favicons>
-            https://raw.githubusercontent.com/beastbytes/router-register/refs/heads/master/Writerside/images/logo.png
+            https://raw.githubusercontent.com/beastbytes/router-register/refs/heads/master/Writerside/images/favicon.png
         </custom-favicons>
         <header-logo>logo.png</header-logo>
     </variables>
