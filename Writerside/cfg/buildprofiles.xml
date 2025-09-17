@@ -11,7 +11,9 @@
     </variables>
     <footer>
         <copyright>2025 BeastBytes</copyright>
-        <social type="github" href="https://github.com/beastbytes/router-register"/>
+        <social type="github" href="https://github.com/beastbytes/router-register">
+            RouterRegister GitHub Repository
+        </social>
     </footer>
     <build-profile instance="r">
         <variables>

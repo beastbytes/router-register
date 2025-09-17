@@ -43,9 +43,10 @@ php composer.phar require -dev "beastbytes/router-register:<version-constraint>"
 
 ## Usage
 Using RouterRegister involves:
-* [Configure the router](Yii-Router-Configuration.md)
+* [Configuring the router](Yii-Router-Configuration.md)
 * [Defining routes](Defining-Routes.md)
 * [Defining groups](Defining-Groups.md) (if required)
+* [Creating Middleware Attributes](Defining-Middleware-Attributes.md) (if required)
 * [Assigning groups and routes in source code](Assigning-Routes-and-Groups-in-Source-Code.md)
 * [Run the Yii console command](Yii-Console-router-register-Command.md)
 * [UrlGenerator](UrlGenerator.md)
