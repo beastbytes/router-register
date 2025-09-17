@@ -1,13 +1,13 @@
 # Defining Middleware Attributes
 
-Middleware can be defined using the [Middleware Attribute](Other-Route-Attributes.md#middleware)
-or by defining middleware attributes in the application.
+Middleware to be applied to a route can be defined using Router Register's
+[Middleware Attribute](Other-Route-Attributes.md#middleware) or by defining middleware attributes in the application.
 Using application defined middleware attributes will make the source code cleaner
 and gives IDE code completion and type checking.
 
 As an example, consider middleware to provide access checking
-to ensure that current user has permission to perform the requested action.
-If the user the user does not have permission the access checker redirects the user to a _safe_ location.
+to ensure that the current user has permission to perform the requested action.
+If the user does not have permission, the access checker redirects the user to a _safe_ location.
 
 ## Access Checker Middleware
 The access checker middleware will be something like:
@@ -59,8 +59,7 @@ final class AccessChecker implements MiddlewareInterface
 ```
 
 ## Using the Middleware Attribute
-Using the AccessChecker Middleware class will look like:
-
+Using the AccessChecker middleware with Router Register's Middleware attribute will look like:
 ```PHP
 final class Secret {
     #[Get(SecretRoute::view)]
@@ -76,16 +75,16 @@ final class Secret {
 }
 ```
 
-This works, but it's a lot of code, especially if many actions need to be checked.
+This works, but the middleware definition is a lot of code, especially if repeated for many actions.
 
 ## Defining an Application Middleware Attribute
-A more elegant and easier to use solution is to define an application middleware attribute.
+A better solution is to define an application middleware attribute.
 
-Application middleware attributes must implement the MiddlewareAttributeInterface,
+Application middleware attributes must implement
+```BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface```,
 which requires that the attribute has a ```getMiddleware()``` method that returns the middleware string.
 
 For the access checker, this will look like:
-
 ```PHP
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class AccessCheck implements MiddlewareAttributeInterface
@@ -113,14 +112,14 @@ final class AccessCheck implements MiddlewareAttributeInterface
 }
 ```
 
-Then, to check permission:
+Then, to add the middleware to the route definition:
 ```PHP
 final class Secret {
     #[Get(SecretRoute::view)]
     #[AccessCheck(permission: 'secret.view', route: 'safe.location')]
-    public function index(): ResponseInterface
+    public function view(): ResponseInterface
     {
-        return $this->viewRenderer->render('index');
+        // Action code
     }
 ```
 
