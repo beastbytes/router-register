@@ -9,6 +9,10 @@
         </custom-favicons>
         <header-logo>logo.png</header-logo>
     </variables>
+    <footer>
+        <copyright>2025 BeastBytes</copyright>
+        <social type="github" href="https://github.com/beastbytes/router-register"/>
+    </footer>
     <build-profile instance="r">
         <variables>
             <noindex-content>true</noindex-content>
