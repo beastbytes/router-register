@@ -5,9 +5,9 @@
 
     <variables>
         <custom-favicons>
-            https://github.com/beastbytes/router-register/blob/master/Writerside/images/logo.svg
+            https://github.com/beastbytes/router-register/blob/master/Writerside/images/logo.png
         </custom-favicons>
-        <header-logo>logo.svg</header-logo>
+        <header-logo>logo.png</header-logo>
     </variables>
     <build-profile instance="r">
         <variables>
