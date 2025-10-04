@@ -27,10 +27,20 @@ Parameter contains alphabetic characters
         </tr>
         <tr>
             <td>length</td>
-            <td>int</td>
-            <td>Number of characters</td>
+            <td>array|int|null</td>
+            <td><dl>
+                    <dt>array &ndash; list{0: ?int, 1: ?int}</dt>
+                    <dd>The minimum and maximum number of characters.
+                        Set minimum null to specify only a maximum,
+                        and maximum null to specify only a minimum.</dd>
+                    <dt>int</dt>
+                    <dd>The number of characters</dd>
+                    <dt>null</dt>
+                    <dd>Any length</dd>
+                </dl>
+            </td>
             <td>No</td>
-            <td>0 (any length)</td>
+            <td>null (any length)</td>
         </tr>
         <tr>
             <td>case</td>
@@ -64,10 +74,20 @@ Parameter contains alphabetic characters and digits
         </tr>
         <tr>
             <td>length</td>
-            <td>int</td>
-            <td>Number of characters</td>
+            <td>array|int|null</td>
+            <td><dl>
+                    <dt>array &ndash; list{0: ?int, 1: ?int}</dt>
+                    <dd>The minimum and maximum number of characters.
+                        Set minimum null to specify only a maximum,
+                        and maximum null to specify only a minimum.</dd>
+                    <dt>int</dt>
+                    <dd>The number of characters</dd>
+                    <dt>null</dt>
+                    <dd>Any length</dd>
+                </dl>
+            </td>
             <td>No</td>
-            <td>0 (any length)</td>
+            <td>null (any length)</td>
         </tr>
         <tr>
             <td>case</td>
@@ -101,10 +121,20 @@ Parameter contains hexadecimal characters
         </tr>
         <tr>
             <td>length</td>
-            <td>int</td>
-            <td>Number of characters</td>
+            <td>array|int|null</td>
+            <td><dl>
+                    <dt>array &ndash; list{0: ?int, 1: ?int}</dt>
+                    <dd>The minimum and maximum number of characters.
+                        Set minimum null to specify only a maximum,
+                        and maximum null to specify only a minimum.</dd>
+                    <dt>int</dt>
+                    <dd>The number of characters</dd>
+                    <dt>null</dt>
+                    <dd>Any length</dd>
+                </dl>
+            </td>
             <td>No</td>
-            <td>0 (any length)</td>
+            <td>null (any length)</td>
         </tr>
         <tr>
             <td>case</td>
@@ -191,10 +221,20 @@ Parameter contains numeric digits
         </tr>
         <tr>
             <td>length</td>
-            <td>int</td>
-            <td>Number of digits</td>
+            <td>array|int|null</td>
+            <td><dl>
+                    <dt>array &ndash; list{0: ?int, 1: ?int}</dt>
+                    <dd>The minimum and maximum number of characters.
+                        Set minimum null to specify only a maximum,
+                        and maximum null to specify only a minimum.</dd>
+                    <dt>int</dt>
+                    <dd>The number of characters</dd>
+                    <dt>null</dt>
+                    <dd>Any length</dd>
+                </dl>
+            </td>
             <td>No</td>
-            <td>0 (any length)</td>
+            <td>null (any length)</td>
         </tr>
         <tr>
             <td>nonZero</td>

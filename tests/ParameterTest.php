@@ -39,6 +39,24 @@ class ParameterTest extends TestCase
         $attribute = new Alpha(name: $name, length: $length, case: $case);
         self::assertSame($name, $attribute->getName());
         self::assertSame('[' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+
+        $length =[random_int(1, 10), random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new Alpha(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
+
+        $length =[null, random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new Alpha(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
+
+        $length =[random_int(1, 10), null];
+        [$min, $max] = $length;
+        $attribute = new Alpha(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
     }
 
     #[Test]
@@ -59,6 +77,24 @@ class ParameterTest extends TestCase
         $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
         self::assertSame($name, $attribute->getName());
         self::assertSame('[\d' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+
+        $length =[random_int(1, 10), random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
+
+        $length =[null, random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
+
+        $length =[random_int(1, 10), null];
+        [$min, $max] = $length;
+        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
     }
 
     #[Test]
@@ -75,10 +111,65 @@ class ParameterTest extends TestCase
         self::assertSame($name, $attribute->getName());
         self::assertSame('[\d' . $alpha . ']+', $attribute->getPattern());
 
+        $attribute = new Hex(name: $name, case: $case, nonZero: true);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[1-9' . $alpha . '][\d' . $alpha . ']*', $attribute->getPattern());
+
         $length = random_int(1, 10);
         $attribute = new Hex(name: $name, length: $length, case: $case);
         self::assertSame($name, $attribute->getName());
         self::assertSame('[\d' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+
+        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
+        --$length;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame(
+            '[1-9' . $alpha . '][\d' . $alpha . ']{' . $length . '}',
+            $attribute->getPattern()
+        );
+
+        $length = [random_int(1, 10), random_int(11, 20)];
+        [$min, $max] = $length;
+        $attribute = new Hex(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
+
+        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
+        $min = $min === 1 ? null : --$min;
+        $max--;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame(
+            '[1-9' . $alpha . '][\d' . $alpha . ']{' . ($min ?? '') . ',' . $max . '}',
+            $attribute->getPattern()
+        );
+
+        $length = [null, random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new Hex(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
+
+        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
+        --$max;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame(
+            '[1-9' . $alpha . '][\d' . $alpha . ']{,' . $max . '}',
+            $attribute->getPattern()
+        );
+
+        $length = [random_int(1, 10), null];
+        [$min, $max] = $length;
+        $attribute = new Hex(name: $name, length: $length, case: $case);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[\d' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
+
+        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
+        --$min;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame(
+            '[1-9' . $alpha . '][\d' . $alpha . ']{' . $min . ',}',
+            $attribute->getPattern()
+        );
     }
 
     #[Test]
@@ -115,6 +206,45 @@ class ParameterTest extends TestCase
         $attribute = new Numeric(name: $name, length: $length);
         self::assertSame($name, $attribute->getName());
         self::assertSame('\d{' . $length . '}', $attribute->getPattern());
+
+        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
+        --$length;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[1-9]\d{' . $length . '}', $attribute->getPattern());
+
+        $length = [random_int(1, 10), random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new Numeric(name: $name, length: $length);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('\d{' . $min . ',' . $max . '}', $attribute->getPattern());
+
+        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
+        --$min;
+        --$max;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[1-9]\d{' . $min . ',' . $max . '}', $attribute->getPattern());
+
+        $length = [null, random_int(1, 10)];
+        [$min, $max] = $length;
+        $attribute = new Numeric(name: $name, length: $length);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('\d{,' . $max . '}', $attribute->getPattern());
+
+        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
+        --$max;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[1-9]\d{,' . $max . '}', $attribute->getPattern());
+
+        $length = [random_int(1, 10), null];
+        [$min, $max] = $length;
+        $attribute = new Numeric(name: $name, length: $length);
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('\d{' . $min . ',}', $attribute->getPattern());
+
+        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
+        --$min;
+        self::assertSame($name, $attribute->getName());
+        self::assertSame('[1-9]\d{' . $min . ',}', $attribute->getPattern());
     }
 
     #[Test]

@@ -9,21 +9,23 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Numeric extends Parameter
 {
+    use LengthTrait;
+
     public function __construct(
         string $name,
-        int $length = 0,
+        array|int|null $length = null,
         bool $nonZero = false
     )
     {
+        $pattern = '\d';
+
         if ($nonZero) {
-            $pattern = '[1-9]\d' . ($length === 0 ? '*' : '{' . (string) (abs($length) - 1) . '}');
-        } else {
-            $pattern = '\d' . ($length === 0 ? '+' : '{' . abs($length) . '}');
+            $pattern = '[1-9]' . $pattern;
         }
 
         parent::__construct(
             name: $name,
-            pattern: $pattern
+            pattern: $pattern . $this->getLength($length, $nonZero)
         );
     }
 }

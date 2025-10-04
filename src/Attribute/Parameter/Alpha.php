@@ -9,9 +9,11 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Alpha extends Parameter
 {
+    use LengthTrait;
+
     public function __construct(
         string $name,
-        int $length = 0,
+        array|int|null $length = null,
         AlphaCase $case = AlphaCase::insensitive
     )
     {
@@ -23,12 +25,7 @@ final class Alpha extends Parameter
 
         parent::__construct(
             name: $name,
-            pattern: '[' . $alpha . ']'
-                . (
-                    $length === 0
-                    ? '+'
-                    : '{' . abs($length) . '}'
-                )
+            pattern: '[' . $alpha . ']' . $this->getLength($length)
         );
     }
 }

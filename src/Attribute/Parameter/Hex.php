@@ -9,9 +9,11 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Hex extends Parameter
 {
+    use LengthTrait;
+
     public function __construct(
         string $name,
-        int $length = 0,
+        array|int|null $length = null,
         bool $nonZero = false,
         AlphaCase $case = AlphaCase::insensitive
     )
@@ -22,16 +24,15 @@ final class Hex extends Parameter
             AlphaCase::upper => 'A-F',
         };
 
+        $pattern = '[\d' . $alpha . ']';
+
         if ($nonZero) {
-            $pattern = "[1-9$alpha][\d$alpha]'"
-                . ($length === 0 ? '*' : '{' . (string) (abs($length) - 1) . '}');
-        } else {
-            $pattern = "[\d$alpha]" . ($length === 0 ? '+' : '{' . abs($length) . '}');
+            $pattern = '[1-9' . $alpha . ']' . $pattern;
         }
 
         parent::__construct(
             name: $name,
-            pattern: $pattern
+            pattern: $pattern . $this->getLength($length, $nonZero)
         );
     }
 }
