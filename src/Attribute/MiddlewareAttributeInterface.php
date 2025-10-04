@@ -7,4 +7,5 @@ namespace BeastBytes\Router\Register\Attribute;
 interface MiddlewareAttributeInterface
 {
     public function getMiddleware(): array|string;
+    public function disable(): bool;
 }
