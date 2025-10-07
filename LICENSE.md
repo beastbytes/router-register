@@ -1,4 +1,4 @@
-The Router Routes library is free software. It is released under the terms of the following BSD License.
+The Router Register library is free software. It is released under the terms of the following BSD License.
 
 Copyright © 2025 BeastBytes - All rights reserved.
 
