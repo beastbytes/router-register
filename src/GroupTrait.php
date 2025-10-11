@@ -18,6 +18,21 @@ trait GroupTrait
 
     public function getRoutePrefix(): string
     {
-        return (defined(self::class . '::PREFIX') ? '/' . self::class::PREFIX: '') . '/' . $this->value;
+        return  $this->commonPrefix() . '/' . $this->value;
+    }
+
+    private function commonPrefix(): string
+    {
+        if (defined(self::class . '::PREFIX')) {
+            $prefixes = [];
+
+            foreach (self::class::PREFIX as [$parameter => $pattern]) {
+                $prefixes[] = is_int($parameter) ? $pattern : sprintf('{%s:%s}', $parameter, $pattern);
+            }
+
+            return '/' . implode('/', $prefixes);
+        }
+
+        return '';
     }
 }
