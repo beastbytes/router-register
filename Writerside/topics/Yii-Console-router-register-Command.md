@@ -12,9 +12,6 @@ Registers routes defined by PHP attributes in application source files to router
 Path to source files. All directories in the path are scanned. [default: current working directory]
 
 ## OPTIONS
--d, --default-group[=DEFAULT-GROUP]<br/>
-Default group name. [default: "default"]
-
 -e, --except[=EXCEPT]<br/>
 Exclude path from source files. (multiple values allowed)<br/>
 [default: ['./config/\**', './resources/\**', './tests/\**', './vendor/\**']]

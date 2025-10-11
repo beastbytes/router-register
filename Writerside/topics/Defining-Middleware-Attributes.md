@@ -81,8 +81,8 @@ This works, but the middleware definition is a lot of code, especially if repeat
 A better solution is to define an application middleware attribute.
 
 Application middleware attributes must implement
-```BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface```,
-which requires that the attribute has a ```getMiddleware()``` method that returns the middleware string.
+`BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface`,
+which requires that the attribute has a `getMiddleware()` method that returns the middleware string.
 
 For the access checker, this will look like:
 ```PHP

@@ -2,18 +2,18 @@
 RouterRegister helps with Url generation as URL name generation gets code completion and checking from the IDE.
 
 ## Setting Up Url Name Generation
-Generated URL names have the format (without the spaces) ```group.prefix.name``` where:
+Generated URL names have the format (without the spaces) `group.prefix.name` where:
 
-* ```group``` - optional - the name of the group the route belongs to
-* ```prefix``` - optional - route prefix
-* ```name``` route name
+* `group` - optional - the name of the group the route belongs to
+* `prefix` - optional - route prefix
+* `name` route name
 
 ### Defining the Group
-To generate route names for routes in a given group, define ```private const GROUP``` in the route enum.
+To generate route names for routes in a given group, define `private const GROUP` in the route enum.
 This can be defined using the Group enum.
 
 The example below defines the RouteGroup enum,
-and the AdminRoute enum will generate route names in the ```admin``` group.
+and the AdminRoute enum will generate route names in the `admin` group.
 
 ```php
 <?php
@@ -54,9 +54,9 @@ enum AdminRoute: string implements RouteInterface
 ```
 
 ### Defining the Prefix
-To generate route names with a common prefix, define ```public const PREFIX``` in the route enum.
+To generate route names with a common prefix, define `public const PREFIX` in the route enum.
 
-The example below will generate route names in the ```admin``` group with the prefix ```item```.
+The example below will generate route names in the `admin` group with the prefix `item`.
 ```php
 <?php
 
@@ -84,13 +84,13 @@ enum ItemRoute: string implements RouteInterface
 ```
 
 ### Defining the Separator
-The default separator is dot(.). To define a different separator, define ```private const SEPARATOR```
+The default separator is dot(.). To define a different separator, define `private const SEPARATOR`
 with the required separator in route enums.
 The simplest way to do this is to define a trait in the application that uses RouterRegister's RouteTrait
 and defines the SEPARATOR constant, and use that trait in the route enums.
 
-The example below will generate route names in the ```admin``` group, with the prefix ```item```,
-and underscore(_) as the separator; e.g. ```admin_item_index```.
+The example below will generate route names in the `admin` group, with the prefix `item`,
+and underscore(_) as the separator; e.g. `admin_item_index`.
 ```php
 <?php
 
@@ -131,14 +131,14 @@ enum ItemRoute: string implements RouteInterface
 ```
 
 ### Example Route Names
-* ```admin.dashboard``` - group.name
-* ```admin.product.index``` - group.prefix.name
-* ```product.view``` - prefix.name
-* ```login``` - name
+* `admin.dashboard` - group.name
+* `admin.product.index` - group.prefix.name
+* `product.view` - prefix.name
+* `login` - name
 
 ## Generating URLs
-URL names are generated using Route enums by calling the ```getRouteName()``` method;
-this is then passed as the ```name``` parameter to ```UrlGeneratorInterface::generate()```,
+URL names are generated using Route enums by calling the `getRouteName()` method;
+this is then passed as the `name` parameter to `UrlGeneratorInterface::generate()`,
 e.g.
 ```php
 $url = $urlGenerator->generate(ItemRoute::view->getRouteName(), ['id' => $item->getId()]);

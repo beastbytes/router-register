@@ -16,7 +16,7 @@ RouterRegister supports grouping routes.
 {style="note"}
 
 ## RouteInterface
-RouteInterface routes provide the ```getRouteName()``` method
+RouteInterface routes provide the `getRouteName()` method
 to get the route name when generating URLs in application code.
 
 ```PHP

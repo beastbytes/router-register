@@ -175,35 +175,3 @@ It is only necessary to define GroupMiddleware in one controller of a group.
         </tr>
     </tbody>
 </table>
-
-## GroupNamePrefix
-Defines a name prefix for a group.
-
-It is only necessary to define GroupNamePrefix in one controller of a group.
-
-If the GroupNamePrefix attribute is not defined, the group name prefix is the group name and separator
-which are obtained from the `group` parameter of the `Group` attribute.
-
-**Use On**: Class
-
-**Cardinality**: ?
-<table>
-    <thead>
-        <tr>
-            <th>Parameter</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Required</th>
-            <th>Default</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>namePrefix</td>
-            <td>string</td>
-            <td>The name prefix.</td>
-            <td>Yes</td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>

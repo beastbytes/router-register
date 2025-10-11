@@ -16,15 +16,15 @@ Defining routes this way means that there is a single point of truth in the appl
 that brings for code development and maintenance, and we get code completion in our IDE.
 
 ## Route Prefix
-A Route enum can define a ```public constant PREFIX```. The value of this constant is used as the prefix
-for all route names. Example: if the prefix is ```product```,
-the route name for the case ```view``` is ```product.view```. The separator can be changed by setting
-the ```public constant SEPARATOR```.
+A Route enum can define a `public constant PREFIX`. The value of this constant is used as the prefix
+for all route names. Example: if the prefix is `product`,
+the route name for the case `view` is `product.view`. The separator can be changed by setting
+the `public constant SEPARATOR`.
 
-By default, the prefix also applies to the route URI. Example: if the prefix is ```product```,
-the URI for ```case view = /{productId};``` is ```/product/{productId}```.
-This behaviour can be overridden by starting the URI (case value) with ```//```.
-Example: the URI for ```case index = //products;``` is ```/products```.
+By default, the prefix also applies to the route URI. Example: if the prefix is `product`,
+the URI for `case view = /{productId};` is `/product/{productId}`.
+This behaviour can be overridden by starting the URI (case value) with `//`.
+Example: the URI for `case index = //products;` is `/products`.
 
 ## Route Enumeration Example
 Our application shows products to users using the ProductController. We define a ProductRoute enumeration
@@ -55,7 +55,7 @@ enum ProductRoute: string implements RouteInterface
 ```
 
 ## RouteInterface & RouteTrait
-RouteInterface allows Routes to be type-checked and defines the ```getRouteName()``` method
+RouteInterface allows Routes to be type-checked and defines the `getRouteName()` method
 that can be used in the application for generating URLs.
 
 RouteTrait implements RouteInterface.
