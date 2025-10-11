@@ -257,7 +257,7 @@ class GeneratorTest extends TestCase
                 . DIRECTORY_SEPARATOR . 'GroupWithPrefixAttributeController.php',
                 'group2',
                 [
-                    "Group::create('/example/{locale:[a-z]{2}}/g2')",
+                    "Group::create('/example/{locale:[a-z]{2}}')",
                     "namePrefix('group2.')",
                     "host('www.example1.com')",
                     "withCors('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\CorsMiddleware')",

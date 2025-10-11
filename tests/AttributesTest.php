@@ -64,15 +64,6 @@ class AttributesTest extends TestCase
     }
 
     #[Test]
-    public function groupNamePrefix(): void
-    {
-        $prefix = 'group-prefix.';
-        $attribute = new GroupNamePrefix($prefix);
-
-        self::assertSame($prefix, $attribute->getNamePrefix());
-    }
-
-    #[Test]
     public function host(): void
     {
         $host = 'localhost';

@@ -17,5 +17,5 @@ enum TestGroupWithPrefix: string implements GroupInterface
     ];
 
     case group1 = 'g1';
-    case group2 = 'g2';
+    case group2 = '';
 }
