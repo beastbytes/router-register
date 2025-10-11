@@ -36,13 +36,6 @@ final class RegisterCommand extends Command
     {
         $this
             ->addOption(
-                'default-group',
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'Default group name.',
-                self::DEFAULT_GROUP
-            )
-            ->addOption(
                 'except',
                 'e',
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
@@ -92,13 +85,6 @@ final class RegisterCommand extends Command
         if (!empty($only)) {
             $this->only = $only;
         }
-
-        $this
-            ->generator
-            ->setDefaultGroup(
-                $input->getOption('default-group')
-            )
-        ;
 
         $files = FileHelper::findFiles($src, [
             'filter' => (new PathMatcher())
