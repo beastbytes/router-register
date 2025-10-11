@@ -15,4 +15,9 @@ trait GroupTrait
     {
         return $this->name . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
     }
+
+    public function getRoutePrefix(): string
+    {
+        return (defined(self::class . '::PREFIX') ? '/' . self::class::PREFIX: '') . '/' . $this->value;
+    }
 }

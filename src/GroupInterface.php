@@ -8,4 +8,5 @@ interface GroupInterface
 {
     public function getName(): string;
     public function getNamePrefix(): string;
+    public function getRoutePrefix(): string;
 }
