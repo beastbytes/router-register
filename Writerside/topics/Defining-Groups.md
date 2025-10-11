@@ -100,10 +100,16 @@ return [
 
 ### Route Prefix
 A common prefix for all groups can be defined by defining the `PREFIX` public constant in the `RouteGroup` enumeration.
-This is used, for example, when the locale is defined in the path of the URL.
 
-The example below defines a route prefix that defines the `locale` route parameter as two lower-case letters
-(e.g. ISO-3166 Alpha-2 codes).
+The value of the constant is an array whose keys are integers or strings and values are strings
+(`non-empty-array<int|string, string>`).
+If the key is an integer the value is a string literal.
+If the key is a string it is a parameter name and the value the corresponding pattern.
+
+Array entries are prefixed to the route in the order defined.
+
+The example below defines a route prefix that defines and literal and
+the `locale` route parameter as two lower-case letters (e.g. ISO-3166 Alpha-2 codes).
 ```php
 <?php
 
@@ -118,7 +124,10 @@ enum RouteGroup implements GroupInterface: string
 {
     use GroupTrait;
     
-    public const PREFIX = '{locale:[a-z]{2}}';
+    public const PREFIX = [
+        'example',
+        'locale' => '[a-z]{2}'
+    ];
 
     case backend => 'admin';
     case frontend => '';
@@ -134,11 +143,11 @@ declare(strict_types=1);
 use Yiisoft\Router\Group;
 
 return [
-    Group::create('/{locale:[a-z]{2}}')
+    Group::create('/example/{locale:[a-z]{2}}')
         ->namePrefix('frontend.')
         ->routes(...(require __DIR__ . '/routes/frontend.php'))
     ,
-    Group::create('{locale:[a-z]{2}}/admin')
+    Group::create('/example/{locale:[a-z]{2}}/admin')
         ->namePrefix('backend.')
         ->routes(...(require __DIR__ . '/routes/backend.php'))
     ,
@@ -146,10 +155,4 @@ return [
 ```
 
 ## GroupTrait
-GroupTrait implements GroupInterface; it generates routes, and route and name prefixes for groups.
-
-GroupTrait expose two methods:
-* `getNamePrefix()` - returns the name prefix of the group
-* `getPrefix()` - returns the route prefix of the group
-> If prefix and/or namePrefix are defined by the `Group` attribute, the `Group` attribute values take precedence.
-{style="note"}
+GroupTrait implements GroupInterface.
