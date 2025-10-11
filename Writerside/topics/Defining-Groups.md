@@ -23,7 +23,7 @@ namespace App;
 use BeastBytes\Router\Register\GroupInterface;
 use BeastBytes\Router\Register\GroupTrait;
 
-enum RouteGroup implements GroupInterface: string
+enum RouteGroup: string implements GroupInterface
 {
     use GroupTrait;
 
@@ -67,7 +67,7 @@ namespace App;
 use BeastBytes\Router\Register\GroupInterface;
 use BeastBytes\Router\Register\GroupTrait;
 
-enum RouteGroup implements GroupInterface: string
+enum RouteGroup: string implements GroupInterface
 {
     use GroupTrait;
     
@@ -120,7 +120,7 @@ namespace App;
 use BeastBytes\Router\Register\GroupInterface;
 use BeastBytes\Router\Register\GroupTrait;
 
-enum RouteGroup implements GroupInterface: string
+enum RouteGroup: string implements GroupInterface
 {
     use GroupTrait;
     
