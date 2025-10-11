@@ -49,7 +49,7 @@ Can also disable group level middleware by setting the `disable` parameter to `f
 Routes can be grouped, e.g. by API endpoint or version, frontend/backend, etc.
 In RouterRegister, a Controller is assigned to a group.
 
-> If a Controller is not explicitly assigned to a group, it is in the "default" group.
+> If a Controller is not explicitly assigned to a group, it is in the "routes" group.
 {style="note"}
 
 A group can assign a prefix to route URIs, route name, specify hosts, and middleware
@@ -79,11 +79,12 @@ namespace App;
 use BeastBytes\Router\Register\GroupInterface;
 use BeastBytes\Router\Register\GroupTrait;
 
-enum RouteGroup implements GroupInterface
+enum RouteGroup: string implements GroupInterface
 {
     use GroupTrait;
 
-    case admin;
+    case backend = 'admin';
+    case frontend = '';
 }
 ```
 
@@ -104,8 +105,6 @@ enum AdminRoute: string implements RouteInterface
 {
     use RouteTrait;
     
-    private const GROUP = RouteGroup::admin->name;
-
     case dashboard => '/';
 }
 ```
@@ -125,8 +124,7 @@ use BeastBytes\Router\Register\RouteTrait;
 enum CategoryRoute: string implements RouteInterface
 {
     use RouteTrait;
-    
-    private const GROUP = RouteGroup::admin->name;
+ 
     public const PREFIX = 'category';
     public const SEPARATOR = '_';
 
@@ -154,7 +152,6 @@ enum ItemRoute: string implements RouteInterface
 {
     use RouteTrait;
     
-    private const GROUP = RouteGroup::admin->name;
     public const PREFIX = 'item';
 
     case index => '//items';
@@ -188,6 +185,7 @@ enum FrontendRoute: string implements RouteInterface
 
 ### Backend Controllers
 #### Admin Controller
+
 ```php
 <?php
 
@@ -197,13 +195,16 @@ namespace App\Admin;
 
 use App\Auth\Middleware\IsEnabled;
 use App\Auth\Middleware\IsLoggedIn;
+use BeastBytes\Router\Register\Attribute\GroupMiddleware;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Method\Post;
 use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
-#[Group(group: RouteGroup::admin, middleware: [IsLoggedIn::class, IsEnabled::class])]
+#[Group(group: RouteGroup::backend)]
+#[GroupMiddleware(IsLoggedIn::class)]
+#[GroupMiddleware(IsEnabled::class)]
 final class Controller
 {
     // -- class constants, class parameters, constructor, etc
@@ -235,7 +236,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
-#[Group(group: RouteGroup::admin)]
+#[Group(group: RouteGroup::backend)]
 final class CategoryController
 {
     // -- class constants, class parameters, constructor, etc
@@ -303,7 +304,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Route;
 use Psr\Http\Message\ResponseInterface;
 
-#[Group(group: RouteGroup::admin)]
+#[Group(group: RouteGroup::backend)]
 final class ItemController
 {
     // -- class constants, class parameters, constructor, etc
@@ -368,6 +369,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Middleware;
 use Psr\Http\Message\ResponseInterface;
 
+#[Group(group: RouteGroup::frontend)]
 #[Middleware(IsLoggedIn::class)]
 final class FrontendController
 {
@@ -414,17 +416,17 @@ use Yiisoft\Router\Group;
 
 return [
     Group::create()
-        ->routes(...(require __DIR__ . '/routes/default.php'))
+        ->routes(...(require __DIR__ . '/routes/frontend.php'))
     ,
     Group::create('/admin')
-        ->namePrefix('admin_')
+        ->namePrefix('backend_')
         ->middleware('Loytyi\Auth\Middleware\IsLoggedIn')
-        ->routes(...(require __DIR__ . '/routes/admin.php'))
+        ->routes(...(require __DIR__ . '/routes/backend.php'))
     ,
 ];
 ```
 
-#### /routes/admin.php
+#### /routes/backend.php
 ```php
 ?php
 
@@ -480,7 +482,7 @@ return [
 > the Route enum defines route names and URIs directly, and the ItemController whose Route enum defines a prefix.
 {style="note"}
 
-#### /routes/default.php
+#### /routes/frontend.php
 ```php
 ?php
 
