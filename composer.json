@@ -19,6 +19,7 @@
   ],
   "require": {
     "php": "^8.2",
+    "ext-mbstring": "*",
     "symfony/console": "^6.0",
     "yiisoft/dummy-provider": "^1.0",
     "yiisoft/files": "^2.0",
