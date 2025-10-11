@@ -26,7 +26,7 @@ trait GroupTrait
         if (defined(self::class . '::PREFIX')) {
             $prefixes = [];
 
-            foreach (self::class::PREFIX as [$parameter => $pattern]) {
+            foreach (self::class::PREFIX as $parameter => $pattern) {
                 $prefixes[] = is_int($parameter) ? $pattern : sprintf('{%s:%s}', $parameter, $pattern);
             }
 

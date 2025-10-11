@@ -13,26 +13,10 @@ use ReflectionClass;
 class GeneratorTest extends TestCase
 {
     #[Test]
-    public function defaultGroupName(): void
-    {
-        $defaultGroup = 'defaultGroup';
-
-        $generator = new RouteGenerator();
-        $generator->setDefaultGroup($defaultGroup);
-
-        $reflectionGenerator = new ReflectionClass($generator);
-        $reflectionProperty = $reflectionGenerator->getProperty('defaultGroup');
-        self::assertSame($defaultGroup, $reflectionProperty->getValue($generator));
-    }
-
-    #[Test]
     #[DataProvider('fileProvider')]
     public function processFile(string $file, string $name, array $group, array $routes): void
     {
-        $defaultGroup = 'default';
-
         $generator = new RouteGenerator();
-        $generator->setDefaultGroup($defaultGroup);
 
         [$generatedName, $generatedGroup, $generatedRoutes] = $generator->processFile($file);
         self::assertSame($name, $generatedName);
@@ -43,16 +27,15 @@ class GeneratorTest extends TestCase
     public static function fileProvider(): Generator
     {
         foreach ([
-            //*
             'Method Attributes' => [
                 __DIR__
                 . DIRECTORY_SEPARATOR . 'resources'
                 . DIRECTORY_SEPARATOR . 'Controller'
                 . DIRECTORY_SEPARATOR . 'MethodAttributesController.php',
-                'default',
+                'routes',
                 [
                     'Group::create()',
-                    "routes(...(require __DIR__ . '/routes/default.php'))"
+                    "routes(...(require __DIR__ . '/routes/routes.php'))"
                 ],
                 [
                     [
@@ -142,17 +125,15 @@ class GeneratorTest extends TestCase
                     ],
                 ]
             ],
-            //*/
-            //*
             'Class Attributes' => [
                 __DIR__
                 . DIRECTORY_SEPARATOR . 'resources'
                 . DIRECTORY_SEPARATOR . 'Controller'
                 . DIRECTORY_SEPARATOR . 'ClassAttributesController.php',
-                'default',
+                'routes',
                 [
                     "Group::create()",
-                    "routes(...(require __DIR__ . '/routes/default.php'))"
+                    "routes(...(require __DIR__ . '/routes/routes.php'))"
                 ],
                 [
                     [
@@ -233,8 +214,6 @@ class GeneratorTest extends TestCase
                     ],
                 ]
             ],
-            //*/
-            //*
             'Group Attributes' => [
                 __DIR__
                 . DIRECTORY_SEPARATOR . 'resources'
@@ -242,7 +221,7 @@ class GeneratorTest extends TestCase
                 . DIRECTORY_SEPARATOR . 'GroupAttributeController.php',
                 'group1',
                 [
-                    "Group::create('/group1')",
+                    "Group::create('/g1')",
                     "namePrefix('group1.')",
                     "host('www.example1.com')",
                     "withCors('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\CorsMiddleware')",
@@ -271,7 +250,42 @@ class GeneratorTest extends TestCase
                     ],
                 ]
             ],
-            //*/
+            'Group With Prefix Attributes' => [
+                __DIR__
+                . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . 'Controller'
+                . DIRECTORY_SEPARATOR . 'GroupWithPrefixAttributeController.php',
+                'group2',
+                [
+                    "Group::create('/example/{locale:[a-z]{2}}/g2')",
+                    "namePrefix('group2.')",
+                    "host('www.example1.com')",
+                    "withCors('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\CorsMiddleware')",
+                    "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\GroupLevelMiddleware')",
+                    "routes(...(require __DIR__ . '/routes/group2.php'))"
+                ],
+                [
+                    [
+                        "Route::methods(['GET'], '/group-attribute')",
+                        "name('group-attribute.method1')",
+                        "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\ClassLevelMiddleware')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\GroupWithPrefixAttributeController::class, 'method1'])",
+                    ],
+                    [
+                        "Route::methods(['GET', 'POST'], '/group-attribute/method2/{id:[1-9]\d*}')",
+                        "name('group-attribute.method2')",
+                        "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\ClassLevelMiddleware')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\GroupWithPrefixAttributeController::class, 'method2'])",
+                    ],
+                    [
+                        "Route::methods(['GET'], '/group-attribute/{id:[1-9]\d*}')",
+                        "name('group-attribute.method3')",
+                        "middleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\ClassLevelMiddleware')",
+                        "disableMiddleware('BeastBytes\\Router\\Register\\Tests\\resources\\Middleware\\GroupLevelMiddleware')",
+                        "action([BeastBytes\\Router\\Register\\Tests\\resources\\Controller\\GroupWithPrefixAttributeController::class, 'method3'])",
+                    ],
+                ]
+            ],
         ] as $file) {
             yield $file;
         };

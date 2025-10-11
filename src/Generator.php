@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
+use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\Route;
 use ReflectionClass;
 use ReflectionMethod;
@@ -11,7 +12,7 @@ use Yiisoft\Files\FileHelper;
 
 final class Generator
 {
-    private string $defaultGroup;
+    private const DEFAULT_GROUP_NAME = 'routes';
 
     public function processFile(string $file): ?array
     {
@@ -36,12 +37,6 @@ final class Generator
         }
 
         return [$name, $group, $routes];
-    }
-
-    public function setDefaultGroup(string $defaultGroup): self
-    {
-        $this->defaultGroup = $defaultGroup;
-        return $this;
     }
 
     private function getClassName(string $file): string
@@ -69,22 +64,18 @@ final class Generator
 
         $groupAttribute = $groupAttributes->getGroup();
 
-        if ($groupAttribute === null) {
-            $name = $this->defaultGroup;
-            $prefix = null;
-        } else {
+        if ($groupAttribute instanceof Group) {
             $name = $groupAttribute->getName();
-            if ($name === null) {
-                $name = $this->defaultGroup;
-            }
-
-            $prefix = $groupAttribute->getPrefix();
+            $routePrefix = "'{$groupAttribute->getRoutePrefix()}'";
+        } else {
+            $name = self::DEFAULT_GROUP_NAME;
+            $routePrefix = '';
         }
 
-        $group = ['Group::create(' . (is_string($prefix) ? "'$prefix'" : null) . ')'];
+        $group = ["Group::create($routePrefix)"];
 
-        if ($groupAttribute !== null) {
-            $this->groupNamePrefix($group, $groupAttributes);
+        if ($groupAttribute instanceof Group) {
+            $this->groupNamePrefix($group, $groupAttribute);
             $this->hosts($group, [$groupAttributes]);
             $this->groupCors($group, $groupAttributes);
             $this->middleware($group, [$groupAttributes]);
@@ -117,17 +108,9 @@ final class Generator
         }
     }
 
-    private function groupNamePrefix(array &$group, GroupAttributes $groupAttributes): void
+    private function groupNamePrefix(array &$group, Group $groupAttribute): void
     {
-        $namePrefixAttribute = $groupAttributes->getPrefix();
-
-        if ($namePrefixAttribute === null) {
-            $namePrefix = $groupAttributes->getGroup()->getNamePrefix();
-        } else {
-            $namePrefix = $namePrefixAttribute->getNamePrefix();
-        }
-
-        $group[] = "namePrefix('$namePrefix')";
+        $group[] = "namePrefix('{$groupAttribute->getNamePrefix()}')";
     }
 
     private function processMethod(ReflectionClass $reflectionClass, ReflectionMethod $reflectionMethod): ?array
