@@ -16,7 +16,7 @@ Defining routes this way means that there is a single point of truth in the appl
 that brings for code development and maintenance, and we get code completion in our IDE.
 
 ## Route Prefix
-A Route enum can define a `public constant PREFIX`. The value of this constant is used as the prefix
+A Route enum can define `public constant PREFIX`. The value of this constant is used as the prefix
 for all route names. Example: if the prefix is `product`,
 the route name for the case `view` is `product.view`. The separator can be changed by setting
 the `public constant SEPARATOR`.
@@ -25,6 +25,14 @@ By default, the prefix also applies to the route URI. Example: if the prefix is 
 the URI for `case view = /{productId};` is `/product/{productId}`.
 This behaviour can be overridden by starting the URI (case value) with `//`.
 Example: the URI for `case index = //products;` is `/products`.
+
+## Route Group
+If the application groups routes Route enums must define `public constant GROUP` whose value is a RouteGroup enum.
+Example: `public constant GROUP = RouteGroup::frontend` denotes that the route is in the `frontend` group.
+For `case view = /{productId}`
+with `public constant GROUP = RouteGroup::frontend`
+and `public constant PREFIX = product`
+the resulting route name is `frontend.product.view`.
 
 ## Route Enumeration Example
 Our application shows products to users using the ProductController. We define a ProductRoute enumeration
@@ -37,13 +45,15 @@ declare(strict_types=1);
 
 namespace App\Product;
 
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use App\RouteGroup;
+use BeastBytes\Router\Register\Route\RouteInterface;
+use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum ProductRoute: string implements RouteInterface
 {
     use RouteTrait;
     
+    public const GROUP = RouteGroup::frontent;
     public const PREFIX = 'product';
 
     case index = '//products';
@@ -55,7 +65,8 @@ enum ProductRoute: string implements RouteInterface
 ```
 
 ## RouteInterface & RouteTrait
-RouteInterface allows Routes to be type-checked and defines the `getRouteName()` method
-that can be used in the application for generating URLs.
+RouteInterface defines methods when generating URLs in the application.
 
 RouteTrait implements RouteInterface.
+
+Use RouteTrait in application Route enums.

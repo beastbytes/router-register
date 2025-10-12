@@ -69,6 +69,7 @@ can view item categories, items in a category, and individual items.
 The backend has a dashboard and allows admins to manage categories and items.
 
 ### Route Group
+
 ```php
 <?php
 
@@ -76,8 +77,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum RouteGroup: string implements GroupInterface
 {
@@ -90,6 +90,7 @@ enum RouteGroup: string implements GroupInterface
 
 ### Backend Routes
 #### Admin
+
 ```php
 <?php
 
@@ -97,9 +98,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
-use App\RouteGroup;
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use App\RouteGroup;use BeastBytes\Router\Register\Route\RouteInterface;use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum AdminRoute: string implements RouteInterface
 {
@@ -110,6 +109,7 @@ enum AdminRoute: string implements RouteInterface
 ```
 
 #### Category
+
 ```php
 <?php
 
@@ -117,9 +117,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Category;
 
-use App\RouteGroup;
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use App\RouteGroup;use BeastBytes\Router\Register\Route\RouteInterface;use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum CategoryRoute: string implements RouteInterface
 {
@@ -137,6 +135,7 @@ enum CategoryRoute: string implements RouteInterface
 ```
 
 #### Item
+
 ```php
 <?php
 
@@ -144,9 +143,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Item;
 
-use App\RouteGroup;
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use App\RouteGroup;use BeastBytes\Router\Register\Route\RouteInterface;use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum ItemRoute: string implements RouteInterface
 {
@@ -163,6 +160,7 @@ enum ItemRoute: string implements RouteInterface
 ```
 
 ### Frontend Routes
+
 ```php
 <?php
 
@@ -170,8 +168,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use BeastBytes\Router\Register\Route\RouteInterface;use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum FrontendRoute: string implements RouteInterface
 {

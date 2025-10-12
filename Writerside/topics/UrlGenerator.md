@@ -2,7 +2,7 @@
 RouterRegister helps with Url generation as URL name generation gets code completion and checking from the IDE.
 
 ## Setting Up Url Name Generation
-Generated URL names have the format (without the spaces) `group.prefix.name` where:
+Generated URL names have the format `group.prefix.name` where:
 
 * `group` - optional - the name of the group the route belongs to
 * `prefix` - optional - route prefix
@@ -13,7 +13,7 @@ To generate route names for routes in a given group, define `private const GROUP
 This can be defined using the Group enum.
 
 The example below defines the RouteGroup enum,
-and the AdminRoute enum will generate route names in the `admin` group.
+and the AppRoute enum will generate route names in the `backend` group.
 
 ```php
 <?php
@@ -22,32 +22,34 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum RouteGroup implements GroupInterface
 {
     use GroupTrait;
 
-    case admin;
+    case backend = 'admin';
+    case frontend = '';
 }
 ```
+
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Admin;
+namespace App\Backend;
 
 use App\RouteGroup;
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use BeastBytes\Router\Register\Route\RouteInterface;
+use BeastBytes\Router\Register\Route\RouteTrait;
 
-enum AdminRoute: string implements RouteInterface
+enum AppRoute: string implements RouteInterface
 {
     use RouteTrait;
     
-    private const GROUP = RouteGroup::admin->name;
+    private const GROUP = RouteGroup::backend;
 
     case dashboard => '/';
 }
@@ -56,7 +58,8 @@ enum AdminRoute: string implements RouteInterface
 ### Defining the Prefix
 To generate route names with a common prefix, define `public const PREFIX` in the route enum.
 
-The example below will generate route names in the `admin` group with the prefix `item`.
+The example below will generate route names in the `backend` group with the prefix `item`.
+
 ```php
 <?php
 
@@ -65,15 +68,15 @@ declare(strict_types=1);
 namespace App\Admin\Item;
 
 use App\RouteGroup;
-use BeastBytes\Router\Register\RouteInterface;
-use BeastBytes\Router\Register\RouteTrait;
+use BeastBytes\Router\Register\Route\RouteInterface;
+use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum ItemRoute: string implements RouteInterface
 {
     use RouteTrait;
     
     public const PREFIX = 'item';
-    private const GROUP = RouteGroup::admin->name;
+    private const GROUP = RouteGroup::backend;
 
     case index => '/items';
     case create => '/item/create';
@@ -89,8 +92,8 @@ with the required separator in route enums.
 The simplest way to do this is to define a trait in the application that uses RouterRegister's RouteTrait
 and defines the SEPARATOR constant, and use that trait in the route enums.
 
-The example below will generate route names in the `admin` group, with the prefix `item`,
-and underscore(_) as the separator; e.g. `admin_item_index`.
+The example below will generate route names in the `backend` group, with the prefix `item`,
+and underscore(_) as the separator; e.g. `backend_item_index`.
 ```php
 <?php
 
@@ -104,6 +107,7 @@ trait RouteTrait {
     private const SEPARATOR = '_';
 }
 ```
+
 ```php
 <?php
 
@@ -113,14 +117,14 @@ namespace App\Admin\Item;
 
 use App\RouteGroup;
 use App\RouteTrait;
-use BeastBytes\Router\Register\RouteInterface;
+use BeastBytes\Router\Register\Route\RouteInterface;
 
 enum ItemRoute: string implements RouteInterface
 {
     use RouteTrait;
     
     public const PREFIX = 'item';
-    private const GROUP = RouteGroup::admin->name;
+    private const GROUP = RouteGroup::backend;
 
     case index => '/items';
     case create => '/item/create';
@@ -131,8 +135,8 @@ enum ItemRoute: string implements RouteInterface
 ```
 
 ### Example Route Names
-* `admin.dashboard` - group.name
-* `admin.product.index` - group.prefix.name
+* `backend.dashboard` - group.name
+* `backend.product.index` - group.prefix.name
 * `product.view` - prefix.name
 * `login` - name
 

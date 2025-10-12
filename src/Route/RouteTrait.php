@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Register;
+namespace BeastBytes\Router\Register\Route;
 
 trait RouteTrait
 {
@@ -11,7 +11,9 @@ trait RouteTrait
         $name = '';
 
         if (defined(self::class . '::PREFIX')) {
-            $name .= self::PREFIX . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
+            $name .= self::PREFIX
+                . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.')
+            ;
         }
 
         return $name .= $this->name;
@@ -22,7 +24,9 @@ trait RouteTrait
         $name = '';
 
         if (defined( self::class . '::GROUP')) {
-            $name .= self::GROUP . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
+            $name .= self::GROUP->name
+                . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.')
+            ;
         }
 
         return $name . $this->getName();

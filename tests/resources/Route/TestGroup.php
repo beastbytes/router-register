@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Tests\resources\Route;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum TestGroup: string implements GroupInterface
 {

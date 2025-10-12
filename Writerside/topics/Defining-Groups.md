@@ -5,13 +5,13 @@ that implements GroupInterface; GroupTrait provides an implementation of GroupIn
 
 The case name defines the group name prefix.
 
-The case value defines the group prefix.
+The case value defines the group route prefix.
 
 An application has zero or one Route Group enum.
 
 ## Group Enumeration
 For an application with a frontend and backend, with the backend having the group prefix `admin`,
-the enumeration will be: 
+the enumeration will be:
 
 ```php
 <?php
@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum RouteGroup: string implements GroupInterface
 {
@@ -57,6 +57,7 @@ The default separator between the group and route name is `.` (dot).
 If a different separator is required, define the `SEPARATOR` public constant in the `RouteGroup` enumeration.
 
 The following example defines the group separator as `_`.
+
 ```php
 <?php
 
@@ -64,8 +65,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum RouteGroup: string implements GroupInterface
 {
@@ -110,6 +111,7 @@ Array entries are prefixed to the route in the order defined.
 
 The example below defines a route prefix that defines and literal and
 the `locale` route parameter as two lower-case letters (e.g. ISO-3166 Alpha-2 codes).
+
 ```php
 <?php
 
@@ -117,8 +119,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use BeastBytes\Router\Register\GroupInterface;
-use BeastBytes\Router\Register\GroupTrait;
+use BeastBytes\Router\Register\Route\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupTrait;
 
 enum RouteGroup: string implements GroupInterface
 {
@@ -155,4 +157,9 @@ return [
 ```
 
 ## GroupTrait
-GroupTrait implements GroupInterface.
+`GroupInterface` defines methods used when generating URLs in the application when routes are grouped.
+The application RouteGroup enum must implement `GroupInterface`.
+
+`GroupTrait` implements `GroupInterface`.
+
+Use `GroupTrait` in the application RouteGroup enum.

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BeastBytes\Router\Register\Attribute;
 
 use Attribute;
-use BeastBytes\Router\Register\GroupInterface;
+use BeastBytes\Router\Register\Route\GroupInterface;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Group implements RouteAttributeInterface

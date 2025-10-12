@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Attribute;
 
-use BeastBytes\Router\Register\Attribute\Method\Method;
-use BeastBytes\Router\Register\RouteInterface;
 use Attribute;
+use BeastBytes\Router\Register\Attribute\Method\Method;
+use BeastBytes\Router\Register\Route\RouteInterface;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Route implements RouteAttributeInterface
