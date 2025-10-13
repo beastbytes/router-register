@@ -35,6 +35,12 @@ trait RouteTrait
     /** @internal */
     public function getUri(): string
     {
-        return $this->value;
+        $uri = '';
+
+        if (defined( self::class . '::GROUP')) {
+            $uri .= self::GROUP->getRoutePrefix();
+        }
+
+        return $uri . $this->value;
     }
 }
