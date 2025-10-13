@@ -11,7 +11,7 @@ use BeastBytes\Router\Register\Attribute\GroupNamePrefix;
 use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Middleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\MethodLevelMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
+use BeastBytes\Router\Register\Tests\resources\Trait\TestGroup;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;

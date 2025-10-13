@@ -15,7 +15,7 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Tests\resources\Middleware\ClassLevelMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\CorsMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\GroupLevelMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
+use BeastBytes\Router\Register\Tests\resources\Trait\TestGroup;
 
 #[Group(TestGroup::group1)]
 #[GroupHost('www.example1.com')]
