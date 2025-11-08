@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class AlphaNumeric extends Parameter
+final class AlphaNumeric extends Pattern
 {
     use LengthTrait;
 

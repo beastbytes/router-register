@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Parameter {
+class Pattern {
     public function __construct(
         private readonly string $name,
         private readonly string $pattern
