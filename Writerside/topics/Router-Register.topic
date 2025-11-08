@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Router Register" id="Router-Register">
+
+    <p>
+        RouterRegister is a Yii console command package that allows routes to be defined in the application source
+        files using PHP <a href="https://www.php.net/manual/en/language.attributes.php">Attributes</a> amd
+        <a href="https://www.php.net/manual/en/language.enumerations.php">Enumerations</a>,
+        and generates the groups and routes for router configuration.
+    </p>
+    <p>There are a number of benefits of defining and registering routes using RouterRegister:</p>
+    <list>
+        <li>
+            Self-documenting code: it's clear that a method corresponds to a given route and what parameters, hosts,
+            and middleware apply to the route.
+        </li>
+        <li>
+            Single point of truth: each route, its URI and name is defined in an enumeration, making maintenance
+            simpler and providing IDE code completion.
+        </li>
+        <li>
+            Simplifies development and eliminates typos: IDE code completion for routes works when generating URLs
+            as well.
+        </li>
+    </list>
+    <chapter title="Usage" id="usage">
+        <p>Using RouterRegister involves:</p>
+        <procedure>
+            <step><a href="Yii-Router-Configuration.topic">Configuring the router</a></step>
+            <step><a href="Defining-Middleware-Attributes.topic">Creating Middleware Attributes</a> (if required)</step>
+            <step><a href="Groups.topic">Defining groups</a> (if required)</step>
+            <step><a href="Routes.topic">Defining routes</a></step>
+            <step>
+                <a href="Assigning-Groups-and-Routes.topic">
+                    Assigning groups and routes in source code
+                </a>
+            </step>
+            <step><a href="Yii-Console-router-register-Command.topic">Run the Yii console command</a></step>
+            <step>
+                <a href="UrlGenerator.topic" instance="!r">
+                    Develop the application using UrlGenerator to generate URLs in source code
+                </a>
+                <if instance="r">
+                    Develop the application using UrlGenerator to generate URLs in source code
+                </if>
+            </step>
+        </procedure>
+        <tip>
+            <p>
+                File watchers can be used to automatically run the console command
+                and generate the groups and routes during application develop.
+            </p>
+        </tip>
+    </chapter>
+</topic>
