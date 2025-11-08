@@ -35,7 +35,7 @@
                 <snippet id="parameter-length">
                     <tr>
                         <td>length</td>
-                        <td>string|int|null</td>
+                        <td>array|int|null</td>
                         <td><a href="Parameter-Attributes.topic#length-definition"/></td>
                         <td>null (any length)</td>
                     </tr>
@@ -138,13 +138,9 @@
         </chapter>
 
         <chapter title="Length Definition" id="length-definition">
-            <link-summary>Defines the length of the parameter</link-summary>
+            <link-summary>Defines the length of a parameter</link-summary>
             <deflist>
-                <def title="string &ndash; '?int, ?int'">
-                    The minimum and maximum number of characters.
-                    Set minimum null to specify only a maximum,
-                    and maximum null to specify only a minimum.
-                </def>
+                <def title="array{min?: int, max?: int}">The minimum and maximum number of characters.</def>
                 <def title="int">The number of characters</def>
                 <def title="null">Any length</def>
             </deflist>
