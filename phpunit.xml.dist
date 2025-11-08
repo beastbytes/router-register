@@ -16,7 +16,7 @@
   </php>
 
   <testsuites>
-    <testsuite name="Wizard Tests">
+    <testsuite name="RouterRegister Tests">
       <directory suffix=".php">./tests</directory>
       <exclude>./tests/Support</exclude>
     </testsuite>
