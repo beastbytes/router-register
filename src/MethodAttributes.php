@@ -7,12 +7,11 @@ namespace BeastBytes\Router\Register;
 use BeastBytes\Router\Register\Attribute\DefaultValue;
 use BeastBytes\Router\Register\Attribute\Fallback;
 use BeastBytes\Router\Register\Attribute\Host;
+use BeastBytes\Router\Register\Attribute\Method\Route;
 use BeastBytes\Router\Register\Attribute\Middleware;
 use BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface;
 use BeastBytes\Router\Register\Attribute\Override;
-use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
-use BeastBytes\Router\Register\Attribute\Route;
-use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
+use BeastBytes\Router\Register\Attribute\Parameter\Pattern;
 use ReflectionAttribute;
 use ReflectionMethod;
 
@@ -49,10 +48,10 @@ final class MethodAttributes
         return $this->getAttribute(Override::class);
     }
 
-    /** @return list<Parameter> */
+    /** @return list<Pattern> */
     public function getParameters(): array
     {
-        return $this->getAttributes(Parameter::class);
+        return $this->getAttributes(Pattern::class);
     }
 
     public function getRoute(): ?Route
@@ -60,14 +59,14 @@ final class MethodAttributes
         return $this->getAttribute(Route::class);
     }
 
-    private function getAttribute(string $attributeClass): null|DefaultValue|Fallback|Host|Middleware|Parameter|Override|Route
+    private function getAttribute(string $attributeClass): null|DefaultValue|Fallback|Host|Middleware|Pattern|Override|Route
     {
         $attributes = $this->getAttributes($attributeClass);
 
         return count($attributes) === 0 ? null : $attributes[0];
     }
 
-    /** @return list<DefaultValue|Fallback|Host|Middleware|Parameter|Override|Route> */
+    /** @return list<DefaultValue|Fallback|Host|Middleware|Pattern|Override|Route> */
     private function getAttributes(string $attributeClass): array
     {
         $attributes = $this
