@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Routes" id="Routes">
+
+    <p>This section describes how to define and use Routes.</p>
+
+    <chapter title="Route Enumerations">
+        <p>
+            Routes are defined in
+            <a href="https://www.php.net/manual/en/language.enumerations.backed.php">string backed Enumerations</a>
+            that implement <code>RouteInterface</code>;
+            <code>RouteTrait</code> provides an implementation of <code>RouteInterface</code>
+            (both are part of the <emphasis>RouterRegister</emphasis> package).
+            Each Controller should have an associated Route Enumeration.
+        </p>
+        <p>Each case in an Enumeration defines a route.</p>
+        <p>The <emphasis>case name</emphasis> defines the route name.</p>
+        <p>
+            The <emphasis>case value</emphasis> defines the route <tooltip term="URI">URI</tooltip>,
+            including route parameter names.
+        </p>
+    </chapter>
+
+    <chapter title="URI Definition">
+        <p>
+            <tooltip term="URI">URI</tooltip> parameters are defined by the parameter name enclosed in braces,
+            with optional <tooltip term="URI">URI</tooltip> parameters additionally enclosed in square brackets.
+        </p>
+        <note>
+            The parameter pattern is defined in the controller
+            using one of the <a href="Parameter-Attributes.topic"/>;
+            see <a href="Assigning-Groups-and-Routes.topic"/>
+        </note>
+        <code-block lang="PHP">
+            enum PostRoute: string implements RouteInterface
+            {
+                use RouteTrait;
+
+                case index => '[/{page}]';
+                case create => '/create';
+                case view => '/{id}';
+            }
+        </code-block>
+    </chapter>
+
+    <chapter title="Route Prefix">
+        <p>
+            <code>public const PREFIX</code> should be defined by defining in the Enumeration;
+            it is used as the <emphasis>name prefix</emphasis> for routes.
+            e.g. for <code>public const PREFIX = 'post';</code> and <code>case index = '';</code>,
+            the route name is <emphasis>post.index</emphasis>
+        </p>
+        <p>
+            By default, the prefix also applies to route <tooltip term="URI">URI</tooltip>s.
+            e.g. the <tooltip term="URI">URI</tooltip> for <code>case view = '/{id}';</code> is <code>/post/{id}</code>.
+        </p>
+        <p>
+            This behaviour can be overridden by starting the route <tooltip term="URI">URI</tooltip> (case value)
+            with <code>//</code>. e.g. the <tooltip term="URI">URI</tooltip> for <code>case index = '//posts';</code>
+            is <code>/posts</code>.
+        </p>
+        <code-block lang="PHP">
+            enum PostRoute: string implements RouteInterface
+            {
+                use RouteTrait;
+
+                case index => '//posts[/{page}]';
+                case create => '/create';
+                case view => '/{id}';
+            }
+        </code-block>
+    </chapter>
+
+    <chapter title="Route Group">
+        <p>
+            If the application groups routes, Route Enumerations must define <code>public const GROUP</code>
+            whose value is a Group Enumeration; this is so that a fully qualified route name can be derived.
+       </p>
+       <p>
+           Example: <code>public const GROUP = RouteGroup::frontend;</code>
+            denotes that routes in the Enumeration are in the <emphasis>frontend</emphasis> group.
+        </p>
+    </chapter>
+
+    <chapter title="Route Name">
+        <p>A fully qualified route name is:</p>
+        <p>
+            <code>group-name.route-prefix.route-name</code>
+            (<emphasis>group-name</emphasis> and <emphasis>route-prefix</emphasis> are optional)
+        </p>
+        <p>For a Route Enumeration with:</p>
+        <list>
+            <li><code>case view = /{id};</code></li>
+            <li><code>public const PREFIX = post;</code></li>
+            <li><code>public const GROUP = RouteGroup::frontend;</code></li>
+        </list>
+        <p>The resulting fully qualified route name is <code>frontend.post.view</code></p>
+
+        <chapter title="URL Generation">
+            <p>
+                <emphasis>RouterRegister</emphasis> Route Enumerations simplify <tooltip term="URL"></tooltip>
+                generation with the <code>getRouteName()</code> method; the return value is passed as the
+                <code>name</code> parameter to <code>UrlGeneratorInterface::generate()</code>.
+            </p>
+            <p>Example:</p>
+            <code-block lang="PHP">
+                $url = $urlGenerator->generate(
+                    PostRoute::view->getRouteName(),
+                    ['id' => $post->getId()]
+                );
+            </code-block>
+
+        </chapter>
+    </chapter>
+
+    <chapter title="RouteInterface and RouteTrait">
+        <chapter title="RouteInterface">
+            <p>
+                <code>RouteInterface</code> defines a method to get the route name;
+                this is useful when generating <tooltip term="URL">URL</tooltip>s.
+                Route Enumerations must implement <code>RouteInterface</code>.
+            </p>
+            <p>Route Interface defines the following method:</p>
+            <deflist type="narrow">
+                <def title="getRouteName()">Returns the fully qualified route name</def>
+            </deflist>
+        </chapter>
+        <chapter title="RouteTrait">
+            <p>
+                <code>RouteTrait</code> implements <code>RouteInterface</code>
+                and can be used in Route Enumerations.
+            </p>
+        </chapter>
+    </chapter>
+
+    <chapter title="Route Enumeration Example">
+        <code-block lang="PHP">
+            enum PostRoute: string implements RouteInterface
+            {
+                use RouteTrait;
+
+                public const GROUP = RouteGroup::frontend;
+                public const PREFIX = 'post';
+
+                case index = '//posts[/{page}]';
+                case create = '/create';
+                case view = '/{id}';
+            }
+        </code-block>
+        <p>The generated routes will be something like:</p>
+        <code-block lang="PHP">
+            // filename: frontend.php
+            return [
+                Group::create('/post')
+                    ->namePrefix('post.')
+                    ->routes(
+                        Route::methods(['GET', 'POST'], '/create')
+                            ->name('create')
+                            ->action([PostController::class, 'create']),
+                        Route::methods(['GET'], '/view/{id: [1-9]\d*}')
+                            ->name('view')
+                            ->action([PostController::class, 'view']),
+                    )
+                ,
+                Route::methods(['GET'], '/posts[/{page: [1-9]\d*}]')
+                    ->name('post.index')
+                    ->action([PostController::class, 'index']),
+            ];
+        </code-block>
+        <note>
+            <p>
+                These routes will be included in the <emphasis>frontend</emphasis> group <code>routes()</code> method.
+            </p>
+            <p>The resulting route names will be:</p>
+            <list>
+                <li>frontend.post.index</li>
+                <li>frontend.post.create</li>
+                <li>frontend.post.view</li>
+            </list>
+            <p>These can be obtained by calling the <code>getRouteName()</code> method of the Route Enumeration.</p>
+        </note>
+    </chapter>
+</topic>

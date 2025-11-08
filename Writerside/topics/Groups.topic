@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Groups" id="Groups">
+
+    <p>This section describes How to define Groups.</p>
+
+    <p>
+        Routes can be grouped.
+        For example, if an application has a <emphasis>frontend</emphasis>, <emphasis>backend</emphasis>,
+        and an <emphasis>API</emphasis>, each can be a group. Grouping routes often simplifies route definitions as
+        it allows common items, e.g. middlewares, to be defined once at the group level.
+    </p>
+    <p>
+        Router Register supports Groups using a
+        <a href="https://www.php.net/manual/en/language.enumerations.backed.php">string backed Enumeration</a>
+        that implements <code>GroupInterface</code>;
+        <code>GroupTrait</code> provides an implementation of <code>GroupInterface</code>
+        (both are part of the <emphasis>RouterRegister</emphasis> package).
+        There is a maximum of 1 (one) Group Enumeration in an application.
+    </p>
+    <note>
+        <emphasis>RouterRegister</emphasis> automatically groups routes at the controller level.
+        Again, this allows common items such as middleware to be defined at the controller level,
+        simplifying route definition. This feature is internal and automatic.
+        The rest of this section deals with route Groups at the application level.
+    </note>
+
+    <chapter title="Group Enumeration">
+        <p>Each <emphasis>case</emphasis> in the Enumeration defines a group.</p>
+        <p>The <emphasis>case name</emphasis> defines the group name prefix.</p>
+        <p>The <emphasis>case value</emphasis> defines the group route prefix.</p>
+        <p>
+            As an example, for an application with a <emphasis>frontend</emphasis> and <emphasis>backend</emphasis>,
+            with the backend having the group prefix <emphasis>admin</emphasis>, the enumeration will be:
+        </p>
+        <code-block lang="PHP">
+            enum RouteGroup: string implements GroupInterface
+            {
+                use GroupTrait;
+
+                case backend => 'admin';
+                case frontend => '';
+            }
+        </code-block>
+        <p>Generated groups will be:</p>
+        <code-block lang="PHP">
+            return [
+                Group::create()
+                    ->namePrefix('frontend.')
+                    ->routes(...(require __DIR__ . '/routes/frontend.php'))
+                ,
+                Group::create('/admin')
+                    ->namePrefix('backend.')
+                    ->routes(...(require __DIR__ . '/routes/backend.php'))
+                ,
+            ];
+        </code-block>
+    </chapter>
+
+    <chapter title="Group Separator">
+        <p>
+            The default separator between the group and route name is `.` (dot).
+            If a different separator is required define <code>public const SEPARATOR</code>
+            in the Enumeration.
+        </p>
+        <p>The following example defines the group separator as `_`.</p>
+        <code-block lang="PHP">
+            enum RouteGroup: string implements GroupInterface
+            {
+                use GroupTrait;
+
+                public const SEPARATOR = '_';
+
+                case backend => 'admin';
+                case frontend => '';
+            }
+        </code-block>
+        <p>Generated groups will be:</p>
+        <code-block lang="PHP">
+            return [
+                Group::create()
+                    ->namePrefix('frontend_')
+                    ->routes(...(require __DIR__ . '/routes/frontend.php'))
+                ,
+                Group::create('/admin')
+                    ->namePrefix('backend_')
+                    ->routes(...(require __DIR__ . '/routes/backend.php'))
+                ,
+            ];
+        </code-block>
+    </chapter>
+
+    <chapter title="Route Prefix">
+        <p>
+            A common prefix for all groups can be defined by defining <code>public const PREFIX</code>
+            in the enumeration.
+        </p>
+        <p>
+            The value of the constant is an array whose keys are integers or strings and values are strings
+            <code>(non-empty-array&lt;int|string, string&gt;)</code>. How the value is interpreted depends on the key type:
+        </p>
+        <deflist>
+            <def title="integer key">Value is a string literal</def>
+            <def title="string key">Key is a parameter name, value is the parameter pattern</def>
+        </deflist>
+        <p>Array entries are prefixed to the route in the order defined.</p>
+        <p>
+            The example below defines a route prefix that defines a literal and
+            the <emphasis>locale</emphasis> route parameter as two lower-case letters
+            (e.g. <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO-3166 Alpha-2</a> codes).
+        </p>
+        <code-block lang="PHP">
+            enum RouteGroup: string implements GroupInterface
+            {
+                use GroupTrait;
+
+                public const PREFIX = [
+                    'example',
+                    'locale' => '[a-z]{2}'
+                ];
+
+                case backend => 'admin';
+                case frontend => '';
+            }
+        </code-block>
+        <p>Generated groups will be:</p>
+        <code-block lang="PHP">
+            return [
+                Group::create('/example/{locale:[a-z]{2}}')
+                    ->namePrefix('frontend.')
+                    ->routes(...(require __DIR__ . '/routes/frontend.php'))
+                ,
+                Group::create('/example/{locale:[a-z]{2}}/admin')
+                    ->namePrefix('backend.')
+                    ->routes(...(require __DIR__ . '/routes/backend.php'))
+                ,
+            ];
+        </code-block>
+    </chapter>
+
+    <chapter title="GroupInterface and GroupTrait">
+        <chapter title="GroupInterface">
+            <p>
+                <code>GroupInterface</code> defines methods used when generating URLs when routes are grouped.
+                The application Group Enumeration must implement <code>GroupInterface</code>.
+            </p>
+            <p>Group Interface defines the following methods:</p>
+            <deflist type="narrow">
+                <def title="getName()">Returns the Group name</def>
+                <def title="getNamePrefix()">Returns the Group name prefix</def>
+                <def title="getRoutePrefix()">Returns the Group route prefix</def>
+            </deflist>
+            <note>
+                <code>GroupInterface</code> methods are used internally and not intended for use by the application.
+            </note>
+        </chapter>
+        <chapter title="GroupTrait">
+            <p>
+                <code>GroupTrait</code> implements <code>GroupInterface</code>
+                and can be used in the application Route Enumeration.
+            </p>
+        </chapter>
+    </chapter>
+</topic>
