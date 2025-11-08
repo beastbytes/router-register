@@ -131,7 +131,9 @@
             <p>AlphaCase is an Enumeration that specifies the case of a parameter's alphabetic characters.</p>
             <p>The enumerations are:</p>
             <deflist>
-                <def title="AlphaCase::insensitive" id="alpha-case-insensitive">Characters can be lowercase or uppercase</def>
+                <def title="AlphaCase::insensitive" id="alpha-case-insensitive">
+                    Characters can be lowercase or uppercase
+                </def>
                 <def title="AlphaCase::lower" id="alpha-case-lower">Characters must be lowercase</def>
                 <def title="AlphaCase::upper" id="alpha-case-upper">Characters must be uppercase</def>
             </deflist>
