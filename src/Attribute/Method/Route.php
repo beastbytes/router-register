@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BeastBytes\Router\Register\Attribute;
+namespace BeastBytes\Router\Register\Attribute\Method;
 
 use Attribute;
-use BeastBytes\Router\Register\Attribute\Method\Method;
+use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
 use BeastBytes\Router\Register\Route\RouteInterface;
 
 #[Attribute(Attribute::TARGET_METHOD)]
