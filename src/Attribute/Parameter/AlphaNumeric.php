@@ -14,7 +14,8 @@ final class AlphaNumeric extends Pattern
     public function __construct(
         string $name,
         array|int|null $length = null,
-        AlphaCase $case = AlphaCase::insensitive
+        AlphaCase $case = AlphaCase::insensitive,
+        FirstChar $firstChar = FirstChar::alphaNumeric
     )
     {
         $alpha = match($case) {
@@ -23,9 +24,15 @@ final class AlphaNumeric extends Pattern
             AlphaCase::upper => 'A-Z',
         };
 
+        $pattern = match ($firstChar) {
+            FirstChar::alpha => "[$alpha][\d$alpha]",
+            FirstChar::alphaNumeric => "[\d$alpha]",
+            FirstChar::numeric => "\d[\d$alpha]",
+        };
+
         parent::__construct(
             name: $name,
-            pattern: '[\d' . $alpha . ']' . $this->getLength($length)
+            pattern: $pattern . $this->getLength($length, ($firstChar !== FirstChar::alphaNumeric))
         );
     }
 }
