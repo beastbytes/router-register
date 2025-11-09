@@ -25,7 +25,7 @@ final class Alpha extends Pattern
 
         parent::__construct(
             name: $name,
-            pattern: '[' . $alpha . ']' . $this->getLength($length)
+            pattern: "[$alpha]" . $this->getLength($length)
         );
     }
 }

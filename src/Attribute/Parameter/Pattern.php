@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Pattern {
+class Pattern implements ParameterInterface {
     public function __construct(
         private readonly string $name,
         private readonly string $pattern
@@ -23,10 +23,5 @@ class Pattern {
     public function getPattern(): string
     {
         return $this->pattern;
-    }
-
-    public function isOptional(): bool
-    {
-        return $this->optional;
     }
 }

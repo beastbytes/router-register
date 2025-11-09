@@ -24,10 +24,10 @@ final class Hex extends Pattern
             AlphaCase::upper => 'A-F',
         };
 
-        $pattern = '[\d' . $alpha . ']';
+        $pattern = "[\d$alpha]";
 
         if ($nonZero) {
-            $pattern = '[1-9' . $alpha . ']' . $pattern;
+            $pattern = "[1-9$alpha]" . $pattern;
         }
 
         parent::__construct(
