@@ -6,12 +6,14 @@ namespace BeastBytes\Router\Register\Tests;
 
 use BeastBytes\Router\Register\Attribute\Parameter\Alpha;
 use BeastBytes\Router\Register\Attribute\Parameter\AlphaCase;
-use BeastBytes\Router\Register\Attribute\Parameter\AlphaNumeric;
+use BeastBytes\Router\Register\Attribute\Parameter\Alphanumeric;
+use BeastBytes\Router\Register\Attribute\Parameter\FirstChar;
 use BeastBytes\Router\Register\Attribute\Parameter\Hex;
 use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Attribute\Parameter\In;
 use BeastBytes\Router\Register\Attribute\Parameter\Numeric;
-use BeastBytes\Router\Register\Attribute\Parameter\Parameter;
+use BeastBytes\Router\Register\Attribute\Parameter\ParameterInterface;
+use BeastBytes\Router\Register\Attribute\Parameter\Pattern;
 use BeastBytes\Router\Register\Attribute\Parameter\Uuid;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -28,35 +30,30 @@ class ParameterTest extends TestCase
         $alpha = match($case) {
             AlphaCase::insensitive => 'a-zA-Z',
             AlphaCase::lower => 'a-z',
-            AlphaCase::upper => 'A-Z'
+            AlphaCase::upper => 'A-Z',
         };
 
-        $attribute = new Alpha(name: $name, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[' . $alpha . ']+', $attribute->getPattern());
+        $patterns = [
+            "[$alpha]+" => null,
+            "[$alpha]{%s}" => 'int',
+            "[$alpha]{,%s}" => 'max',
+            "[$alpha]{%s,}" => 'min',
+            "[$alpha]{%s,%s}" => 'range',
+        ];
 
-        $length = random_int(1, 10);
-        $attribute = new Alpha(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+        foreach ($patterns as $patternTemplate => $lengthType) {
+            $length = $this->getLength($lengthType);
 
-        $length =[random_int(1, 10), random_int(11, 20)];
-        [$min, $max] = $length;
-        $attribute = new Alpha(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
+            $pattern = match ($lengthType) {
+                'int' => sprintf($patternTemplate, $length),
+                'max' => sprintf($patternTemplate, $length['max']),
+                'min' => sprintf($patternTemplate, $length['min']),
+                'range' => sprintf($patternTemplate, $length['min'], $length['max']),
+                default => $patternTemplate
+            };
 
-        $length =[null, random_int(1, 10)];
-        [$min, $max] = $length;
-        $attribute = new Alpha(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
-
-        $length =[random_int(1, 10), null];
-        [$min, $max] = $length;
-        $attribute = new Alpha(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
+            $this->assertions(new Alpha(name: $name, length: $length, case: $case), $name, $pattern);
+        }
     }
 
     #[Test]
@@ -66,35 +63,51 @@ class ParameterTest extends TestCase
         $alpha = match($case) {
             AlphaCase::insensitive => 'a-zA-Z',
             AlphaCase::lower => 'a-z',
-            AlphaCase::upper => 'A-Z'
+            AlphaCase::upper => 'A-Z',
         };
 
-        $attribute = new AlphaNumeric(name: $name, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']+', $attribute->getPattern());
+        $patterns = [
+            "[\d$alpha]+" => [null, FirstChar::alphaNumeric],
+            "\d[\d$alpha]*" => [null, FirstChar::numeric],
+            "[$alpha][\d$alpha]*" => [null, FirstChar::alpha],
+            "[\d$alpha]{%s}" => ['int', FirstChar::alphaNumeric],
+            "\d[\d$alpha]{%s}" => ['int', FirstChar::numeric],
+            "[$alpha][\d$alpha]{%s}" => ['int', FirstChar::alpha],
+            "[\d$alpha]{,%s}" => ['max', FirstChar::alphaNumeric],
+            "\d[\d$alpha]{,%s}" => ['max', FirstChar::numeric],
+            "[$alpha][\d$alpha]{,%s}" => ['max', FirstChar::alpha],
+            "[\d$alpha]{%s,}" => ['min', FirstChar::alphaNumeric],
+            "\d[\d$alpha]{%s,}" => ['min', FirstChar::numeric],
+            "[$alpha][\d$alpha]{%s,}" => ['min', FirstChar::alpha],
+            "[\d$alpha]{%s,%s}" => ['range', FirstChar::alphaNumeric],
+            "\d[\d$alpha]{%s,%s}" => ['range', FirstChar::numeric],
+            "[$alpha][\d$alpha]{%s,%s}" => ['range', FirstChar::alpha],
+        ];
 
-        $length = random_int(1, 10);
-        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+        foreach ($patterns as $patternTemplate => $config) {
+            [$lengthType, $firstChar] = $config;
 
-        $length =[random_int(1, 10), random_int(11, 20)];
-        [$min, $max] = $length;
-        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
+            $length = $this->getLength($lengthType);
+            $lengthAdjust = $firstChar === FirstChar::alphaNumeric ? 0 : 1;
 
-        $length =[null, random_int(1, 10)];
-        [$min, $max] = $length;
-        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
+            $pattern = match ($lengthType) {
+                'int' => sprintf($patternTemplate, $length - $lengthAdjust),
+                'max' => sprintf($patternTemplate, $length['max'] - $lengthAdjust),
+                'min' => sprintf($patternTemplate, $length['min'] - $lengthAdjust),
+                'range' => sprintf(
+                    $patternTemplate,
+                    $length['min'] - $lengthAdjust,
+                    $length['max'] - $lengthAdjust
+                ),
+                default => $patternTemplate
+            };
 
-        $length =[random_int(1, 10), null];
-        [$min, $max] = $length;
-        $attribute = new AlphaNumeric(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
+            $this->assertions(
+                new Alphanumeric(name: $name, length: $length, firstChar: $firstChar, case: $case),
+                $name,
+                $pattern
+            );
+        }
     }
 
     #[Test]
@@ -104,157 +117,103 @@ class ParameterTest extends TestCase
         $alpha = match($case) {
             AlphaCase::insensitive => 'a-fA-F',
             AlphaCase::lower => 'a-f',
-            AlphaCase::upper => 'A-F'
+            AlphaCase::upper => 'A-F',
         };
 
-        $attribute = new Hex(name: $name, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']+', $attribute->getPattern());
+        $patterns = [
+            "[\d$alpha]+" => [null, false],
+            "[1-9$alpha][\d$alpha]*" => [null, true],
+            "[\d$alpha]{%s}" => ['int', false],
+            "[1-9$alpha][\d$alpha]{%s}" => ['int', true],
+            "[\d$alpha]{,%s}" => ['max', false],
+            "[1-9$alpha][\d$alpha]{,%s}" => ['max', true],
+            "[\d$alpha]{%s,}" => ['min', false],
+            "[1-9$alpha][\d$alpha]{%s,}" => ['min', true],
+            "[\d$alpha]{%s,%s}" => ['range', false],
+            "[1-9$alpha][\d$alpha]{%s,%s}" => ['range', true],
+        ];
 
-        $attribute = new Hex(name: $name, case: $case, nonZero: true);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9' . $alpha . '][\d' . $alpha . ']*', $attribute->getPattern());
+        foreach ($patterns as $patternTemplate => $config) {
+            [$lengthType, $nonZero] = $config;
 
-        $length = random_int(1, 10);
-        $attribute = new Hex(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $length . '}', $attribute->getPattern());
+            $length = $this->getLength($lengthType);
+            $lengthAdjust = $nonZero ? 1 : 0;
 
-        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
-        --$length;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame(
-            '[1-9' . $alpha . '][\d' . $alpha . ']{' . $length . '}',
-            $attribute->getPattern()
-        );
+            $pattern = match ($lengthType) {
+                'int' => sprintf($patternTemplate, $length - $lengthAdjust),
+                'max' => sprintf($patternTemplate, $length['max'] - $lengthAdjust),
+                'min' => sprintf($patternTemplate, $length['min'] - $lengthAdjust),
+                'range' => sprintf(
+                    $patternTemplate,
+                    $length['min'] - $lengthAdjust,
+                    $length['max'] - $lengthAdjust
+                ),
+                default => $patternTemplate
+            };
 
-        $length = [random_int(1, 10), random_int(11, 20)];
-        [$min, $max] = $length;
-        $attribute = new Hex(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $min . ',' . $max . '}', $attribute->getPattern());
-
-        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
-        --$min;
-        --$max;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame(
-            '[1-9' . $alpha . '][\d' . $alpha . ']{' . ($min ?? '') . ',' . $max . '}',
-            $attribute->getPattern()
-        );
-
-        $length = [null, random_int(1, 10)];
-        [$min, $max] = $length;
-        $attribute = new Hex(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{,' . $max . '}', $attribute->getPattern());
-
-        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
-        --$max;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame(
-            '[1-9' . $alpha . '][\d' . $alpha . ']{,' . $max . '}',
-            $attribute->getPattern()
-        );
-
-        $length = [random_int(1, 10), null];
-        [$min, $max] = $length;
-        $attribute = new Hex(name: $name, length: $length, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[\d' . $alpha . ']{' . $min . ',}', $attribute->getPattern());
-
-        $attribute = new Hex(name: $name, length: $length, case: $case, nonZero: true);
-        --$min;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame(
-            '[1-9' . $alpha . '][\d' . $alpha . ']{' . $min . ',}',
-            $attribute->getPattern()
-        );
+            $this->assertions(new Hex(name: $name, length: $length, nonZero: $nonZero, case: $case), $name, $pattern);
+        }
     }
 
     #[Test]
     #[DataProvider('nameProvider')]
     public function Id(string $name): void
     {
-        $attribute = new Id(name: $name);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d*', $attribute->getPattern());
+        $this->assertions(new Id(name: $name), $name, '[1-9]\d*');
     }
 
     #[Test]
     #[DataProvider('nameProvider')]
     public function In(string $name): void
     {
-        $attribute = new In(name: $name, options: ['abc', '123', 'XYZ']);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[abc|123|XYZ]', $attribute->getPattern());
+        $this->assertions(new In(name: $name, options: ['abc', '123', 'XYZ']), $name, '[abc|123|XYZ]');
     }
 
     #[Test]
     #[DataProvider('nameProvider')]
     public function numeric(string $name): void
     {
-        $attribute = new Numeric(name: $name);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('\d+', $attribute->getPattern());
+        $patterns = [
+            "\d+" => [null, false],
+            "[1-9]\d*" => [null, true],
+            "\d{%s}" => ['int', false],
+            "[1-9]\d{%s}" => ['int', true],
+            "\d{,%s}" => ['max', false],
+            "[1-9]\d{,%s}" => ['max', true],
+            "\d{%s,}" => ['min', false],
+            "[1-9]\d{%s,}" => ['min', true],
+            "\d{%s,%s}" => ['range', false],
+            "[1-9]\d{%s,%s}" => ['range', true],
+        ];
 
-        $attribute = new Numeric(name: $name, nonZero: true);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d*', $attribute->getPattern());
+        foreach ($patterns as $patternTemplate => $config) {
+            [$lengthType, $nonZero] = $config;
 
-        $length = random_int(1, 10);
-        $attribute = new Numeric(name: $name, length: $length);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('\d{' . $length . '}', $attribute->getPattern());
+            $length = $this->getLength($lengthType);
+            $lengthAdjust = $nonZero ? 1 : 0;
 
-        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
-        --$length;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d{' . $length . '}', $attribute->getPattern());
+            $pattern = match ($lengthType) {
+                'int' => sprintf($patternTemplate, $length - $lengthAdjust),
+                'max' => sprintf($patternTemplate, $length['max'] - $lengthAdjust),
+                'min' => sprintf($patternTemplate, $length['min'] - $lengthAdjust),
+                'range' => sprintf(
+                    $patternTemplate,
+                    $length['min'] - $lengthAdjust,
+                    $length['max'] - $lengthAdjust
+                ),
+                default => $patternTemplate
+            };
 
-        $length = [random_int(1, 10), random_int(11, 20)];
-        [$min, $max] = $length;
-        $attribute = new Numeric(name: $name, length: $length);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('\d{' . $min . ',' . $max . '}', $attribute->getPattern());
-
-        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
-        --$min;
-        --$max;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d{' . $min . ',' . $max . '}', $attribute->getPattern());
-
-        $length = [null, random_int(1, 10)];
-        [$min, $max] = $length;
-        $attribute = new Numeric(name: $name, length: $length);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('\d{,' . $max . '}', $attribute->getPattern());
-
-        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
-        --$max;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d{,' . $max . '}', $attribute->getPattern());
-
-        $length = [random_int(1, 10), null];
-        [$min, $max] = $length;
-        $attribute = new Numeric(name: $name, length: $length);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('\d{' . $min . ',}', $attribute->getPattern());
-
-        $attribute = new Numeric(name: $name, length: $length, nonZero: true);
-        --$min;
-        self::assertSame($name, $attribute->getName());
-        self::assertSame('[1-9]\d{' . $min . ',}', $attribute->getPattern());
+            $this->assertions(new Numeric(name: $name, length: $length, nonZero: $nonZero), $name, $pattern);
+        }
     }
 
     #[Test]
     #[DataProvider('nameProvider')]
-    public function parameter(string $name): void
+    public function pattern(string $name): void
     {
         $pattern = '\d{3}[\da-f]{5}';
-        $attribute = new Parameter($name, $pattern);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame($pattern, $attribute->getPattern());
+        $this->assertions(new Pattern($name, $pattern), $name, $pattern);
     }
 
     #[Test]
@@ -264,12 +223,10 @@ class ParameterTest extends TestCase
         $pattern = match($case) {
             AlphaCase::insensitive => '[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}',
             AlphaCase::lower => '[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}',
-            AlphaCase::upper => '[\dA-F]{8}-[\dA-F]{4}-[\dA-F]{4}-[\dA-F]{4}-[\dA-F]{12}'
+            AlphaCase::upper => '[\dA-F]{8}-[\dA-F]{4}-[\dA-F]{4}-[\dA-F]{4}-[\dA-F]{12}',
         };
 
-        $attribute = new Uuid(name: $name, case: $case);
-        self::assertSame($name, $attribute->getName());
-        self::assertSame($pattern, $attribute->getPattern());
+        $this->assertions(new Uuid(name: $name, case: $case), $name, $pattern);
     }
 
     public static function nameProvider(): Generator
@@ -283,5 +240,22 @@ class ParameterTest extends TestCase
             $name = self::nameProvider();
             yield [$name->current()[0], $case];
         }
+    }
+
+    private function assertions(ParameterInterface $parameter, string $name, string $pattern): void
+    {
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($pattern, $parameter->getPattern());
+    }
+
+    private function getLength(?string $lengthType): array|int|null
+    {
+        return match ($lengthType) {
+            'int' => random_int(1, 10),
+            'max' => ['max' => random_int(11, 20)],
+            'min' => ['min' => random_int(1, 10)],
+            'range' => ['min' => random_int(1, 10), 'max' => random_int(11, 20)],
+            default => null
+        };
     }
 }
