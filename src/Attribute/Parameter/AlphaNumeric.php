@@ -14,8 +14,8 @@ final class AlphaNumeric extends Pattern
     public function __construct(
         string $name,
         array|int|null $length = null,
-        AlphaCase $case = AlphaCase::insensitive,
-        FirstChar $firstChar = FirstChar::alphaNumeric
+        FirstChar $firstChar = FirstChar::alphaNumeric,
+        AlphaCase $case = AlphaCase::insensitive
     )
     {
         $alpha = match($case) {
