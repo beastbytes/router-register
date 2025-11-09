@@ -9,14 +9,8 @@ use BeastBytes\Router\Register\Tests\resources\Trait\TestRouteWithGroup;
 use BeastBytes\Router\Register\Tests\resources\Trait\TestRouteWithGroupAndPrefix;
 use BeastBytes\Router\Register\Tests\resources\Trait\TestRouteWithGroupPrefix;
 use BeastBytes\Router\Register\Tests\resources\Trait\TestRouteWithPrefix;
-use HttpSoft\Message\Uri;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Router\CurrentRoute;
-use Yiisoft\Router\FastRoute\UrlGenerator;
-use Yiisoft\Router\Route;
-use Yiisoft\Router\RouteCollection;
-use Yiisoft\Router\RouteCollector;
 
 class TraitTest extends TestCase
 {
