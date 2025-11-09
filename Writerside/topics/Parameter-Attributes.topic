@@ -45,21 +45,51 @@
                         <td>case</td>
                         <td><a href="Parameter-Attributes.topic#alpha-case"/></td>
                         <td>Whether characters must be lowercase, uppercase, or can be either</td>
-                        <td><a href="Parameter-Attributes.topic#alpha-case-insensitive"/></td>
+                        <td>
+                            <a href="Parameter-Attributes.topic#alpha-case-insensitive"/>
+                            (can be lowercase or uppercase)
+                        </td>
                     </tr>
                 </snippet>
             </table>
         </snippet>
     </chapter>
 
-    <chapter title="AlphaNumeric" id="alphanumeric">
+    <chapter title="Alphanumeric" id="alphanumeric">
         <p>Alphabetic characters and digits.</p>
-        <include from="Parameter-Attributes.topic" element-id="parameter-table"/>
+        <table>
+            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
+            <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
+            <tr>
+                <td>firstChar</td>
+                <td><a href="Parameter-Attributes.topic#first-char"/></td>
+                <td>The type of the first character</td>
+                <td>
+                    <a href="Parameter-Attributes.topic#first-char-alphanumeric"/>
+                    (can be alphabetic or a digit)
+                </td>
+            </tr>
+            <include from="Parameter-Attributes.topic" element-id="parameter-case"/>
+        </table>
     </chapter>
 
     <chapter title="Hex" id="hex">
         <p>Parameter contains hexadecimal characters.</p>
-        <include from="Parameter-Attributes.topic" element-id="parameter-table"/>
+        <table>
+            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
+            <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
+            <snippet id="parameter-non-zero">
+                <tr>
+                    <td>nonZero</td>
+                    <td>bool</td>
+                    <td>Whether the number must be non-zero</td>
+                    <td>false (zero is allowed)</td>
+                </tr>
+            </snippet>
+            <include from="Parameter-Attributes.topic" element-id="parameter-case"/>
+        </table>
     </chapter>
 
     <chapter title="Id" id="id">
@@ -90,12 +120,7 @@
             <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
             <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
             <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
-            <tr>
-                <td>nonZero</td>
-                <td>bool</td>
-                <td>Whether the number must be non-zero</td>
-                <td>false (zero is allowed)</td>
-            </tr>
+            <include from="Parameter-Attributes.topic" element-id="parameter-non-zero"/>
         </table>
     </chapter>
 
@@ -139,10 +164,22 @@
             </deflist>
         </chapter>
 
+        <chapter title="FirstChar" id="first-char">
+            <p>FirstChar is an Enumeration that specifies the type the first character an alphanumeric parameter.</p>
+            <p>The enumerations are:</p>
+            <deflist>
+                <def title="FirstChar::alpha" id="first-char-alpha">First character must be alphabetic</def>
+                <def title="FirstChar::alphanumeric" id="first-char-alphanumeric">
+                    First character can be alphabetic or a digit
+                </def>
+                <def title="FirstChar::numeric" id="first-char-numeric">First character must be numeric</def>
+            </deflist>
+        </chapter>
+
         <chapter title="Length Definition" id="length-definition">
             <link-summary>Defines the length of a parameter</link-summary>
             <deflist>
-                <def title="array{min?: int, max?: int}">The minimum and maximum number of characters.</def>
+                <def title="array{max?: int, min?: int}">The maximum and/or minimum number of characters.</def>
                 <def title="int">The number of characters</def>
                 <def title="null">Any length</def>
             </deflist>
