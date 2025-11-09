@@ -11,10 +11,10 @@ trait LengthTrait
     /**
      * @param array|int|null $length
      * @psalm-param array{min?: int, max?: int}|int|null $length
-     * @param bool $nonZero
+     * @param bool $adjust
      * @return string
      */
-    private function getLength(array|int|null $length, bool $nonZero = false): string
+    private function getLength(array|int|null $length, bool $adjust = false): string
     {
         if (is_array($length)) {
             $max = $min = null;
@@ -25,7 +25,7 @@ trait LengthTrait
                 } elseif($length['max'] < 0) {
                     throw new RuntimeException("\$length['mav'] must be >= 0");
                 } else {
-                    $max = $length['max'] - ($nonZero ? 1 : 0);
+                    $max = $length['max'] - (int) $adjust;
                 }
             }
 
@@ -35,7 +35,7 @@ trait LengthTrait
                 } elseif($length['min'] < 0) {
                     throw new RuntimeException("\$length['min'] must be >= 0");
                 } else {
-                    $min = $length['min'] - ($nonZero ? 1 : 0);
+                    $min = $length['min'] - (int) $adjust;
                 }
             }
 
@@ -51,9 +51,9 @@ trait LengthTrait
                 throw new RuntimeException('Integer values for $length must be > 0');
             }
 
-            return '{' . ($length - ($nonZero ? 1 : 0)) . '}';
+            return '{' . ($length - (int) $adjust) . '}';
         }
 
-        return $nonZero ? '*' : '+';
+        return $adjust ? '*' : '+';
     }
 }
