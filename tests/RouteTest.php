@@ -12,7 +12,7 @@ use BeastBytes\Router\Register\Attribute\Method\Options;
 use BeastBytes\Router\Register\Attribute\Method\Patch;
 use BeastBytes\Router\Register\Attribute\Method\Post;
 use BeastBytes\Router\Register\Attribute\Method\Put;
-use BeastBytes\Router\Register\Attribute\Route;
+use BeastBytes\Router\Register\Attribute\Method\Route;
 use BeastBytes\Router\Register\Tests\resources\Trait\TestRoute;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
