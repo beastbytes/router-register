@@ -11,8 +11,6 @@ namespace BeastBytes\Router\Register\Attribute\Method;
  */
 enum Method
 {
-    case ALL;
-
     /**
      * The DELETE method requests that the origin server remove the
      * association between the target resource and its current
