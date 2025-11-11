@@ -9,12 +9,12 @@
 
     <chapter title="Group" id="group">
         <deflist type="narrow">
-            <def title="Use On" id="group-use-on">Class</def>
-            <def title="Cardinality" id="group-cardinality">?</def>
+            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
         <p>Defines the group a controller belongs to.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>group</td>
                 <td>GroupInterface</td>
@@ -25,7 +25,7 @@
                         both can be overridden by the attribute parameters
                     </p>
                 </td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
             <tr>
                 <td>prefix</td>
@@ -39,12 +39,12 @@
     <chapter title="GroupCors" id="group-cors">
         <note>It is only necessary to define GroupCors in one controller of a group.</note>
         <deflist type="narrow">
-            <def title="Use On" id="group-cors-use-on">Class</def>
-            <def title="Cardinality" id="group-cors-cardinality">?</def>
+            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
         <p>Defines CORS middleware to apply a group.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>middleware</td>
                 <td>array|string</td>
@@ -66,7 +66,7 @@
                     </code></p>
                     <p>All other strings are treated "as is".</p>
                 </td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -74,17 +74,17 @@
     <chapter title="GroupHost" id="group-host">
         <note>It is only necessary to define GroupHost in one controller of a group.</note>
         <deflist type="narrow">
-            <def title="Use On" id="group-host-use-on">Class</def>
-            <def title="Cardinality" id="group-host-cardinality">*</def>
+            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <p>Defines a host that all routes in a group are valid for.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>host</td>
                 <td>string</td>
                 <td>The host the route is valid for</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -92,12 +92,12 @@
     <chapter title="GroupMiddleware" id="group-middleware">
         <note>It is only necessary to define GroupMiddleware in one controller of a group.</note>
         <deflist type="narrow">
-            <def title="Use On" id="group-middleware-use-on">Class</def>
-            <def title="Cardinality" id="group-middleware-cardinality">*</def>
+            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <p>Defines a middleware to apply a group.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>middleware</td>
                 <td>array|string</td>
@@ -119,7 +119,7 @@
                     </code></p>
                     <p>All other strings are treated "<i>as is</i>".</p>
                 </td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>

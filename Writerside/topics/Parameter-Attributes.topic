@@ -8,59 +8,26 @@
     <p>Parameter attributes define a <tooltip term="URI">URI</tooltip> parameter matching patterns.</p>
 
     <deflist type="narrow">
-        <def title="Use On" id="default-value-use-on">Action method</def>
-        <def title="Cardinality" id="default-value-cardinality">*</def>
+        <include element-id="use-on-action" from="attribute.topic"/>
+        <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
     </deflist>
 
     <chapter title="Alpha" id="alpha">
         <p>Alphabetic characters.</p>
-        <snippet id="parameter-table">
-            <table>
-                <snippet id="parameter-table-header">
-                    <tr>
-                        <td>Parameter</td>
-                        <td>Type</td>
-                        <td>Description</td>
-                        <td>Default</td>
-                    </tr>
-                </snippet>
-                <snippet id="parameter-name">
-                    <tr>
-                        <td>name</td>
-                        <td>string</td>
-                        <td>Parameter name</td>
-                        <snippet id="required-parameter"><td>&lt;Required&gt;</td></snippet>
-                    </tr>
-                </snippet>
-                <snippet id="parameter-length">
-                    <tr>
-                        <td>length</td>
-                        <td>array|int|null</td>
-                        <td><a href="Parameter-Attributes.topic#length-definition"/></td>
-                        <td>null (any length)</td>
-                    </tr>
-                </snippet>
-                <snippet id="parameter-case">
-                    <tr>
-                        <td>case</td>
-                        <td><a href="Parameter-Attributes.topic#alpha-case"/></td>
-                        <td>Whether characters must be lowercase, uppercase, or can be either</td>
-                        <td>
-                            <a href="Parameter-Attributes.topic#alpha-case-insensitive"/>
-                            (can be lowercase or uppercase)
-                        </td>
-                    </tr>
-                </snippet>
-            </table>
-        </snippet>
+        <table>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
+            <include element-id="parameter-length" from="attribute.topic"/>
+            <include element-id="parameter-case" from="attribute.topic"/>
+        </table>
     </chapter>
 
     <chapter title="Alphanumeric" id="alphanumeric">
         <p>Alphabetic characters and digits.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
+            <include element-id="parameter-length" from="attribute.topic"/>
             <tr>
                 <td>firstChar</td>
                 <td><a href="Parameter-Attributes.topic#first-char"/></td>
@@ -70,46 +37,39 @@
                     (can be alphabetic or a digit)
                 </td>
             </tr>
-            <include from="Parameter-Attributes.topic" element-id="parameter-case"/>
+            <include element-id="parameter-case" from="attribute.topic"/>
         </table>
     </chapter>
 
     <chapter title="Hex" id="hex">
         <p>Parameter contains hexadecimal characters.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
-            <snippet id="parameter-non-zero">
-                <tr>
-                    <td>nonZero</td>
-                    <td>bool</td>
-                    <td>Whether the number must be non-zero</td>
-                    <td>false (zero is allowed)</td>
-                </tr>
-            </snippet>
-            <include from="Parameter-Attributes.topic" element-id="parameter-case"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
+            <include element-id="parameter-length" from="attribute.topic"/>
+            <include element-id="parameter-non-zero" from="attribute.topic"/>
+            <include element-id="parameter-case" from="attribute.topic"/>
         </table>
     </chapter>
 
     <chapter title="Id" id="id">
         <p>A number with a minimum value of 1; e.g. database autoincrement value.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
         </table>
     </chapter>
 
     <chapter title="In" id="in">
         <p>Parameter must be one of the provided options.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
             <tr>
                 <td>options</td>
                 <td>string[]</td>
                 <td>Options to match</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -117,23 +77,23 @@
     <chapter title="Numeric" id="numeric">
         <p>Numeric digits.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-length"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-non-zero"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
+            <include element-id="parameter-length" from="attribute.topic"/>
+            <include element-id="parameter-non-zero" from="attribute.topic"/>
         </table>
     </chapter>
 
     <chapter title="Pattern" id="pattern">
         <p>Specifies the pattern the parameter must match.</p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
             <tr>
                 <td>pattern</td>
                 <td>string</td>
                 <td>Regex to match</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -144,9 +104,9 @@
             (aka Globally Unique Identifier (GUID)).
         </p>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-name"/>
-            <include from="Parameter-Attributes.topic" element-id="parameter-case"/>
+            <include element-id="table-header" from="attribute.topic"/>
+            <include element-id="parameter-name" from="attribute.topic"/>
+            <include element-id="parameter-case" from="attribute.topic"/>
         </table>
     </chapter>
 

@@ -9,26 +9,23 @@
     
     <chapter title="DefaultValue" id="default-value">
         <p>Defines a default value for a parameter when the route does not contain a value.</p>
-        <snippet id="class-level">
-            <p>When used at the class level it applies to all routes in the class.</p>
-        </snippet>
         <deflist type="narrow">
-            <def title="Use On" id="default-value-use-on">Class | Action method</def>
-            <def title="Cardinality" id="default-value-cardinality">*</def>
+            <include from="attribute.topic" element-id="use-on-action"/>
+            <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>parameter</td>
                 <td>string</td>
                 <td>Name of the parameter</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
             <tr>
                 <td>value</td>
                 <td>int|string</td>
                 <td>The default value</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -37,25 +34,25 @@
         <p>Defines a fallback route that is attempted if no other routes in a group match.</p>
         <note>Only one fallback route is permitted in a group.</note>
         <deflist type="narrow">
-            <def title="Use On" id="fallback-use-on">Action method</def>
-            <def title="Cardinality" id="fallback-cardinality">?</def>
+            <include element-id="use-on-action" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
     </chapter>
 
     <chapter title="Host" id="host">
         <p>Defines a host that all routes in a class are valid for.</p>
-        <include from="Other-Route-Attributes.topic" element-id="class-level"/>
+        <include element-id="class-level" from="attribute.topic"/>
         <deflist type="narrow">
-            <def title="Use On" id="host-use-on">Class | Action method</def>
-            <def title="Cardinality" id="host-cardinality">*</def>
+            <include element-id="use-on-action-or-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>host</td>
                 <td>string</td>
                 <td>The host the route is valid for</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
     </chapter>
@@ -65,14 +62,14 @@
             Defines a middleware to apply the route or, if the `disable` parameter is `true`,
             a parent group or class level middleware that should not be invoked.
         </p>
-        <include from="Other-Route-Attributes.topic" element-id="class-level"/>
+        <include element-id="class-level" from="attribute.topic"/>
         <p><b>See Also</b>: <a href="Defining-Middleware-Attributes.topic"/></p>
         <deflist type="narrow">
-            <def title="Use On" id="middleware-use-on">Class | Action method</def>
-            <def title="Cardinality" id="middleware-cardinality">+</def>
+            <include element-id="use-on-action-or-class" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
+            <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>middleware</td>
                 <td>array|string</td>
@@ -94,7 +91,7 @@
                     </code></p>
                     <p>All other strings are treated "as is".</p>
                 </td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
+                <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
             <tr>
                 <td>disable</td>
@@ -108,8 +105,8 @@
     <chapter title="Override" id="override">
         <p>Overrides another route with the same name.</p>
         <deflist type="narrow">
-            <def title="Use On" id="override-use-on">Action method</def>
-            <def title="Cardinality" id="override-cardinality">?</def>
+            <include element-id="use-on-action" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
     </chapter>
 </topic>

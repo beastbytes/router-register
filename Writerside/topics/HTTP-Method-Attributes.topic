@@ -9,96 +9,75 @@
         This is done using one of the <tooltip term="HTTP">HTTP</tooltip> method attributes or the Route attribute.
     </p>
 
+    <chapter title="Route" id="route">
+        <p>Defines a route that responds to one or more <tooltip term="HTTP">HTTP</tooltip> methods.</p>
+        <include element-id="http-method-use-on" from="attribute.topic"/>
+        <table>
+            <include element-id="table-header" from="attribute.topic"/>
+            <tr>
+                <td>methods</td>
+                <td>Method[]</td>
+                <td>The HTTP methods that the route responds to</td>
+                <include element-id="required-parameter" from="attribute.topic"/>
+            </tr>
+            <include element-id="parameter-route" from="attribute.topic"/>
+        </table>
+    </chapter>
+
     <chapter title="All" id="all">
         <p>Defines a route that responds to all <tooltip term="HTTP">HTTP</tooltip> methods</p>
-        <snippet id="method">
-            <snippet id="method-use-on">
-                <deflist type="narrow">
-                    <def title="Use On">Action Methods</def>
-                    <def title="Cardinality">1</def>
-                </deflist>
-            </snippet>
-            <table>
-                <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-                <snippet id="parameter-route">
-                    <tr>
-                        <td>route</td>
-                        <td>RouteInterface</td>
-                        <td>The route</td>
-                        <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
-                    </tr>
-                </snippet>
-            </table>
-        </snippet>
+        <p>
+            Equivalent to
+            <code>Route(['DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT'], &lt;route&gt;)</code>.
+        </p>
+        <include element-id="http-method" from="attribute.topic"/>
     </chapter>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.5</var>
     <var name="method-name">Delete</var>
     <var name="method-name-lc">delete</var>
     <var name="method-name-uc">DELETE</var>
-    <snippet id="method-chapter">
-        <chapter title="%method-name%" id="%method-name-lc%">
-            <p>
-                Defines a route that responds to the <a href="%method-href%">%method-name-uc%</a>
-                <tooltip term="HTTP">HTTP</tooltip> method
-            </p>
-            <include from="HTTP-Method-Attributes.topic" element-id="method"/>
-        </chapter>
-    </snippet>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.1</var>
     <var name="method-name">Get</var>
     <var name="method-name-lc">get</var>
     <var name="method-name-uc">GET</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <chapter title="GetPost" id="get-post">
         <p>Convenience attribute for GET and POST methods</p>
-        <include from="HTTP-Method-Attributes.topic" element-id="method"/>
+        <p>Equivalent to <code>Route(['GET', 'POST'], &lt;route&gt;)</code>.</p>
+        <include element-id="http-method" from="attribute.topic"/>
     </chapter>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.2</var>
     <var name="method-name">Head</var>
     <var name="method-name-lc">head</var>
     <var name="method-name-uc">HEAD</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.7</var>
     <var name="method-name">Options</var>
     <var name="method-name-lc">options</var>
     <var name="method-name-uc">OPTIONS</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <var name="method-href">https://tools.ietf.org/html/rfc5789#section-2</var>
     <var name="method-name">Patch</var>
     <var name="method-name-lc">patch</var>
     <var name="method-name-uc">PATCH</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.3</var>
     <var name="method-name">Post</var>
     <var name="method-name-lc">post</var>
     <var name="method-name-uc">POST</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 
     <var name="method-href">https://tools.ietf.org/html/rfc7231#section-4.3.4</var>
     <var name="method-name">Put</var>
     <var name="method-name-lc">put</var>
     <var name="method-name-uc">PUT</var>
-    <include from="HTTP-Method-Attributes.topic" element-id="method-chapter"/>
-
-    <chapter title="Route" id="route">
-        <p>Defines a route that responds to one or more <tooltip term="HTTP">HTTP</tooltip> methods.</p>
-        <include from="HTTP-Method-Attributes.topic" element-id="method-use-on"/>
-        <table>
-            <include from="Parameter-Attributes.topic" element-id="parameter-table-header"/>
-            <tr>
-                <td>methods</td>
-                <td>Method[]</td>
-                <td>The HTTP methods that the route responds to</td>
-                <include from="Parameter-Attributes.topic" element-id="required-parameter"/>
-            </tr>
-            <include from="HTTP-Method-Attributes.topic" element-id="parameter-route"/>
-        </table>
-    </chapter>
+    <include element-id="http-method-chapter" from="attribute.topic"/>
 </topic>
