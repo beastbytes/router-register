@@ -39,37 +39,65 @@
             {
                 use RouteTrait;
 
-                case index => '[/{page}]';
-                case create => '/create';
-                case view => '/{id}';
+                case index = '[/{page}]';
+                case create = '/create';
+                case view = '/{id}';
             }
         </code-block>
     </chapter>
 
-    <chapter title="Route Prefix">
+    <chapter title="Name Prefix">
         <p>
-            <code>public const PREFIX</code> should be defined by defining in the Enumeration;
+            <code>public const PREFIX</code> should be defined in the Enumeration;
             it is used as the <emphasis>name prefix</emphasis> for routes.
             e.g. for <code>public const PREFIX = 'post';</code> and <code>case index = '';</code>,
             the route name is <emphasis>post.index</emphasis>
         </p>
+    </chapter>
+
+    <chapter title="Route Prefix" id="route-prefix">
         <p>
-            By default, the prefix also applies to route <tooltip term="URI">URI</tooltip>s.
+            By default <code>PREFIX</code> also applies to route <tooltip term="URI">URI</tooltip>s.
             e.g. the <tooltip term="URI">URI</tooltip> for <code>case view = '/{id}';</code> is <code>/post/{id}</code>.
         </p>
         <p>
-            This behaviour can be overridden by starting the route <tooltip term="URI">URI</tooltip> (case value)
-            with <code>//</code>. e.g. the <tooltip term="URI">URI</tooltip> for <code>case index = '//posts';</code>
-            is <code>/posts</code>.
+            This can be overridden by starting the route <tooltip term="URI">URI</tooltip>
+            (the Enumeration case value) with <code>//</code>. e.g. the <tooltip term="URI">URI</tooltip> for
+            <code>case index = '//posts';</code> is <code>/posts</code>.
         </p>
+        <note>
+            <p>
+                <emphasis>RouterRegister</emphasis> automatically groups routes assigned in a controller.
+                This simplifies route naming and <tooltip term="URI">URI</tooltip> definition,
+                and allows attributes that apply to all or most routes in a controller, e.g. hosts and middlewares,
+                to be defined at the controller level.
+            </p>
+            <p>
+                Routes whose <tooltip term="URI">URI</tooltip> starts with <code>//</code> are <i>hoisted</i> out of the
+                class Group. This means that <emphasis>Class Level Attributes</emphasis> will
+                <emphasis>not</emphasis> be applied to those routes.
+            </p>
+            <p>
+                If any of the <emphasis>Class Level Attributes</emphasis> should be applied to such routes,
+                specify the required attributes to the route at <emphasis>Method Level</emphasis>.
+            </p>
+            <p>
+                The route name is <emphasis>not</emphasis> altered for hoisted routes;
+                e.g. for <code>public const PREFIX = 'post';</code> both <code>case index = '';</code>
+                and <code>case index = '//posts';</code> have same the route name (<emphasis>post.index</emphasis>)
+                and application level group route and name prefixes apply.
+            </p>
+        </note>
         <code-block lang="PHP">
             enum PostRoute: string implements RouteInterface
             {
                 use RouteTrait;
 
-                case index => '//posts[/{page}]';
-                case create => '/create';
-                case view => '/{id}';
+                public const PREFIX = 'post';
+
+                case index = '//posts[/{page}]'; // this route will be "hoisted"
+                case create = '/create';
+                case view = '/{id}';
             }
         </code-block>
     </chapter>
@@ -147,27 +175,39 @@
 
                 case index = '//posts[/{page}]';
                 case create = '/create';
+                case update = '/update/{id}';
                 case view = '/{id}';
             }
         </code-block>
-        <p>The generated routes will be something like:</p>
+        <p>
+            The generated routes
+            (including <emphasis>middleware</emphasis> attributes that would be specified in the controller)
+            will be something like:
+        </p>
         <code-block lang="PHP">
             // filename: frontend.php
             return [
+                // the `post.index` route has been hoisted out of the `post` group
+                Route::methods(['GET'], '/posts[/{page: [1-9]\d*}]')
+                    ->name('post.index')
+                    ->action([PostController::class, 'index'])
+                ,
                 Group::create('/post')
                     ->namePrefix('post.')
+                    ->middleware(IsLoggedIn::class)
                     ->routes(
                         Route::methods(['GET', 'POST'], '/create')
                             ->name('create')
                             ->action([PostController::class, 'create']),
+                        Route::methods(['GET', 'POST'], '/update')
+                            ->name('update')
+                            ->action([PostController::class, 'update']),
                         Route::methods(['GET'], '/view/{id: [1-9]\d*}')
                             ->name('view')
+                            ->disableMiddleware(IsLoggedIn::class)
                             ->action([PostController::class, 'view']),
                     )
                 ,
-                Route::methods(['GET'], '/posts[/{page: [1-9]\d*}]')
-                    ->name('post.index')
-                    ->action([PostController::class, 'index']),
             ];
         </code-block>
         <note>

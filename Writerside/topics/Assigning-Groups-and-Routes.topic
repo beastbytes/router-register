@@ -211,13 +211,12 @@
                         }
 
                         #[Post(App\Backend\PostRoute::delete)]
-                        public function create(): ResponseInterface
+                        public function delete(): ResponseInterface
                         {
                         }
 
-                        #[GetPost(App\Backend\PostRoute::update)]
-                        #[Id('id')]
-                        public function update(): ResponseInterface
+                        #[Post(App\Backend\PostRoute::hide)]
+                        public function hide(): ResponseInterface
                         {
                         }
 
@@ -306,30 +305,28 @@
                                     ->name('index')
                                     ->action([App\Backend\BackendController::class, 'index'])
                                 ,
+                                Group::create('/post')
+                                    ->namePrefix('post.')
+                                    ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.admin')->withRedirectRoute('backend.backend.index'))
+                                    ->routes(
+                                        Route::methods(['GET'], '')
+                                            ->name('index')
+                                            ->action([App\Backend\PostController::class, 'index'])
+                                        ,
+                                        Route::methods(['POST'], '/delete/{id: [1-9]\d*}')
+                                            ->name('delete')
+                                            ->action([App\Backend\PostController::class, 'delete'])
+                                        ,
+                                        Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
+                                            ->name('update')
+                                            ->action([App\Backend\PostController::class, 'update'])
+                                        ,
+                                        Route::methods(['GET'], '/{id: [1-9]\d*}')
+                                            ->name('view')
+                                            ->action([App\Backend\PostController::class, 'view'])
+                                        ,
+                                    )
                             )
-                        ,
-                        Group::create('/post')
-                            ->namePrefix('post.')
-                            ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.admin')->withRedirectRoute('backend.backend.index'))
-                            ->routes(
-                                Route::methods(['GET'], '')
-                                    ->name('index')
-                                    ->action([App\Backend\PostController::class, 'index'])
-                                ,
-                                Route::methods(['POST'], '/delete/{id: [1-9]\d*}')
-                                    ->name('delete')
-                                    ->action([App\Backend\PostController::class, 'delete'])
-                                ,
-                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                    ->name('update')
-                                    ->action([App\Backend\PostController::class, 'update'])
-                                ,
-                                Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                    ->name('view')
-                                    ->action([App\Backend\PostController::class, 'view'])
-                                ,
-                            )
-                        ,
                     ];
                 </code-block>
             </chapter>
@@ -344,30 +341,28 @@
                                     ->name('index')
                                     ->action([App\Frontend\FrontendController::class, 'index'])
                                 ,
+                                Route::methods(['GET'], '/posts')
+                                    ->name('post.index')
+                                    ->action([App\Frontend\PostController::class, 'index'])
+                                ,
+                                Group::create('/post')
+                                    ->namePrefix('post.')
+                                    ->routes(
+                                        Route::methods(['GET', 'POST'], '/create')
+                                            ->name('create')
+                                            ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.create')->withRedirectRoute('frontend.frontend.index'))
+                                            ->action([App\Frontend\PostController::class, 'create'])
+                                        ,
+                                        Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
+                                            ->name('update')
+                                            ->action([App\Frontend\PostController::class, 'update'])
+                                        ,
+                                        Route::methods(['GET'], '/{id: [1-9]\d*}')
+                                            ->name('view')
+                                            ->action([App\Frontend\PostController::class, 'view'])
+                                        ,
+                                    )
                             )
-                        ,
-                        Route::methods(['GET'], '/posts')
-                            ->name('post.index')
-                            ->action([App\Frontend\PostController::class, 'index'])
-                        ,
-                        Group::create('/post')
-                            ->namePrefix('post.')
-                            ->routes(
-                                Route::methods(['GET', 'POST'], '/create')
-                                    ->name('create')
-                                    ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.create')->withRedirectRoute('frontend.frontend.index'))
-                                    ->action([App\Frontend\PostController::class, 'create'])
-                                ,
-                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                    ->name('update')
-                                    ->action([App\Frontend\PostController::class, 'update'])
-                                ,
-                                Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                    ->name('view')
-                                    ->action([App\Frontend\PostController::class, 'view'])
-                                ,
-                            )
-                        ,
                     ];
                 </code-block>
             </chapter>

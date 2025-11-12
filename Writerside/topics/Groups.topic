@@ -5,13 +5,13 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Groups" id="Groups">
 
-    <p>This section describes How to define Groups.</p>
+    <p>This section describes how to define Groups.</p>
 
     <p>
         Routes can be grouped.
         For example, if an application has a <emphasis>frontend</emphasis>, <emphasis>backend</emphasis>,
         and an <emphasis>API</emphasis>, each can be a group. Grouping routes often simplifies route definitions as
-        it allows common items, e.g. middlewares, to be defined once at the group level.
+        it allows common attributes, e.g. middlewares, to be defined once at the group level.
     </p>
     <p>
         Router Register supports Groups using a
@@ -21,12 +21,12 @@
         (both are part of the <emphasis>RouterRegister</emphasis> package).
         There is a maximum of 1 (one) Group Enumeration in an application.
     </p>
-    <note>
-        <emphasis>RouterRegister</emphasis> automatically groups routes at the controller level.
-        Again, this allows common items such as middleware to be defined at the controller level,
-        simplifying route definition. This feature is internal and automatic.
-        The rest of this section deals with route Groups at the application level.
-    </note>
+    <p>The Group Enumeration works as follows:</p>
+    <deflist>
+        <def title="case">Each <emphasis>case</emphasis> defines a group</def>
+        <def title="case name">The <emphasis>case name</emphasis> defines the group name prefix</def>
+        <def title="case value">The <emphasis>case value</emphasis> defines the group route prefix</def>
+    </deflist>
 
     <chapter title="Group Enumeration">
         <p>Each <emphasis>case</emphasis> in the Enumeration defines a group.</p>
