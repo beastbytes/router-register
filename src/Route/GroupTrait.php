@@ -6,26 +6,14 @@ namespace BeastBytes\Router\Register\Route;
 
 trait GroupTrait
 {
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
+    /** @internal */
     public function getNamePrefix(): string
     {
-        return $this->name . (defined(self::class . '::SEPARATOR') ? self::class::SEPARATOR : '.');
+        return $this->name . '.';
     }
 
+    /** @internal */
     public function getRoutePrefix(): string
-    {
-        $commonPrefixes = $this->commonPrefixes();
-
-        return (sizeof($commonPrefixes) > 0 ? '/' . implode('/', $commonPrefixes) : '')
-            . (mb_strlen($this->value) > 0 ? '/' . $this->value : '')
-        ;
-    }
-
-    private function commonPrefixes(): array
     {
         $prefixes = [];
 
@@ -35,6 +23,8 @@ trait GroupTrait
             }
         }
 
-        return $prefixes;
+        return (sizeof($prefixes) > 0 ? '/' . implode('/', $prefixes) : '')
+            . (mb_strlen($this->value) > 0 ? $this->value : '')
+        ;
     }
 }

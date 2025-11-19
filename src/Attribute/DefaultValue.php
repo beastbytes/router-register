@@ -11,7 +11,7 @@ use Attribute;
  * The method attribute takes precedence over a class attribute.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class DefaultValue implements ClassAttributeInterface
+final class DefaultValue implements AttributeInterface
 {
     public function __construct(
         private readonly string $parameter,

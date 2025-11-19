@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Uuid extends Parameter
+final class Uuid extends Pattern
 {
     public function __construct(
         string $name,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Tests\resources\Controller;
 
+use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Method\Get;
 use BeastBytes\Router\Register\Attribute\Middleware;
@@ -14,8 +15,9 @@ use BeastBytes\Router\Register\Tests\resources\Middleware\GroupLevelMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\MethodLevelMiddleware;
 
 // Routes in this controller are in the default group and have some class attributes
-#[Host('www.example1.com')]
-#[Host('www.example2.com')]
+#[Group(prefix: false)]
+#[Host('https://www.example1.com')]
+#[Host('https://www.example2.com')]
 #[Middleware(ClassLevelMiddleware::class)]
 #[Middleware('fn (' . ClassLevelMiddleware::class . ' $middleware) => $middleware->withParameter("class")')]
 #[Middleware(GroupLevelMiddleware::class, Middleware::DISABLE)]
@@ -61,14 +63,14 @@ class ClassAttributesController
 
     #[Get(route: ClassAttributesRoute::method7)]
     #[Id(name: 'testId')]
-    #[Host('www.example.com')]
+    #[Host('https://www.example.com')]
     public function method7(): void
     {
     }
 
     #[Get(route: ClassAttributesRoute::method8)]
     #[Id(name: 'testId')]
-    #[Host('www.example.com')]
+    #[Host('https://www.example.com')]
     #[Middleware(MethodLevelMiddleware::class)]
     #[Middleware('fn (' . MethodLevelMiddleware::class . ' $middleware) => $middleware->withParameter("test")')]
     public function method8(): void

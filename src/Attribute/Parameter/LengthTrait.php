@@ -8,42 +8,52 @@ use RuntimeException;
 
 trait LengthTrait
 {
-    private function getLength(array|int|null $length, bool $nonZero = false): string
+    /**
+     * @param array|int|null $length
+     * @psalm-param array{min?: int, max?: int}|int|null $length
+     * @param bool $adjust
+     * @return string
+     */
+    private function getLength(array|int|null $length, bool $adjust = false): string
     {
-        if ($length === null) {
-            return $nonZero ? '*' : '+';
+        if (is_array($length)) {
+            $max = $min = null;
+
+            if (isset($length['max'])) {
+                if (!is_int($length['max'])) {
+                    throw new RuntimeException("\$length['max'] must be an integer");
+                } elseif($length['max'] < 0) {
+                    throw new RuntimeException("\$length['mav'] must be >= 0");
+                } else {
+                    $max = $length['max'] - (int) $adjust;
+                }
+            }
+
+            if (isset($length['min'])) {
+                if (!is_int($length['min'])) {
+                    throw new RuntimeException("\$length['min'] must be an integer");
+                } elseif($length['min'] < 0) {
+                    throw new RuntimeException("\$length['min'] must be >= 0");
+                } else {
+                    $min = $length['min'] - (int) $adjust;
+                }
+            }
+
+            if (isset($length['max']) && isset($length['min']) && $length['max'] <= $length['min']) {
+                throw new RuntimeException("\$length['max'] must be > \$length['min']");
+            }
+
+            return '{' . ($min ?? '') . ',' . ($max ?? '') . '}';
         }
 
         if (is_int($length)) {
-            if ($length > 0) {
-                if ($nonZero) {
-                    return '{' . ($length - 1) . '}';
-                }
-
-                return '{' . $length . '}';
+            if ($length <= 0) {
+                throw new RuntimeException('Integer values for $length must be > 0');
             }
 
-            throw new RuntimeException('Integer values for $length must be > 0');
+            return '{' . ($length - (int) $adjust) . '}';
         }
 
-        [$min, $max] = $length;
-
-        if ((is_int($min) && $min < 0) || (is_int($min) && $max < 0)) {
-            throw new RuntimeException('Integer values for `min` and `max` must be >= 0');
-        }
-        if (is_int($min) && is_int($max) && $max <= $min) {
-            throw new RuntimeException('`max` must be > `min`');
-        }
-
-        if ($nonZero) {
-            if (is_int($min) && $min > 0) {
-                --$min;
-            }
-            if (is_int($max) && $max > 0) {
-                --$max;
-            }
-        }
-
-        return '{' . ($min ?? '') . ',' . ($max ?? '') . '}';
+        return $adjust ? '*' : '+';
     }
 }

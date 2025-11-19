@@ -10,7 +10,7 @@ use Attribute;
  * Define a host for a group
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class GroupHost implements ClassAttributeInterface
+final class GroupHost implements AttributeInterface
 {
     use HostTrait;
 }

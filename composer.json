@@ -1,11 +1,10 @@
 {
   "name": "beastbytes/router-register",
-  "description": "Console command to create and register routes from attributes",
+  "description": "Define routes using attributes",
   "keywords": [
     "attributes",
     "router",
-    "routes",
-    "yii3"
+    "routes"
   ],
   "type": "project",
   "minimum-stability": "dev",
@@ -19,19 +18,12 @@
   ],
   "require": {
     "php": "^8.2",
-    "ext-mbstring": "*",
-    "symfony/console": "^6.0",
-    "yiisoft/dummy-provider": "^1.0",
-    "yiisoft/files": "^2.0",
-    "yiisoft/router": "^4.0",
-    "yiisoft/yii-console": "^2.0"
+    "ext-mbstring": "*"
   },
   "require-dev": {
     "dg/bypass-finals": "^1.0",
     "phpunit/phpunit": "^10.0",
-    "rector/rector": "^1.0",
-    "vimeo/psalm": "~5.26",
-    "yiisoft/security": "^1.0"
+    "vimeo/psalm": "^6.0"
   },
   "autoload": {
     "psr-4": {
@@ -42,20 +34,5 @@
     "psr-4": {
       "BeastBytes\\Router\\Register\\Tests\\": "tests"
     }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
-    },
-    "config-plugin-options": {
-      "source-directory": "config"
-    },
-    "config-plugin": {
-      "di-console": "di-console.php",
-      "params": "params.php"
-    }
-  },
-  "config": {
-    "sort-packages": true
   }
 }

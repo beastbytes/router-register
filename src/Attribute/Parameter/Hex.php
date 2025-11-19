@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Hex extends Parameter
+final class Hex extends Pattern
 {
     use LengthTrait;
 
@@ -24,10 +24,10 @@ final class Hex extends Parameter
             AlphaCase::upper => 'A-F',
         };
 
-        $pattern = '[\d' . $alpha . ']';
+        $pattern = "[\d$alpha]";
 
         if ($nonZero) {
-            $pattern = '[1-9' . $alpha . ']' . $pattern;
+            $pattern = "[1-9$alpha]" . $pattern;
         }
 
         parent::__construct(

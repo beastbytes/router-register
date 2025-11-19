@@ -7,16 +7,16 @@ use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\GroupCors;
 use BeastBytes\Router\Register\Attribute\GroupHost;
 use BeastBytes\Router\Register\Attribute\GroupMiddleware;
-use BeastBytes\Router\Register\Attribute\GroupNamePrefix;
 use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Middleware;
+use BeastBytes\Router\Register\Route\GroupInterface;
 use BeastBytes\Router\Register\Tests\resources\Middleware\MethodLevelMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Route\TestGroup;
+use BeastBytes\Router\Register\Tests\resources\Enum\TestGroup;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Security\Random;
+use Random\RandomException;
 
 class AttributesTest extends TestCase
 {
@@ -29,21 +29,33 @@ class AttributesTest extends TestCase
         self::assertSame((string) $value, $defaultValue->getValue());
     }
     #[Test]
-    public function group(): void
+    #[DataProvider('groupProvider')]
+    public function group(?GroupInterface $group, string $name, ?string $prefix): void
     {
-        $group = TestGroup::group1;
-        $attribute = new Group($group);
+        $attribute = new Group(group: $group, name: $name, prefix: $prefix);
 
-        self::assertSame($group->getName(), $attribute->getName());
-        self::assertSame($group->getNamePrefix(), $attribute->getNamePrefix());
+        if ($group instanceof GroupInterface) {
+            self::assertSame($group->name, $attribute->getGroupName());
+        } else {
+            self::assertNull($attribute->getGroupName());
+        }
+        self::assertSame($name, $attribute->getName());
+        if (is_string($prefix)) {
+            self::assertSame($prefix, $attribute->getPrefix());
+        } elseif (is_bool($prefix)) {
+                self::assertFalse($attribute->getPrefix());
+            } else {
+            self::assertNull($attribute->getPrefix());
+        }
+
     }
 
     #[Test]
     #[DataProvider('middlewareProvider')]
-    public function groupCora(array|string $middleware, bool $disable): void
+    public function groupCors(array|string $middleware, bool $disable, string $expected): void
     {
         $attribute = new GroupCors($middleware);
-        self::assertSame($middleware, $attribute->getMiddleware());
+        self::assertSame($expected, $attribute->getMiddleware());
     }
 
     #[Test]
@@ -56,11 +68,11 @@ class AttributesTest extends TestCase
 
     #[Test]
     #[DataProvider('middlewareProvider')]
-    public function groupMiddleware(array|string $middleware, bool $disable): void
+    public function groupMiddleware(array|string $middleware, bool $disable, string $expected): void
     {
         $attribute = new GroupMiddleware($middleware, $disable);;
-        self::assertSame($middleware, $attribute->getMiddleware());
-        self::assertSame($disable, $attribute->disable());
+        self::assertSame($expected, $attribute->getMiddleware());
+        self::assertSame($disable, $attribute->isDisable());
     }
 
     #[Test]
@@ -73,21 +85,21 @@ class AttributesTest extends TestCase
 
     #[Test]
     #[DataProvider('middlewareProvider')]
-    public function middleware(array|string $middleware, bool $disable): void
+    public function middleware(array|string $middleware, bool $disable, string $expected): void
     {
         $attribute = new Middleware($middleware, $disable);;
-        self::assertSame($middleware, $attribute->getMiddleware());
-        self::assertSame($disable, $attribute->disable());
+        self::assertSame($expected, $attribute->getMiddleware());
+        self::assertSame($disable, $attribute->isDisable());
     }
 
     public static function defaultValueProvider(): Generator
     {
         for ($i = 0; $i < 10; $i++) {
-            $parameter = Random::string(random_int(5, 10));
+            $parameter = self::randomString(random_int(5, 10));
 
             $x = random_int(1, 100);
             $value = $x % 2
-                ? Random::string(random_int(5, 10))
+                ? self::randomString(random_int(5, 10))
                 : random_int(1, 100)
             ;
 
@@ -95,16 +107,39 @@ class AttributesTest extends TestCase
         }
     }
 
+    public static function groupProvider(): Generator
+    {
+        yield [TestGroup::group1, 'group-name', 'group-prefix'];
+        yield [null, 'group-name', 'group-prefix'];
+        yield [null, 'group-name', null];
+        yield [TestGroup::group1, 'group-name', null];
+    }
+
     public static function middlewareProvider(): Generator
     {
         foreach ([
-            MethodLevelMiddleware::class,
-            'fn (' . MethodLevelMiddleware::class . ' $middleware) => $middleware->withParameter("test")',
-            ['class' => MethodLevelMiddleware::class, 'withParameter()' => ["test"]],
-        ] as $middleware) {
+            "'" . MethodLevelMiddleware::class . "'" => MethodLevelMiddleware::class,
+            'fn (' . MethodLevelMiddleware::class . ' $middleware) => $middleware->withParameter("test")'
+                => 'fn (' . MethodLevelMiddleware::class . ' $middleware) => $middleware->withParameter("test")',
+            "['class' => '" . MethodLevelMiddleware::class . "', 'withParameter()' => ['test']]"
+                => ['class' => MethodLevelMiddleware::class, 'withParameter()' => ["test"]],
+        ] as $expected => $middleware) {
             foreach ([true, false] as $disable) {
-                yield [$middleware, $disable];
+                yield [$middleware, $disable, $expected];
             }
         }
+    }
+
+    private static function randomString(int $length): string
+    {
+        return substr(
+            strtr(
+                base64_encode(random_bytes((int) ceil($length * 0.75))),
+                '+/',
+                '-_'
+            ),
+            0,
+            $length
+        );
     }
 }

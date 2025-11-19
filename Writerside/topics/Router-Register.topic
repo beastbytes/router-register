@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Router Register" id="Router-Register">
+
+    <p>
+        <emphasis>RouterRegister</emphasis> allows routes to be defined in application source
+        files using PHP <a href="https://www.php.net/manual/en/language.attributes.php">Attributes</a> amd
+        <a href="https://www.php.net/manual/en/language.enumerations.php">Enumerations</a>,
+        and generates router configuration files.
+    </p>
+    <p>There are a number of benefits of defining and registering routes using RouterRegister:</p>
+    <list>
+        <li>
+            Self-documenting code: it's clear that a method corresponds to a given route and what parameters, hosts,
+            and middleware apply to the route.
+        </li>
+        <li>
+            Single point of truth: each route, its URI and name is defined in an enumeration, making maintenance
+            simpler and providing IDE code completion.
+        </li>
+        <li>
+            Simplifies development and eliminates typos: IDE code completion for routes works when generating URLs
+            as well.
+        </li>
+    </list>
+    <p>
+        <emphasis>RouterRegister</emphasis> parses generates an internal representation of the defined groups and routes
+        from the Attributes and Enumerations. A framework specific Writer object then creates the router configuration
+        files.
+    </p>
+
+    <chapter title="Installation">
+        <emphasis>RouterRegister</emphasis> is installed as a dependency
+        of a framework specific <emphasis>RouterRegister</emphasis> Writer package.
+    </chapter>
+
+    <chapter title="Usage" id="usage">
+        <p>Using <emphasis>RouterRegister</emphasis> involves:</p>
+        <procedure>
+            <step><a href="Defining-Middleware-Attributes.topic">Creating Middleware Attributes</a> (if required)</step>
+            <step><a href="Groups.topic">Defining groups</a> (if required)</step>
+            <step><a href="Routes.topic">Defining routes</a></step>
+            <step>
+                <a href="Assigning-Groups-and-Routes.topic">
+                    Assigning groups and routes in source code
+                </a>
+            </step>
+            <step>
+                Running <emphasis>RouterRegister to generate router configuration files</emphasis>.
+                This can be from a console command or on an HTTP request;
+                if using the latter, the configuration files should be cached in a production environment.
+            </step>
+        </procedure>
+        <tip>
+            <p>
+                If using a console command, file watchers can be used to automatically run the command
+                and generate the groups and routes during application develop.
+            </p>
+        </tip>
+        <tip>
+            <emphasis>RouterRegister</emphasis> Route Enumerations generate route names that can be used with
+            framework URL generators.
+        </tip>
+    </chapter>
+</topic>

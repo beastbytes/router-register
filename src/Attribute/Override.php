@@ -7,6 +7,6 @@ namespace BeastBytes\Router\Register\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-final class Override implements RouteAttributeInterface
+final class Override implements RouteInterface
 {
 }

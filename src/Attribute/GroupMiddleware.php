@@ -10,7 +10,14 @@ use Attribute;
  * Define middleware for a group.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-final class GroupMiddleware implements ClassAttributeInterface
+final class GroupMiddleware
 {
     use MiddlewareTrait;
+
+    public function __construct(
+        private readonly array|string $middleware,
+        private readonly bool $disable = !self::DISABLE,
+    )
+    {
+    }
 }

@@ -11,7 +11,14 @@ use Attribute;
  * To define a parent group middleware that should not be invoked, set the `disable` parameter to `true`.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Middleware implements ClassAttributeInterface, MiddlewareAttributeInterface
+final class Middleware
 {
    use MiddlewareTrait;
+
+    public function __construct(
+        private readonly array|string $middleware,
+        private readonly bool $disable = !self::DISABLE,
+    )
+    {
+    }
 }

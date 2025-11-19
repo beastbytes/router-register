@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Route;
 
-interface RouteInterface
+use BackedEnum;
+
+interface RouteInterface extends BackedEnum
 {
-    public function getRouteName(): string;
 }

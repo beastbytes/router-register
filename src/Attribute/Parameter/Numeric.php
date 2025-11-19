@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Numeric extends Parameter
+final class Numeric extends Pattern
 {
     use LengthTrait;
 

@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register\Attribute\Parameter;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Alpha extends Parameter
+final class Alpha extends Pattern
 {
     use LengthTrait;
 
@@ -25,7 +25,7 @@ final class Alpha extends Parameter
 
         parent::__construct(
             name: $name,
-            pattern: '[' . $alpha . ']' . $this->getLength($length)
+            pattern: "[$alpha]" . $this->getLength($length)
         );
     }
 }

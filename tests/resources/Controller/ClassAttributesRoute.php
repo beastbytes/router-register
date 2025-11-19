@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace BeastBytes\Router\Register\Tests\resources\Controller;
 
 use BeastBytes\Router\Register\Route\RouteInterface;
-use BeastBytes\Router\Register\Route\RouteTrait;
 
 enum ClassAttributesRoute: string implements RouteInterface
 {
-    use RouteTrait;
-
-    public const PREFIX = 'class-attributes';
-
     case method1 = '';
     case method2 = '/method2';
     case method3 = '/method3/{testId}';
