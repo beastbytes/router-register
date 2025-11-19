@@ -13,12 +13,12 @@
 
     <chapter title="Route Method(s)">
         <p>
-            Routes are assigned to controller methods.
+            Routes are assigned to controller actions.
             The <tooltip term="HTTP">HTTP</tooltip> method(s) for a route is defined using
             one of the <a href="HTTP-Method-Attributes.topic"/>
             or the <a href="HTTP-Method-Attributes.topic#route"/> attribute;
             these attributes take an instance of <code>RouteInterface</code>
-            (a Route Enumeration case) as a parameter; this allocates the route to the action.
+            (a Route Enumeration case) as a parameter which assigns the route to the action.
         </p>
     </chapter>
 
@@ -28,14 +28,31 @@
             <a href="Parameter-Attributes.topic"/>:
         </p>
         <deflist type="narrow">
-            <def title="Alpha">An alphabetic string</def>
-            <def title="AlphaNumeric">An alphanumeric string</def>
-            <def title="Hex">A hexadecimal number</def>
-            <def title="Id">A number greater than 0</def>
-            <def title="In">A list of allowed values</def>
-            <def title="Numeric">A decimal number</def>
-            <def title="Pattern">A regex to match; use if none of the other parameter attributes are suitable</def>
-            <def title="Uuid">A Universally Unique Identifier</def>
+            <def title="Alpha">
+                <a href="Parameter-Attributes.topic#alpha"/> defines an alphabetic string
+            </def>
+            <def title="Alphanumeric">
+                <a href="Parameter-Attributes.topic#alphanumeric"/> defines an alphanumeric string
+            </def>
+            <def title="Hex">
+                <a href="Parameter-Attributes.topic#hex"/> defines a hexadecimal number
+            </def>
+            <def title="Id">
+                <a href="Parameter-Attributes.topic#id"/> defines a number greater than 0
+            </def>
+            <def title="In">
+                <a href="Parameter-Attributes.topic#in"/> defines a list of allowed values
+            </def>
+            <def title="Numeric">
+                <a href="Parameter-Attributes.topic#numeric"/> defines a decimal number
+            </def>
+            <def title="Pattern">
+                <a href="Parameter-Attributes.topic#pattern"/>
+                defines a regex to match; use if none of the other parameter attributes are suitable
+            </def>
+            <def title="Uuid">
+                <a href="Parameter-Attributes.topic#uuid"/> defines a Universally Unique Identifier
+            </def>
         </deflist>
     </chapter>
 
@@ -48,9 +65,10 @@
             <def title="Fallback">
                 A fallback route that is attempted if no other routes in a group match.
                 Only one fallback route is permitted in a group.
-                <warning>
-                    Is it HOISTED?
-                </warning>
+                <note>
+                    A fallback route is hoisted out of its controller group,
+                    meaning that any controller level attributes that apply to it must be specified at the method level.
+                </note>
             </def>
             <def title="Host">Defines the host(s) the route applies to.</def>
             <def title="Middleware">
@@ -111,264 +129,5 @@
             The other Group attributes need only specified in one Controller within the Application Group;
             typically the Controller that provides the Group's <emphasis>home page</emphasis>.
         </p>
-    </chapter>
-
-    <chapter title="Example">
-        <p>
-            The following example illustrates using <emphasis>RouterRegister</emphasis>
-            to define and assign Groups and Routes.
-        </p>
-        <note>
-            The example concentrates on how to define and assign Groups and Routes,
-            and omits things like <code>namespace</code> and <code>use</code> statements,
-            constructors, method implementations, etc.
-        </note>
-        <chapter title="Group and Route Definition">
-            <chapter title="Group Definition">
-                <code-block lang="PHP">
-                    enum RouteGroup: string implements GroupInterface
-                    {
-                        use GroupTrait;
-
-                        case backend = 'admin';
-                        case frontend = '';
-                    }
-                </code-block>
-            </chapter>
-
-            <chapter title="Backend Routes Definition">
-                <code-block lang="PHP">
-                    enum BackendRoute: string implements RouteInterface
-                    {
-                        use RouteTrait;
-
-                        case index = '';
-                    }
-                </code-block>
-
-                <code-block lang="PHP">
-                    enum PostRoute: string implements RouteInterface
-                    {
-                        use RouteTrait;
-
-                        case index = '';
-                        case hide = '/update/{id}';
-                        case view = '/{id}';
-                    }
-                </code-block>
-            </chapter>
-
-            <chapter title="Frontend Routes Definition">
-                <code-block lang="PHP">
-                    enum FrontendRoute: string implements RouteInterface
-                    {
-                        use RouteTrait;
-
-                        case index = '';
-                    }
-                </code-block>
-
-                <code-block lang="PHP">
-                    enum PostRoute: string implements RouteInterface
-                    {
-                        use RouteTrait;
-
-                        case index = '//posts';
-                        case create = '/create';
-                        case update = '/update/{id}';
-                        case view = '/{id}';
-                    }
-                </code-block>
-            </chapter>
-        </chapter>
-
-        <chapter title="Controllers">
-            <chapter title="Backend Controllers">
-                <code-block lang="PHP">
-                    #[Group(group:App\RouteGroup::backend, routePrefix:false)]
-                    #[GroupMiddleware(App\Middleware\IsAdmin::class)]
-                    final class BackendController
-                    {
-                        #[Get(App\Backend\BackendRoute::index)]
-                        public function index(): ResponseInterface
-                        {
-                        }
-                    }
-                </code-block>
-
-                <code-block lang="PHP">
-                    #[Group(App\RouteGroup::backend)]
-                    #[AccessCheck(permission: 'post.admin',  redirectRoute: App\Backend\BackendRoute::index)]
-                    final class PostController
-                    {
-                        #[Get(App\Backend\PostRoute::index)]
-                        public function index(): ResponseInterface
-                        {
-                        }
-
-                        #[Post(App\Backend\PostRoute::hide)]
-                        public function hide(): ResponseInterface
-                        {
-                        }
-
-                        #[Get(App\Backend\PostRoute::view)]
-                        #[Id('id')]
-                        public function view(): ResponseInterface
-                        {
-                        }
-                    }
-                </code-block>
-            </chapter>
-
-            <chapter title="Frontend Controllers">
-                <code-block lang="PHP">
-                    #[Group(group: App\RouteGroup::frontend, routePrefix:false)]
-                    final class FrontendController
-                    {
-                        #[Get(App\Frontend\FrontendRoute::index)]
-                        public function index(): ResponseInterface
-                        {
-                        }
-                    }
-                </code-block>
-
-                <code-block lang="PHP">
-                    #[Group(App\RouteGroup::frontend)]
-                    final class PostController
-                    {
-                        #[Get(App\Frontend\PostRoute::index)]
-                        public function index(): ResponseInterface
-                        {
-                        }
-
-                        #[GetPost(App\Frontend\PostRoute::create)]
-                        #[AccessCheck(permission: 'post.create',  redirectRoute: App\Frontend\FrontendRoute::index)]
-                        public function create(): ResponseInterface
-                        {
-                        }
-
-                        #[GetPost(App\Frontend\PostRoute::update)]
-                        #[Id('id')]
-                        #[AccessCheck(permission: 'post.update',  redirectRoute: App\Frontend\FrontendRoute::index)]
-                        public function update(): ResponseInterface
-                        {
-                        }
-
-                        #[Get(App\Frontend\PostRoute::view)]
-                        #[Id('id')]
-                        public function view(): ResponseInterface
-                        {
-                        }
-                    }
-                </code-block>
-            </chapter>
-        </chapter>
-
-        <chapter title="RouterRegister Output">
-            <p>
-                These are the routes configuration files that <emphasis>RouterRegister</emphasis>
-                would generate for the example. See <a href="Yii-Router-Configuration.topic"/>
-                for details on how to use them in the router configuration.
-            </p>
-            <chapter title="groups.php">
-                <code-block lang="PHP">
-                    return [
-                        Group::create('')
-                            ->namePrefix('frontend.')
-                            ->routes(...(require __DIR__ . '/routes/frontend.php'))
-                        ,
-                        Group::create('/admin')
-                            ->namePrefix('backend.')
-                            ->middleware(App\Middleware\IsAdmin::class)
-                            ->routes(...(require __DIR__ . '/routes/backend.php'))
-                        ,
-                    ];
-                </code-block>
-            </chapter>
-
-            <chapter title="../routes/backend.php">
-                <code-block lang="PHP">
-                    return [
-                        Group::create()
-                            ->namePrefix('backend.')
-                            ->routes(
-                                Route::methods(['GET'], '')
-                                    ->name('index')
-                                    ->action([App\Backend\BackendController::class, 'index'])
-                                ,
-                                Route::methods(['GET'], '')
-                                    ->name('login')
-                                    ->action([App\Backend\BackendController::class, 'login'])
-                                ,
-                                Route::methods(['GET'], '')
-                                    ->name('logout')
-                                    ->action([App\Backend\BackendController::class, 'logout'])
-                                ,
-                            )
-                        ,
-                        Group::create('/post')
-                            ->namePrefix('post.')
-                            ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.admin')->withRedirectRoute('backend.backend.index'))
-                            ->routes(
-                                Route::methods(['GET'], '')
-                                    ->name('index')
-                                    ->action([App\Backend\PostController::class, 'index'])
-                                ,
-                                Route::methods(['POST'], '/delete/{id: [1-9]\d*}')
-                                    ->name('delete')
-                                    ->action([App\Backend\PostController::class, 'delete'])
-                                ,
-                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                    ->name('update')
-                                    ->action([App\Backend\PostController::class, 'update'])
-                                ,
-                                Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                    ->name('view')
-                                    ->action([App\Backend\PostController::class, 'view'])
-                                ,
-                            )
-                        ,
-                    ];
-                </code-block>
-            </chapter>
-
-            <chapter title="../routes/frontend.php">
-                <code-block lang="PHP">
-                    return [
-                        Group::create('')
-                            ->namePrefix('frontend.')
-                            ->routes(
-                                Route::methods(['GET'], '')
-                                    ->name('index')
-                                    ->action([App\Frontend\FrontendController::class, 'index'])
-                                ,
-                            )
-                        ,
-                        Route::methods(['GET'], '/posts')
-                            ->name('post.index')
-                            ->action([App\Frontend\PostController::class, 'index'])
-                        ,
-                        Group::create('/post')
-                            ->namePrefix('post.')
-                            ->routes(
-                                Route::methods(['GET', 'POST'], '/create')
-                                    ->name('create')
-                                    ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.create')->withRedirectRoute('frontend.frontend.index'))
-                                    ->action([App\Frontend\PostController::class, 'create'])
-                                ,
-                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                    ->name('update')
-                                    ->action([App\Frontend\PostController::class, 'update'])
-                                ,
-                                Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                    ->name('view')
-                                    ->action([App\Frontend\PostController::class, 'view'])
-                                ,
-                            )
-                        ,
-                    ];
-                </code-block>
-            </chapter>
-        </chapter>
     </chapter>
 </topic>
