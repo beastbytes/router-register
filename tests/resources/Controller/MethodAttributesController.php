@@ -77,23 +77,23 @@ class MethodAttributesController
 
     #[Get(route: MethodAttributesRoute::method9)]
     #[Id(name: 'testId')]
-    #[Host('www.example.com')]
+    #[Host('https://www.example.com')]
     public function method9(): void
     {
     }
 
     #[Get(route: MethodAttributesRoute::method10)]
     #[Id(name: 'testId')]
-    #[Host('www.example1.com')]
-    #[Host('www.example2.com')]
+    #[Host('https://www.example1.com')]
+    #[Host('https://www.example2.com')]
     public function method10(): void
     {
     }
 
     #[Get(route: MethodAttributesRoute::method11)]
     #[Id(name: 'testId')]
-    #[Host('www.example1.com')]
-    #[Host('www.example2.com')]
+    #[Host('https://www.example1.com')]
+    #[Host('https://www.example2.com')]
     #[Middleware(MethodLevelMiddleware::class)]
     #[Middleware('fn (' . MethodLevelMiddleware::class . ' $middleware) => $middleware->withParameter("test")')]
     #[Middleware(GroupLevelMiddleware::class, Middleware::DISABLE)]

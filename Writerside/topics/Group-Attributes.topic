@@ -12,26 +12,34 @@
             <include element-id="use-on-class" from="attribute.topic"/>
             <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
-        <p>Defines the group a controller belongs to.</p>
+        <p>Defines group parameters for a controller.</p>
         <table>
             <include element-id="table-header" from="attribute.topic"/>
             <tr>
                 <td>group</td>
-                <td>GroupInterface</td>
+                <td>?GroupInterface</td>
                 <td>
-                    <p>The group</p>
-                    <p>
-                        Defines the prefixes applied to routes and names in the group;
-                        both can be overridden by the attribute parameters
-                    </p>
+                    <p>The application level group a controller belongs to</p>
                 </td>
-                <include element-id="required-parameter" from="attribute.topic"/>
+                <td>
+                    <p>null</p>
+                    <p>Required if an Application Group Enumeration is defined</p>
+                </td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>?string</td>
+                <td>The name prefix for all routes in the controller group</td>
+                <td>null (based on the controller name)</td>
             </tr>
             <tr>
                 <td>prefix</td>
-                <td>string</td>
-                <td>The prefix applied to all routes in the group</td>
-                <td>null</td>
+                <td>bool|string|null</td>
+                <td>
+                    The route prefix for routes in the controller
+                    or do not apply a prefix (<code>bool false</code>)
+                </td>
+                <td>null (based on the controller name)</td>
             </tr>
         </table>
     </chapter>

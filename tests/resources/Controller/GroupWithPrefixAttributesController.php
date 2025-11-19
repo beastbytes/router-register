@@ -15,27 +15,27 @@ use BeastBytes\Router\Register\Attribute\Parameter\Id;
 use BeastBytes\Router\Register\Tests\resources\Middleware\ClassLevelMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\CorsMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\GroupLevelMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Trait\TestGroupWithPrefix;
+use BeastBytes\Router\Register\Tests\resources\Enum\TestGroupWithPrefix;
 
 #[Group(TestGroupWithPrefix::group2)]
-#[GroupHost('www.example1.com')]
+#[GroupHost('https://www.example1.com')]
 #[GroupCors(CorsMiddleware::class)]
 #[GroupMiddleware(GroupLevelMiddleware::class)]
 #[Middleware(ClassLevelMiddleware::class)]
-class GroupWithPrefixAttributeController
+class GroupWithPrefixAttributesController
 {
-    #[Get(route: GroupAttributeRoute::method1)]
+    #[Get(route: GroupAttributesRoute::method1)]
     public function method1(): void
     {
     }
 
-    #[GetPost(GroupAttributeRoute::method2)]
+    #[GetPost(GroupAttributesRoute::method2)]
     #[Id(name: 'id')]
     public function method2(): void
     {
     }
 
-    #[Get(route: GroupAttributeRoute::method3)]
+    #[Get(route: GroupAttributesRoute::method3)]
     #[Id(name: 'id')]
     #[Middleware(GroupLevelMiddleware::class, Middleware::DISABLE)]
     public function method3(): void

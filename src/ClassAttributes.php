@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Register\Attribute\DefaultValue;
+use BeastBytes\Router\Register\Attribute\AttributeInterface;
 use BeastBytes\Router\Register\Attribute\Host;
-use BeastBytes\Router\Register\Attribute\MiddlewareAttributeInterface;
-use BeastBytes\Router\Register\Attribute\RouteAttributeInterface;
+use BeastBytes\Router\Register\Attribute\Middleware;
 use ReflectionAttribute;
 use ReflectionClass;
 
@@ -17,12 +16,6 @@ final class ClassAttributes
     {
     }
 
-    /** @return list<DefaultValue> */
-    public function getDefaults(): array
-    {
-        return $this->getAttributes(DefaultValue::class);
-    }
-
     /** @return list<Host> */
     public function getHosts(): array
     {
@@ -30,21 +23,21 @@ final class ClassAttributes
     }
 
     /**
-     * @return list<MiddlewareAttributeInterface>
+     * @return list<Middleware>
      */
     public function getMiddlewares(): array
     {
-        return $this->getAttributes(MiddlewareAttributeInterface::class);
+        return $this->getAttributes(Middleware::class);
     }
 
-    private function getAttribute(string $attributeClass): ?RouteAttributeInterface
+    private function getAttribute(string $attributeClass): null|AttributeInterface
     {
         $attributes = $this->getAttributes($attributeClass);
 
         return count($attributes) === 0 ? null : $attributes[0];
     }
 
-    /** @return list<RouteAttributeInterface> */
+    /** @return list<AttributeInterface> */
     private function getAttributes(string $attributeClass): array
     {
         $attributes = $this

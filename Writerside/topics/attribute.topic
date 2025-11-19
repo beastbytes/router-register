@@ -90,6 +90,13 @@
             <td>Default</td>
         </tr>
     </snippet>
+    <snippet id="method-table-header">
+        <tr>
+            <td>Method</td>
+            <td>Return Type</td>
+            <td>Description</td>
+        </tr>
+    </snippet>
     <snippet id="use-on-action">
         <def title="Use On">Action</def>
     </snippet>

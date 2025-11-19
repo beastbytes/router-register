@@ -7,7 +7,7 @@
 
     <p>
         Middleware to be applied to a route can be defined using Router Register's
-        <a href="Other-Route-Attributes.topic#middleware">Middleware Attribute</a>
+        <a href="Other-Attributes.topic#middleware">Middleware Attribute</a>
         or by defining middleware attributes in the application.
     </p>
     <p>
@@ -73,7 +73,7 @@
         <chapter title="Using the Middleware Attribute">
             <p>
                 Using the AccessChecker middleware with Router Register's
-                <a href="Other-Route-Attributes.topic#middleware">Middleware attribute</a>
+                <a href="Other-Attributes.topic#middleware">Middleware attribute</a>
                 will look like:
             </p>
             <code-block lang="PHP">

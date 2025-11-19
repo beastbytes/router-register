@@ -15,20 +15,40 @@ trait MiddlewareTrait
 {
     public const DISABLE = true;
 
-    public function __construct(
-        private readonly array|string $middleware,
-        private readonly bool $disable = !self::DISABLE,
-    )
+    public function getMiddleware(): string
     {
+        if (is_array($this->middleware)) {
+            return "{$this->array2String($this->middleware)}";
+        } elseif (str_starts_with($this->middleware, 'fn') || str_starts_with($this->middleware, 'function')) {
+            return "$this->middleware";
+        } else {
+           return "'$this->middleware'";
+        }
     }
 
-    public function getMiddleware(): array|string
-    {
-        return $this->middleware;
-    }
-
-    public function disable(): bool
+    public function isDisable(): bool
     {
         return $this->disable;
+    }
+
+    private function array2String(array $ary): string
+    {
+        $elements = [];
+
+        foreach ($ary as $k => $v) {
+            $element = is_string($k) ? "'$k' => " : '';
+
+            if (is_array($v)) {
+                $element .= $this->array2String($v);
+            } elseif (is_string($v)) {
+                $element .= "'$v'";
+            } else {
+                $element .= "$v";
+            }
+
+            $elements[] = $element;
+        }
+
+        return  sprintf('[%s]', implode(', ', $elements));
     }
 }

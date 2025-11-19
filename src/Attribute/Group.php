@@ -6,26 +6,43 @@ namespace BeastBytes\Router\Register\Attribute;
 
 use Attribute;
 use BeastBytes\Router\Register\Route\GroupInterface;
+use RuntimeException;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class Group implements RouteAttributeInterface
+final class Group implements RouteInterface
 {
-    public function __construct(private readonly GroupInterface $group)
+    private bool|null|string $prefix;
+
+    public function __construct(
+        private readonly ?GroupInterface $group = null,
+        private readonly ?string $name = null,
+        bool|null|string $prefix = null,
+    )
     {
+        if (is_bool($prefix) && $prefix === true) {
+            throw new RuntimeException('`$prefix` must be `false`, `null`, or a string');
+        }
+
+        $this->prefix = $prefix;
     }
 
-    public function getName(): string
+    public function getGroupName(): ?string
     {
-        return $this->group->getName();
+        return $this->group instanceof GroupInterface ? $this->group->name : null;
     }
 
-    public function getRoutePrefix(): ?string
+    public function getGroupPrefix(): ?string
     {
-        return $this->group->getRoutePrefix();
+        return $this->group instanceof GroupInterface ? $this->group->getRoutePrefix() : null;
     }
 
-    public function getNamePrefix(): ?string
+    public function getName(): ?string
     {
-        return $this->group->getNamePrefix();
+        return $this->name;
+    }
+
+    public function getPrefix(): bool|null|string
+    {
+        return $this->prefix;
     }
 }

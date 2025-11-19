@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Route;
 
-interface GroupInterface
+use \BackedEnum;
+
+interface GroupInterface extends BackedEnum
 {
-    public function getName(): string;
     public function getNamePrefix(): string;
     public function getRoutePrefix(): string;
 }

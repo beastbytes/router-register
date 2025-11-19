@@ -10,14 +10,11 @@ use Attribute;
  * Define CORS middleware for a group.
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-final class GroupCors implements ClassAttributeInterface
+final class GroupCors
 {
+    use MiddlewareTrait;
+
     public function __construct(private readonly array|string $middleware)
     {
-    }
-
-    public function getMiddleware(): array|string
-    {
-        return $this->middleware;
     }
 }

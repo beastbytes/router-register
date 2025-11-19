@@ -6,7 +6,8 @@
        title="Assigning Groups and Routes" id="Assigning-Groups-and-Routes">
 
     <p>
-        Routes and Groups are assigned in controllers using RouterRegister <a href="Attributes.topic">Attributes</a>
+        Routes and Groups are assigned in controllers using <emphasis>RouterRegister</emphasis>'s
+        <a href="Attributes.topic">Attributes</a>
         and application defined <a href="Groups-and-Routes.topic">Group and Route Enumerations</a>.
     </p>
 
@@ -47,6 +48,9 @@
             <def title="Fallback">
                 A fallback route that is attempted if no other routes in a group match.
                 Only one fallback route is permitted in a group.
+                <warning>
+                    Is it HOISTED?
+                </warning>
             </def>
             <def title="Host">Defines the host(s) the route applies to.</def>
             <def title="Middleware">
@@ -92,19 +96,20 @@
     <chapter title="Groups" id="groups">
         <p>Group level attributes are:</p>
         <deflist>
-            <def title="Group">Assigns the Controller to the Group</def>
+            <def title="Group">
+                <p>
+                    Defines the application group a controller belongs to
+                    and the controller level name and route prefixes.
+                </p>
+            </def>
             <def title="GroupCors">Defines <tooltip term="CORS">CORS</tooltip> middleware</def>
             <def title="GroupHost">Defines the host(s) that can access routes in the Group</def>
             <def title="GroupMiddleware">Defines middleware applied to the Group</def>
         </deflist>
         <p>
-            To explicitly assign a Controller to a Group they must use the Group attribute.
-            The Group defines the <emphasis>name prefix</emphasis> using the <emphasis>case name</emphasis>,
-            and the <emphasis>route prefix</emphasis> using the <emphasis>case value</emphasis>.
-        </p>
-        <p>
-            Other Group attributes need only specified in one Controller within the Group;
-            typically this will be the Controller that provides the Group's <emphasis>home page</emphasis>.
+            The Group attribute is used in all controllers.
+            The other Group attributes need only specified in one Controller within the Application Group;
+            typically the Controller that provides the Group's <emphasis>home page</emphasis>.
         </p>
     </chapter>
 
@@ -137,8 +142,6 @@
                     {
                         use RouteTrait;
 
-                        public const PREFIX = 'backend';
-
                         case index = '';
                     }
                 </code-block>
@@ -148,11 +151,8 @@
                     {
                         use RouteTrait;
 
-                        public const PREFIX = 'post';
-
                         case index = '';
-                        case delete = '/delete/{id}';
-                        case update = '/update/{id}';
+                        case hide = '/update/{id}';
                         case view = '/{id}';
                     }
                 </code-block>
@@ -164,8 +164,6 @@
                     {
                         use RouteTrait;
 
-                        public const PREFIX = 'frontend';
-
                         case index = '';
                     }
                 </code-block>
@@ -174,8 +172,6 @@
                     enum PostRoute: string implements RouteInterface
                     {
                         use RouteTrait;
-
-                        public const PREFIX = 'post';
 
                         case index = '//posts';
                         case create = '/create';
@@ -189,7 +185,7 @@
         <chapter title="Controllers">
             <chapter title="Backend Controllers">
                 <code-block lang="PHP">
-                    #[Group(App\RouteGroup::backend)]
+                    #[Group(group:App\RouteGroup::backend, routePrefix:false)]
                     #[GroupMiddleware(App\Middleware\IsAdmin::class)]
                     final class BackendController
                     {
@@ -210,11 +206,6 @@
                         {
                         }
 
-                        #[Post(App\Backend\PostRoute::delete)]
-                        public function delete(): ResponseInterface
-                        {
-                        }
-
                         #[Post(App\Backend\PostRoute::hide)]
                         public function hide(): ResponseInterface
                         {
@@ -231,7 +222,7 @@
 
             <chapter title="Frontend Controllers">
                 <code-block lang="PHP">
-                    #[Group(App\RouteGroup::frontend)]
+                    #[Group(group: App\RouteGroup::frontend, routePrefix:false)]
                     final class FrontendController
                     {
                         #[Get(App\Frontend\FrontendRoute::index)]
@@ -283,13 +274,13 @@
                 <code-block lang="PHP">
                     return [
                         Group::create('')
-                                ->namePrefix('frontend.')
-                                ->routes(...(require __DIR__ . '/routes/frontend.php'))
+                            ->namePrefix('frontend.')
+                            ->routes(...(require __DIR__ . '/routes/frontend.php'))
                         ,
                         Group::create('/admin')
-                                ->namePrefix('backend.')
-                                ->middleware(App\Middleware\IsAdmin::class)
-                                ->routes(...(require __DIR__ . '/routes/backend.php'))
+                            ->namePrefix('backend.')
+                            ->middleware(App\Middleware\IsAdmin::class)
+                            ->routes(...(require __DIR__ . '/routes/backend.php'))
                         ,
                     ];
                 </code-block>
@@ -298,35 +289,45 @@
             <chapter title="../routes/backend.php">
                 <code-block lang="PHP">
                     return [
-                        Group::create('/backend')
+                        Group::create()
                             ->namePrefix('backend.')
                             ->routes(
                                 Route::methods(['GET'], '')
                                     ->name('index')
                                     ->action([App\Backend\BackendController::class, 'index'])
                                 ,
-                                Group::create('/post')
-                                    ->namePrefix('post.')
-                                    ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.admin')->withRedirectRoute('backend.backend.index'))
-                                    ->routes(
-                                        Route::methods(['GET'], '')
-                                            ->name('index')
-                                            ->action([App\Backend\PostController::class, 'index'])
-                                        ,
-                                        Route::methods(['POST'], '/delete/{id: [1-9]\d*}')
-                                            ->name('delete')
-                                            ->action([App\Backend\PostController::class, 'delete'])
-                                        ,
-                                        Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                            ->name('update')
-                                            ->action([App\Backend\PostController::class, 'update'])
-                                        ,
-                                        Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                            ->name('view')
-                                            ->action([App\Backend\PostController::class, 'view'])
-                                        ,
-                                    )
+                                Route::methods(['GET'], '')
+                                    ->name('login')
+                                    ->action([App\Backend\BackendController::class, 'login'])
+                                ,
+                                Route::methods(['GET'], '')
+                                    ->name('logout')
+                                    ->action([App\Backend\BackendController::class, 'logout'])
+                                ,
                             )
+                        ,
+                        Group::create('/post')
+                            ->namePrefix('post.')
+                            ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.admin')->withRedirectRoute('backend.backend.index'))
+                            ->routes(
+                                Route::methods(['GET'], '')
+                                    ->name('index')
+                                    ->action([App\Backend\PostController::class, 'index'])
+                                ,
+                                Route::methods(['POST'], '/delete/{id: [1-9]\d*}')
+                                    ->name('delete')
+                                    ->action([App\Backend\PostController::class, 'delete'])
+                                ,
+                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
+                                    ->name('update')
+                                    ->action([App\Backend\PostController::class, 'update'])
+                                ,
+                                Route::methods(['GET'], '/{id: [1-9]\d*}')
+                                    ->name('view')
+                                    ->action([App\Backend\PostController::class, 'view'])
+                                ,
+                            )
+                        ,
                     ];
                 </code-block>
             </chapter>
@@ -334,35 +335,37 @@
             <chapter title="../routes/frontend.php">
                 <code-block lang="PHP">
                     return [
-                        Group::create('/frontend')
+                        Group::create('')
                             ->namePrefix('frontend.')
                             ->routes(
                                 Route::methods(['GET'], '')
                                     ->name('index')
                                     ->action([App\Frontend\FrontendController::class, 'index'])
                                 ,
-                                Route::methods(['GET'], '/posts')
-                                    ->name('post.index')
-                                    ->action([App\Frontend\PostController::class, 'index'])
-                                ,
-                                Group::create('/post')
-                                    ->namePrefix('post.')
-                                    ->routes(
-                                        Route::methods(['GET', 'POST'], '/create')
-                                            ->name('create')
-                                            ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.create')->withRedirectRoute('frontend.frontend.index'))
-                                            ->action([App\Frontend\PostController::class, 'create'])
-                                        ,
-                                        Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
-                                            ->name('update')
-                                            ->action([App\Frontend\PostController::class, 'update'])
-                                        ,
-                                        Route::methods(['GET'], '/{id: [1-9]\d*}')
-                                            ->name('view')
-                                            ->action([App\Frontend\PostController::class, 'view'])
-                                        ,
-                                    )
                             )
+                        ,
+                        Route::methods(['GET'], '/posts')
+                            ->name('post.index')
+                            ->action([App\Frontend\PostController::class, 'index'])
+                        ,
+                        Group::create('/post')
+                            ->namePrefix('post.')
+                            ->routes(
+                                Route::methods(['GET', 'POST'], '/create')
+                                    ->name('create')
+                                    ->middleware(fn(App\Middleware\AccessChecker $checker)=>$checker->withPermission('post.create')->withRedirectRoute('frontend.frontend.index'))
+                                    ->action([App\Frontend\PostController::class, 'create'])
+                                ,
+                                Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
+                                    ->name('update')
+                                    ->action([App\Frontend\PostController::class, 'update'])
+                                ,
+                                Route::methods(['GET'], '/{id: [1-9]\d*}')
+                                    ->name('view')
+                                    ->action([App\Frontend\PostController::class, 'view'])
+                                ,
+                            )
+                        ,
                     ];
                 </code-block>
             </chapter>

@@ -6,12 +6,12 @@
        title="Attributes" id="Attributes">
 
     <p>Attributes are used to assign Routes in the controller.</p>
-    <p>This section provides the full definition of all RouterRegister attributes.</p>
+    <p>This section provides the full definition of all <emphasis>RouterRegister</emphasis> attributes.</p>
     <list>
         <li><a href="Group-Attributes.topic"/></li>
         <li><a href="HTTP-Method-Attributes.topic"/></li>
         <li><a href="Parameter-Attributes.topic"/></li>
-        <li><a href="Other-Route-Attributes.topic"/></li>
+        <li><a href="Other-Attributes.topic"/></li>
         <li><a href="Defining-Middleware-Attributes.topic"/></li>
     </list>
 </topic>

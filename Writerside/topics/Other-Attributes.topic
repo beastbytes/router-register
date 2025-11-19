@@ -3,9 +3,10 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Other Route Attributes" id="Other-Route-Attributes">
+       title="Other Attributes" id="Other-Attributes">
 
-    <p>Other attributes that can be applied to a route.</p>
+    <p>Other attributes that can be applied.</p>
+    <note>Attribute methods are used internally by Writer objects.</note>
     
     <chapter title="DefaultValue" id="default-value">
         <p>Defines a default value for a parameter when the route does not contain a value.</p>
@@ -28,6 +29,23 @@
                 <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
+        <chapter title="Methods">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getParameter()</td>
+                    <td>string</td>
+                    <td>The parameter name
+                    </td>
+                </tr>
+                <tr>
+                    <td>getValue()</td>
+                    <td>string</td>
+                    <td>The parameter value
+                    </td>
+                </tr>
+            </table>
+        </chapter>
     </chapter>
 
     <chapter title="Fallback" id="fallback">
@@ -55,6 +73,16 @@
                 <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>
+        <chapter title="Methods">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getHost()</td>
+                    <td>string</td>
+                    <td>The host</td>
+                </tr>
+            </table>
+        </chapter>
     </chapter>
 
     <chapter title="Middleware" id="middleware">
@@ -100,6 +128,16 @@
                 <td>false</td>
             </tr>
         </table>
+        <chapter title="Methods">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getMiddleware()</td>
+                    <td>string</td>
+                    <td>The middleware string</td>
+                </tr>
+            </table>
+        </chapter>
     </chapter>
 
     <chapter title="Override" id="override">

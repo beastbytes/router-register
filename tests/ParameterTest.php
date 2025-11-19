@@ -19,7 +19,6 @@ use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Security\Random;
 
 class ParameterTest extends TestCase
 {
@@ -231,7 +230,7 @@ class ParameterTest extends TestCase
 
     public static function nameProvider(): Generator
     {
-        yield [Random::string(random_int(5, 10))];
+        yield [self::randomString(random_int(5, 10))];
     }
 
     public static function caseProvider(): Generator
@@ -257,5 +256,18 @@ class ParameterTest extends TestCase
             'range' => ['min' => random_int(1, 10), 'max' => random_int(11, 20)],
             default => null
         };
+    }
+
+    private static function randomString(int $length): string
+    {
+        return substr(
+            strtr(
+                base64_encode(random_bytes((int) ceil($length * 0.75))),
+                '+/',
+                '-_'
+            ),
+            0,
+            $length
+        );
     }
 }
