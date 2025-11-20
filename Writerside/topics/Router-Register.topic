@@ -8,8 +8,7 @@
     <p>
         <emphasis>RouterRegister</emphasis> allows routes to be defined in application source
         files using PHP <a href="https://www.php.net/manual/en/language.attributes.php">Attributes</a> amd
-        <a href="https://www.php.net/manual/en/language.enumerations.php">Enumerations</a>,
-        and generates router configuration files.
+        <a href="https://www.php.net/manual/en/language.enumerations.php">Enumerations</a>.
     </p>
     <p>There are a number of benefits of defining and registering routes using RouterRegister:</p>
     <list>
