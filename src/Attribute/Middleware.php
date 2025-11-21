@@ -11,7 +11,7 @@ use Attribute;
  * To define a parent group middleware that should not be invoked, set the `disable` parameter to `true`.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Middleware
+final class Middleware implements MiddlewareInterface
 {
    use MiddlewareTrait;
 
