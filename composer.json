@@ -6,7 +6,7 @@
     "router",
     "routes"
   ],
-  "type": "project",
+  "type": "library",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "license": "BSD-3-Clause",
@@ -21,7 +21,6 @@
     "ext-mbstring": "*"
   },
   "require-dev": {
-    "dg/bypass-finals": "^1.0",
     "phpunit/phpunit": "^10.0",
     "vimeo/psalm": "^6.0"
   },
