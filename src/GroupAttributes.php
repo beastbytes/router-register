@@ -7,7 +7,7 @@ namespace BeastBytes\Router\Register;
 use BeastBytes\Router\Register\Attribute\Cors;
 use BeastBytes\Router\Register\Attribute\Group;
 use BeastBytes\Router\Register\Attribute\Host;
-use BeastBytes\Router\Register\Attribute\Middleware;
+use BeastBytes\Router\Register\Attribute\MiddlewareInterface;
 use BeastBytes\Router\Register\Attribute\Prefix;
 use ReflectionClass;
 use ReflectionEnumBackedCase;
@@ -36,9 +36,10 @@ final class GroupAttributes
         return $this->getAttributes(Host::class);
     }
 
+    /** @return list<MiddlewareInterface> */
     public function getMiddlewares(): array
     {
-        return $this->getAttributes(Middleware::class);
+        return $this->getAttributes(MiddlewareInterface::class);
     }
 
     public function getPrefix(): ?Prefix
