@@ -7,13 +7,20 @@ namespace BeastBytes\Router\Register\Attribute;
 use Attribute;
 
 /**
- * Define middleware for all routes in a class or method route.
+ * Define a middleware for a group or route.
  * To define a parent group middleware that should not be invoked, set the `disable` parameter to `true`.
  */
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(
+    Attribute::TARGET_CLASS
+    | Attribute::TARGET_CLASS_CONSTANT
+    | Attribute::TARGET_METHOD
+    | Attribute::IS_REPEATABLE
+)]
 final class Middleware implements MiddlewareInterface
 {
-   use MiddlewareTrait;
+    use MiddlewareTrait;
+
+    public const DISABLE = true;
 
     public function __construct(
         private readonly array|string $middleware,

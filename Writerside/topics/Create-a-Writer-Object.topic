@@ -221,4 +221,48 @@
             </tr>
         </table>
     </chapter>
+
+    <chapter title="Attribute Methods">
+        <p>
+            This section list attributes that can be accessed from the Group and Route objects
+            the methods to access the attribute data.
+        </p>
+        <chapter title="DefaultValue">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getParameter()</td>
+                    <td>string</td>
+                    <td>The parameter name
+                    </td>
+                </tr>
+                <tr>
+                    <td>getValue()</td>
+                    <td>string</td>
+                    <td>The parameter value
+                    </td>
+                </tr>
+            </table>
+        </chapter>
+        <chapter title="Host">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getHost()</td>
+                    <td>string</td>
+                    <td>The host</td>
+                </tr>
+            </table>
+        </chapter>
+        <chapter title="Middleware">
+            <table>
+                <include element-id="method-table-header" from="attribute.topic"/>
+                <tr>
+                    <td>getMiddleware()</td>
+                    <td>string</td>
+                    <td>The middleware string</td>
+                </tr>
+            </table>
+        </chapter>
+    </chapter>
 </topic>

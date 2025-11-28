@@ -5,8 +5,6 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Routes" id="Routes">
 
-    <p>This section describes how to define and use Routes.</p>
-
     <chapter title="Route Enumerations">
         <p>
             Routes are defined in
@@ -14,9 +12,6 @@
             that implement <code>RouteInterface</code> (part of the <emphasis>RouterRegister</emphasis> package).
             Each Controller should have an associated Route Enumeration.
         </p>
-        <note>
-            <code>RouteInterface</code> is used for type-checking; it does not define any methods.
-        </note>
         <p>Each <emphasis>case</emphasis> in a Route Enumeration defines a route.</p>
         <p>The <emphasis>case name</emphasis> defines the route name.</p>
         <p>The <emphasis>case value</emphasis> defines the route pattern, including route parameter names.</p>
@@ -28,11 +23,12 @@
             with optional parameters additionally enclosed in square brackets.
         </p>
         <note>
-            The parameter pattern is defined in the controller
-            using one of the <a href="Parameter-Attributes.topic"/>;
+            The parameter pattern is defined by one of the <a href="Parameter-Attributes.topic"/>;
             see <a href="Assigning-Groups-and-Routes.topic"/>
         </note>
         <code-block lang="PHP">
+            #[Group('post', GroupEnum::frontend)]
+            #[Prefix('post')]
             enum PostRoute: string implements RouteInterface
             {
                 use RouteTrait;
@@ -43,10 +39,7 @@
                 case view = '/{id}';
             }
         </code-block>
-        <p>
-            Assuming that both <emphasis>id</emphasis> and <emphasis>page</emphasis> are positive integers,
-            the generated routes will be something like (class names will be FQCNs):
-        </p>
+        <p>The generated routes will be something like (class names will be FQCNs):</p>
         <code-block lang="PHP">
             Group::create('/post')
                 ->namePrefix('post.')
@@ -73,11 +66,31 @@
             The resulting route names and <tooltip term="URL">URLs</tooltip> are:
         </p>
         <table>
-            <tr><td>Route name</td><td>URL</td></tr>
-            <tr><td>{group name prefix}post.index</td><td>{group route prefix}/post</td></tr>
-            <tr><td>{group name prefix}post.create</td><td>{group route prefix}/post/create</td></tr>
-            <tr><td>{group name prefix}post.update</td><td>{group route prefix}/post/update/{id}</td></tr>
-            <tr><td>{group name prefix}post.view</td><td>{group route prefix}/post/view/{id}</td></tr>
+            <tr>
+                <td>Case</td>
+                <td>Name</td>
+                <td>URL</td>
+            </tr>
+            <tr>
+                <td>index</td>
+                <td>{group name prefix}post.index</td>
+                <td>{group route prefix}/post</td>
+            </tr>
+            <tr>
+                <td>create</td>
+                <td>{group name prefix}post.create</td>
+                <td>{group route prefix}/post/create</td>
+            </tr>
+            <tr>
+                <td>update</td>
+                <td>{group name prefix}post.update</td>
+                <td>{group route prefix}/post/update/&lt;id&gt;</td>
+            </tr>
+            <tr>
+                <td>view</td>
+                <td>{group name prefix}post.view</td>
+                <td>{group route prefix}/post/&lt;id&gt;</td>
+            </tr>
         </table>
     </chapter>
 
@@ -85,7 +98,7 @@
         <p>
             If a route should not have the route prefix applied,
             it can be hoisted out of the controller group by starting the pattern with <code>//</code>.
-            For example, if the PostController index page should match <code>/posts</code>,
+            For example, if the <emphasis>index</emphasis> Case should match <code>/posts</code>,
             the route pattern should be <code>//posts</code>.
         </p>
         <p>
@@ -95,6 +108,8 @@
             specify the required attributes at <emphasis>Method Level</emphasis>.
         </p>
         <code-block lang="PHP">
+            #[Group('post', GroupEnum::frontend)]
+            #[Prefix('post')]
             enum PostRoute: string implements RouteInterface
             {
                 use RouteTrait;
@@ -109,31 +124,46 @@
             The resulting <tooltip term="URL">URLs</tooltip> and route names are:
         </p>
         <table>
-            <tr><td>Route name</td><td>URL</td></tr>
-            <tr><td>{group name prefix}post.index</td><td>{group route prefix}/posts</td></tr>
-            <tr><td>{group name prefix}post.create</td><td>{group route prefix}/post/create</td></tr>
-            <tr><td>{group name prefix}post.update</td><td>{group route prefix}/post/update/{id}</td></tr>
-            <tr><td>{group name prefix}post.view</td><td>{group route prefix}/post/view/{id}</td></tr>
+            <tr>
+                <td>Case</td>
+                <td>Name</td>
+                <td>URL</td>
+            </tr>
+            <tr>
+                <td>index</td>
+                <td>{group name prefix}post.index</td>
+                <td>{group route prefix}/posts</td>
+            </tr>
+            <tr>
+                <td>create</td>
+                <td>{group name prefix}post.create</td>
+                <td>{group route prefix}/post/create</td>
+            </tr>
+            <tr>
+                <td>update</td>
+                <td>{group name prefix}post.update</td>
+                <td>{group route prefix}/post/update/{id}</td>
+            </tr>
+            <tr>
+                <td>view</td>
+                <td>{group name prefix}post.view</td>
+                <td>{group route prefix}/post/view/{id}</td>
+            </tr>
         </table>
     </chapter>
 
     <chapter title="RouteInterface and RouteTrait">
         <chapter title="RouteInterface">
-            <p>
-                <code>RouteInterface</code> defines a method to get the route name;
-                this is useful when generating <tooltip term="URL">URL</tooltip>s.
-                Route Enumerations must implement <code>RouteInterface</code>.
-            </p>
             <p>Route Interface defines the following method:</p>
             <deflist type="narrow">
-                <def title="getRouteName()">Returns the fully qualified route name</def>
+                <def title="getRouteName()">
+                    Returns the fully qualified route name;
+                    useful when generating <tooltip term="URL">URL</tooltip>s
+                </def>
             </deflist>
         </chapter>
         <chapter title="RouteTrait">
-            <p>
-                <code>RouteTrait</code> implements <code>RouteInterface</code>
-                and can be used in Route Enumerations.
-            </p>
+            <p><code>RouteTrait</code> implements <code>RouteInterface</code> and can be used in Route Enumerations.</p>
         </chapter>
     </chapter>
 </topic>

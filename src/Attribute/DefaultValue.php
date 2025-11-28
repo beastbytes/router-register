@@ -7,10 +7,10 @@ namespace BeastBytes\Router\Register\Attribute;
 use Attribute;
 
 /**
- * Defines a default value for a route parameter at a class or method level.
+ * Defines a default value for a route parameter.
  * The method attribute takes precedence over a class attribute.
  */
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class DefaultValue implements AttributeInterface
 {
     public function __construct(

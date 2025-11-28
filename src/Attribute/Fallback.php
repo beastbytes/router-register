@@ -7,6 +7,6 @@ namespace BeastBytes\Router\Register\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-final class Fallback implements RouteInterface
+final class Fallback implements AttributeInterface
 {
 }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register;
 
-use BeastBytes\Router\Register\Attribute\Group as GroupAttribute;
 use BeastBytes\Router\Register\Attribute\Middleware;
 use BeastBytes\Router\Register\Attribute\Route as RouteAttribute;
 use BeastBytes\Router\Register\DTO\Group;
 use BeastBytes\Router\Register\DTO\Route;
+use BeastBytes\Router\Register\Route\GroupInterface;
 use ReflectionClass;
+use ReflectionEnumBackedCase;
 use ReflectionMethod;
-use Yiisoft\Files\FileHelper;
 
 /**
  * Parses RouterRegister attributes in application source code and generates an array of tree structures
@@ -26,6 +26,7 @@ final class Parser
      * @psalm-var array{string: Group}
      */
     private array $groups = [];
+    private string $name;
 
     public function processFiles(array $files): array
     {
@@ -38,7 +39,7 @@ final class Parser
 
     private function processFile(string $file): void
     {
-        $name = $prefix = null;
+        $group = null;
         $className = $this->getClassName($file);
 
         if (!class_exists($className)) {
@@ -47,30 +48,71 @@ final class Parser
 
         $reflectionClass = new ReflectionClass($className);
 
-        $attributes = new GroupAttributes($reflectionClass);
-        $groupAttribute = $attributes->getGroup();
+        foreach ($reflectionClass->getMethods() as $reflectionMethod) {
+            $attributes = new MethodAttributes($reflectionMethod);
+            $routeAttribute = $attributes->getRoute();
 
-        if ($groupAttribute instanceof GroupAttribute) {
-            $name = $groupAttribute->getGroupName();
-            $prefix = $groupAttribute->getGroupPrefix();
+            $route = $routeAttribute instanceof RouteAttribute
+                ? Route::create($routeAttribute)
+                    ->action(new Middleware([$reflectionClass->getName(), $reflectionMethod->getName()]))
+                    ->defaultValues($attributes->getDefaultValues())
+                    ->fallback($attributes->getFallback())
+                    ->hosts($attributes->getHosts())
+                    ->middlewares($attributes->getMiddlewares())
+                    ->override($attributes->getOverride())
+                    ->parameters($attributes->getParameters())
+                : null
+            ;
+
+            if ($route instanceof Route) {
+                if ($group === null) {
+                    $group = $this->createGroup($route);
+                }
+
+                if ($route->isHoisted()) {
+                    $this->groups[$this->name]->route($route->group($group));
+                } else {
+                    $group->route($route->group($group));
+                }
+            }
         }
 
-        if ($name === null) {
-            $name = self::DEFAULT_GROUP_NAME;
+        $this->groups[$this->name]->route($group);
+    }
+
+    private function createGroup(Route $route): Group
+    {
+        $attributes = new GroupAttributes(new ReflectionClass($route->getRoute()->getRoute()));
+        $parent = $attributes->getGroup()->getParent();
+
+        $this->name = $parent instanceof GroupInterface ? $parent->name : self::DEFAULT_GROUP_NAME;
+
+        if (!array_key_exists($this->name, $this->groups)) {
+            $this->groups[$this->name] = $this->createTopLevelGroup($parent);
         }
 
-        $group = (array_key_exists($name, $this->groups))
-            ? $this->groups[$name]
-            : Group::create($name, $prefix)
-        ;
-        $group = $group
+        return Group::create($attributes->getGroup()->getName(), $attributes->getPrefix()?->getPrefix())
             ->hosts($attributes->getHosts())
             ->cors($attributes->getCors())
             ->middlewares($attributes->getMiddlewares())
         ;
-        $group = $this->processClass($reflectionClass, $group);
+    }
 
-        $this->groups[$name] = $group;
+    private function createTopLevelGroup(?GroupInterface $group): Group
+    {
+        if (!$group instanceof GroupInterface) {
+            return Group::create(self::DEFAULT_GROUP_NAME);
+        }
+
+        $reflectionCase = new ReflectionEnumBackedCase($group, $group->name);
+        $attributes = new GroupAttributes($reflectionCase);
+        $commonAttributes = new GroupAttributes($reflectionCase->getDeclaringClass());
+
+        return Group::create($group->name, $group->getPrefix())
+            ->hosts(array_merge($commonAttributes->getHosts(), $attributes->getHosts()))
+            ->cors($commonAttributes->getCors() ?? $attributes->getCors())
+            ->middlewares(array_merge($commonAttributes->getMiddlewares(), $attributes->getMiddlewares()))
+        ;
     }
 
     private function getClassName(string $filename): string
@@ -90,81 +132,5 @@ final class Parser
         $class = substr($filename, strrpos($filename, '/') + 1, -4);
 
         return $namespace . '\\' . $class;
-    }
-
-    private function processClass(ReflectionClass $reflectionClass, Group $group): Group
-    {
-        $name = $prefix = null;
-        $routes = [];
-
-        $attributes = new GroupAttributes($reflectionClass);
-        $groupAttribute = $attributes->getGroup();
-
-        if ($groupAttribute instanceof GroupAttribute) {
-            $name = $groupAttribute->getName();
-            $prefix = $groupAttribute->getPrefix();
-        }
-
-        if ($name === null || $prefix === null) {
-            $nx = mb_strtolower(
-                preg_replace(
-                    '/(?<=\p{L})(\p{Lu})/u',
-                    '-' . '\1',
-                    str_replace(['Action', 'Controller'], '', $reflectionClass->getShortName())
-                )
-            );
-
-            $name = $name ?? $nx;
-            $prefix = match(gettype($prefix)) {
-                'boolean' => null,
-                'string' => $prefix,
-                'NULL' => '/' . $nx
-            };
-        }
-
-        $attributes = new ClassAttributes($reflectionClass);
-        $classGroup = Group::create($name, $prefix)
-            ->hosts($attributes->getHosts())
-            ->middlewares($attributes->getMiddlewares())
-        ;
-
-        foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $routes[] = $this->processMethod($reflectionClass, $reflectionMethod);
-        }
-
-        foreach ($routes as $route) {
-            if ($route instanceof Route) {
-                if ($route->isHoisted()) {
-                    $group->route($route->group($classGroup));
-                } else {
-                    $classGroup->route($route->group($classGroup));
-                }
-            }
-        }
-
-        return $classGroup instanceof Group ? $group->route($classGroup) : $group;
-    }
-
-    private function processMethod(
-        ReflectionClass $reflectionClass,
-        ReflectionMethod $reflectionMethod,
-    ): ?Route
-    {
-        $attributes = new MethodAttributes($reflectionMethod);
-        $routeAttribute = $attributes->getRoute();
-
-        if ($routeAttribute instanceof RouteAttribute) {
-            return Route::create($routeAttribute)
-                ->action(new Middleware([$reflectionClass->getName(), $reflectionMethod->getName()]))
-                ->defaultValues($attributes->getDefaultValues())
-                ->fallback($attributes->getFallback())
-                ->hosts($attributes->getHosts())
-                ->middlewares($attributes->getMiddlewares())
-                ->override($attributes->getOverride())
-                ->parameters($attributes->getParameters())
-            ;
-        }
-
-        return null;
     }
 }

@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace BeastBytes\Router\Register\Attribute;
 
 use Attribute;
-use BeastBytes\Router\Register\Attribute\RouteInterface as RouteAttributeInterface;
 use BeastBytes\Router\Register\Attribute\Method\Method;
 use BeastBytes\Router\Register\Route\RouteInterface;
+use ReflectionAttribute;
+use ReflectionClass;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class Route implements RouteAttributeInterface
+class Route implements AttributeInterface
 {
-    private const HOISTED_ROUTE = '//';
-
     /**
      * @param list<Method> $methods
      * @param RouteInterface $route
@@ -46,10 +45,14 @@ class Route implements RouteAttributeInterface
 
     public function getPrefix(): string
     {
-        return defined($this->route::class . '::PREFIX')
-            ? '/' . $this->route::PREFIX
-            : ''
-        ;
+        $reflectionClass = new ReflectionClass($this->route);
+        $prefix = $reflectionClass->getAttributes(Prefix::class, ReflectionAttribute::IS_INSTANCEOF);
+
+        if (sizeof($prefix) > 0) {
+            return $prefix[0]->getPrefix();
+        }
+
+        return '';
     }
 
     public function getPattern(): string
@@ -57,8 +60,13 @@ class Route implements RouteAttributeInterface
         return $this->route->value;
     }
 
+    public function getRoute(): RouteInterface
+    {
+        return $this->route;
+    }
+
     public function isHoisted(): bool
     {
-        return str_starts_with($this->route->value, self::HOISTED_ROUTE);
+        return $this->route->isHoisted();
     }
 }

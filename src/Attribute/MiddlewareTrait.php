@@ -13,13 +13,14 @@ use Attribute;
 
 trait MiddlewareTrait
 {
-    public const DISABLE = true;
-
     public function getMiddleware(): string
     {
         if (is_array($this->middleware)) {
             return "{$this->array2String($this->middleware)}";
-        } elseif (str_starts_with($this->middleware, 'fn') || str_starts_with($this->middleware, 'function')) {
+        } elseif (
+            str_starts_with($this->middleware, 'fn')
+            || str_starts_with($this->middleware, 'function')
+        ) {
             return "$this->middleware";
         } else {
            return "'$this->middleware'";

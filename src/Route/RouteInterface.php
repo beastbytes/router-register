@@ -8,4 +8,7 @@ use BackedEnum;
 
 interface RouteInterface extends BackedEnum
 {
+    public function getRouteName(): string;
+
+    public function isHoisted(): bool;
 }

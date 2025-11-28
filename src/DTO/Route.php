@@ -148,9 +148,17 @@ final class Route
         return $pattern;
     }
 
+    /**
+     * @internal
+     */
     public function getPrefix(): string
     {
         return $this->route->getPrefix();
+    }
+
+    public function getRoute(): RouteAttribute
+    {
+        return $this->route;
     }
 
     /**

@@ -100,10 +100,16 @@
     <snippet id="use-on-action">
         <def title="Use On">Action</def>
     </snippet>
-    <snippet id="use-on-action-or-class">
-        <def title="Use On">Action | Class</def>
+    <snippet id="use-on-action-or-enumeration-or-case">
+        <def title="Use On">Action | Group Enumeration | Group Enumeration Case | Route Enumeration</def>
     </snippet>
-    <snippet id="use-on-class">
-        <def title="Use On">Class</def>
+    <snippet id="use-on-enumeration-or-case">
+        <def title="Use On">Group Enumeration | Group Enumeration Case | Route Enumeration</def>
+    </snippet>
+    <snippet id="use-on-enumeration">
+        <def title="Use On">Group Enumeration | Route Enumeration</def>
+    </snippet>
+    <snippet id="use-on-route-enumeration">
+        <def title="Use On">Route Enumeration</def>
     </snippet>
 </topic>

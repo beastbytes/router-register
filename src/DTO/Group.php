@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\DTO;
 
-use BeastBytes\Router\Register\Attribute\GroupCors;
-use BeastBytes\Router\Register\Attribute\GroupHost;
-use BeastBytes\Router\Register\Attribute\GroupMiddleware;
+use BeastBytes\Router\Register\Attribute\Cors;
 use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Middleware;
 
 final class Group
 {
-    private ?GroupCors $cors = null;
-    /** @var list<GroupHost|Host> */
+    private ?Cors $cors = null;
+    /** @var list<Host|Host> */
     private array $hosts = [];
-    /** @var list<GroupMiddleware|Middleware> */
+    /** @var list<Middleware|Middleware> */
     private array $middlewares = [];
     /** @var Group[]|Route[] */
     private array $routes = [];
@@ -36,17 +34,17 @@ final class Group
     }
 
     /**
-     * @internal
-     * @param ?GroupCors $cors
+     * @param ?Cors $cors
      * @return self
+     *@internal
      */
-    public function cors(?GroupCors $cors): self
+    public function cors(?Cors $cors): self
     {
         $this->cors = $cors;
         return $this;
     }
 
-    public function getCors(): ?GroupCors
+    public function getCors(): ?Cors
     {
         return $this->cors;
     }
@@ -97,7 +95,7 @@ final class Group
 
     public function hasCors(): bool
     {
-        return $this->cors instanceof GroupCors;
+        return $this->cors instanceof Cors;
     }
 
     public function hasHosts(): bool
@@ -106,9 +104,9 @@ final class Group
     }
 
     /**
-     * @internal
-     * @param list<GroupHost|Host> $hosts
+     * @param list<Host|Host> $hosts
      * @return self
+     *@internal
      */
     public function hosts(array $hosts): self
     {
@@ -117,9 +115,9 @@ final class Group
     }
 
     /**
-     * @internal
-     * @param list<GroupMiddleware|Middleware> $middlewares
+     * @param list<Middleware|Middleware> $middlewares
      * @return self
+     *@internal
      */
     public function middlewares(array $middlewares): self
     {

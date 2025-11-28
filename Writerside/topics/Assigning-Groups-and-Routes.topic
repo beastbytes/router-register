@@ -5,129 +5,113 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Assigning Groups and Routes" id="Assigning-Groups-and-Routes">
 
-    <p>
-        Routes and Groups are assigned in controllers using <emphasis>RouterRegister</emphasis>'s
-        <a href="Attributes.topic">Attributes</a>
-        and application defined <a href="Groups-and-Routes.topic">Group and Route Enumerations</a>.
-    </p>
+    <chapter title="Assigning Groups">
+        <chapter title="Application Level Groups" id="groups">
+            <p>
+                Application Level Groups (defined in the application Group Enumeration)
+                are assigned in Route Enumerations using the <emphasis>Group</emphasis> Attribute;
+                the <emphasis>parent</emphasis> parameter is an application Group Enumeration Case that defines
+                the parent Group.
+            </p>
+        </chapter>
 
-    <chapter title="Route Method(s)">
+        <chapter title="Group Attributes">
+            <p>
+                If an attribute applies to all routes in a Group (either an Application Level Groups or
+                routes in a Route Enumeration, e.g. middleware to be applied,
+                an attribute, e.g. <code>Middleware</code>, can be used.
+            </p>
+            <p>Group attributes are:</p>
+            <deflist>
+                <def title="Cors">Defines <tooltip term="CORS">CORS</tooltip> middleware</def>
+                <def title="Host">Defines a host that the routes respond to.</def>
+                <def title="Middleware">
+                    <p>Defines a middleware to apply the routes.</p>
+                    <p>
+                        This attribute can also disable an ancestor group middleware
+                        by setting the <code>disable</code> parameter to <code>false</code>.
+                    </p>
+                    <note>
+                        Application specific Middleware attributes can be defined and used;
+                        see <a href="Defining-Middleware-Attributes.topic">Defining Middleware Attributes</a>
+                    </note>
+                </def>
+            </deflist>
+        </chapter>
+
+    </chapter>
+
+    <chapter title="Assigning Routes">
         <p>
-            Routes are assigned to controller actions.
-            The <tooltip term="HTTP">HTTP</tooltip> method(s) for a route is defined using
-            one of the <a href="HTTP-Method-Attributes.topic"/>
+            Routes are assigned to actions using one of the <a href="HTTP-Method-Attributes.topic"/>
             or the <a href="HTTP-Method-Attributes.topic#route"/> attribute;
-            these attributes take an instance of <code>RouteInterface</code>
-            (a Route Enumeration case) as a parameter which assigns the route to the action.
+            these define the <tooltip term="HTTP">HTTP</tooltip> method(s) the route responds to,
+            and take an instance of <code>RouteInterface</code> (a Route Enumeration Case) as a parameter
+            which defines the pattern a route must match.
         </p>
-    </chapter>
 
-    <chapter title="Route Parameters" id="route-parameters">
-        <p>
-            If the route has parameters, each parameter is defined by one of the
-            <a href="Parameter-Attributes.topic"/>:
-        </p>
-        <deflist type="narrow">
-            <def title="Alpha">
-                <a href="Parameter-Attributes.topic#alpha"/> defines an alphabetic string
-            </def>
-            <def title="Alphanumeric">
-                <a href="Parameter-Attributes.topic#alphanumeric"/> defines an alphanumeric string
-            </def>
-            <def title="Hex">
-                <a href="Parameter-Attributes.topic#hex"/> defines a hexadecimal number
-            </def>
-            <def title="Id">
-                <a href="Parameter-Attributes.topic#id"/> defines a number greater than 0
-            </def>
-            <def title="In">
-                <a href="Parameter-Attributes.topic#in"/> defines a list of allowed values
-            </def>
-            <def title="Numeric">
-                <a href="Parameter-Attributes.topic#numeric"/> defines a decimal number
-            </def>
-            <def title="Pattern">
-                <a href="Parameter-Attributes.topic#pattern"/>
-                defines a regex to match; use if none of the other parameter attributes are suitable
-            </def>
-            <def title="Uuid">
-                <a href="Parameter-Attributes.topic#uuid"/> defines a Universally Unique Identifier
-            </def>
-        </deflist>
-    </chapter>
+        <chapter title="Route Parameters" id="route-parameters">
+            <p>
+                If the route pattern has parameters, each parameter is defined by one of the
+                <a href="Parameter-Attributes.topic"/>:
+            </p>
+            <deflist type="narrow">
+                <def title="Alpha">
+                    <a href="Parameter-Attributes.topic#alpha"/> defines an alphabetic string
+                </def>
+                <def title="Alphanumeric">
+                    <a href="Parameter-Attributes.topic#alphanumeric"/> defines an alphanumeric string
+                </def>
+                <def title="Hex">
+                    <a href="Parameter-Attributes.topic#hex"/> defines a hexadecimal number
+                </def>
+                <def title="Id">
+                    <a href="Parameter-Attributes.topic#id"/> defines a number greater than 0
+                </def>
+                <def title="In">
+                    <a href="Parameter-Attributes.topic#in"/> defines a list of allowed values
+                </def>
+                <def title="Numeric">
+                    <a href="Parameter-Attributes.topic#numeric"/> defines a decimal number
+                </def>
+                <def title="Pattern">
+                    <a href="Parameter-Attributes.topic#pattern"/>
+                    defines a regex to match; use if none of the other parameter attributes are suitable
+                </def>
+                <def title="Uuid">
+                    <a href="Parameter-Attributes.topic#uuid"/> defines a Universally Unique Identifier
+                </def>
+            </deflist>
+        </chapter>
 
-    <chapter title="Other Method Level Attributes" id="other-method-level-attributes">
-        <p>Other attributes can be used to further configure the route, e.g. middleware to be applied:</p>
-        <deflist>
-            <def title="DefaultValue">
-                Defines a default value for a parameter when the route does not contain a value.
-            </def>
-            <def title="Fallback">
-                A fallback route that is attempted if no other routes in a group match.
-                Only one fallback route is permitted in a group.
-                <note>
-                    A fallback route is hoisted out of its controller group,
-                    meaning that any controller level attributes that apply to it must be specified at the method level.
-                </note>
-            </def>
-            <def title="Host">Defines the host(s) the route applies to.</def>
-            <def title="Middleware">
-                <p>Defines middleware(s) to apply the route.</p>
-                <p>
-                    This attribute can also disable group or class level middleware
-                    by setting the <code>disable</code> parameter to <code>false</code>.
-                </p>
-                <note>
-                    Application specific Middleware attributes can be defined and used;
-                    see <a href="Defining-Middleware-Attributes.topic">Defining Middleware Attributes</a>
-                </note>
-            </def>
-            <def title="Override">Overrides a route with the same name.</def>
-        </deflist>
-    </chapter>
-
-    <chapter title="Class Level Attributes" id="class-level-attributes">
-        <p>
-            If an attribute applies to all routes in a controller, e.g. middleware to be applied,
-            a class level attribute, e.g. <code>Middleware</code> can be used.
-        </p>
-        <p>Class level attributes are:</p>
-        <deflist>
-            <def title="DefaultValue">
-                Defines a default value for a parameter when the route does not contain a value.
-            </def>
-            <def title="Host">Defines the host(s) the routes apply to.</def>
-            <def title="Middleware">
-                <p>Defines middleware(s) to apply the routes.</p>
-                <p>
-                    This attribute can also disable group level middleware
-                    by setting the <code>disable</code> parameter to <code>false</code>.
-                </p>
-                <note>
-                    Application specific Middleware attributes can be defined and used;
-                    see <a href="Defining-Middleware-Attributes.topic">Defining Middleware Attributes</a>
-                </note>
-            </def>
-        </deflist>
-    </chapter>
-
-    <chapter title="Groups" id="groups">
-        <p>Group level attributes are:</p>
-        <deflist>
-            <def title="Group">
-                <p>
-                    Defines the application group a controller belongs to
-                    and the controller level name and route prefixes.
-                </p>
-            </def>
-            <def title="GroupCors">Defines <tooltip term="CORS">CORS</tooltip> middleware</def>
-            <def title="GroupHost">Defines the host(s) that can access routes in the Group</def>
-            <def title="GroupMiddleware">Defines middleware applied to the Group</def>
-        </deflist>
-        <p>
-            The Group attribute is used in all controllers.
-            The other Group attributes need only specified in one Controller within the Application Group;
-            typically the Controller that provides the Group's <emphasis>home page</emphasis>.
-        </p>
+        <chapter title="Other Method Attributes" id="other-method-level-attributes">
+            <p>Other attributes can be used to further configure a route, e.g. middleware to be applied:</p>
+            <deflist>
+                <def title="DefaultValue">
+                    Defines a default value for a parameter when the route does not contain a value.
+                </def>
+                <def title="Fallback">
+                    A fallback route that is attempted if no other routes in a group match.
+                    Only one fallback route is permitted in a group.
+                    <note>
+                        A fallback route is hoisted out of its controller group,
+                        meaning that any controller level attributes that apply to it must be specified at the method level.
+                    </note>
+                </def>
+                <def title="Host">Defines the host(s) the route applies to.</def>
+                <def title="Middleware">
+                    <p>Defines middleware(s) to apply the route.</p>
+                    <p>
+                        This attribute can also disable group or class level middleware
+                        by setting the <code>disable</code> parameter to <code>false</code>.
+                    </p>
+                    <note>
+                        Application specific Middleware attributes can be defined and used;
+                        see <a href="Defining-Middleware-Attributes.topic">Defining Middleware Attributes</a>
+                    </note>
+                </def>
+                <def title="Override">Overrides a route with the same name.</def>
+            </deflist>
+        </chapter>
     </chapter>
 </topic>

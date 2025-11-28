@@ -8,6 +8,5 @@ use \BackedEnum;
 
 interface GroupInterface extends BackedEnum
 {
-    public function getNamePrefix(): string;
-    public function getRoutePrefix(): string;
+    public function getPrefix(): ?string;
 }

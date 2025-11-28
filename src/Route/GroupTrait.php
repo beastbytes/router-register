@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Route;
 
+use BeastBytes\Router\Register\Attribute\Prefix;
+use ReflectionAttribute;
+use ReflectionClass;
+use ReflectionEnumBackedCase;
+
 trait GroupTrait
 {
     /** @internal */
-    public function getNamePrefix(): string
+    public function getPrefix(): ?string
     {
-        return $this->name . '.';
-    }
+        $prefix = [$this->value];
 
-    /** @internal */
-    public function getRoutePrefix(): string
-    {
-        $prefixes = [];
+        $reflectionClass = new ReflectionClass($this);
 
-        if (defined(self::class . '::PREFIX')) {
-            foreach (self::class::PREFIX as $parameter => $pattern) {
-                $prefixes[] = is_int($parameter) ? $pattern : sprintf('{%s:%s}', $parameter, $pattern);
-            }
+        $prefixes = $reflectionClass->getAttributes(Prefix::class, ReflectionAttribute::IS_INSTANCEOF);
+
+        if (sizeof($prefixes) > 0) {
+            $prefix[] = $prefixes[0]->newInstance()->getPrefix();
         }
 
-        return (sizeof($prefixes) > 0 ? '/' . implode('/', $prefixes) : '')
-            . (mb_strlen($this->value) > 0 ? $this->value : '')
-        ;
+        $prefix = implode(array_reverse($prefix));
+
+        return mb_strlen($prefix) > 0 ? $prefix : null;
     }
 }

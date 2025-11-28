@@ -9,8 +9,8 @@ use Attribute;
 /**
  * Define CORS middleware for a group.
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class GroupCors
+#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_CLASS_CONSTANT)]
+final class Cors implements MiddlewareInterface
 {
     use MiddlewareTrait;
 

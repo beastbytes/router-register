@@ -9,48 +9,38 @@
 
     <chapter title="Group" id="group">
         <deflist type="narrow">
-            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="use-on-route-enumeration" from="attribute.topic"/>
             <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
-        <p>Defines group parameters for a controller.</p>
+        <p>Defines group for a set of routes.</p>
         <table>
             <include element-id="table-header" from="attribute.topic"/>
             <tr>
-                <td>group</td>
+                <td>name</td>
+                <td>?string</td>
+                <td>The name prefix for the routes</td>
+                <include element-id="required-parameter" from="attribute.topic"/>
+            </tr>
+            <tr>
+                <td>parent</td>
                 <td>?GroupInterface</td>
                 <td>
-                    <p>The application level group a controller belongs to</p>
+                    <p>The parent group</p>
                 </td>
                 <td>
                     <p>null</p>
-                    <p>Required if an Application Group Enumeration is defined</p>
                 </td>
-            </tr>
-            <tr>
-                <td>name</td>
-                <td>?string</td>
-                <td>The name prefix for all routes in the controller group</td>
-                <td>null (based on the controller name)</td>
-            </tr>
-            <tr>
-                <td>prefix</td>
-                <td>bool|string|null</td>
-                <td>
-                    The route prefix for routes in the controller
-                    or do not apply a prefix (<code>bool false</code>)
-                </td>
-                <td>null (based on the controller name)</td>
             </tr>
         </table>
     </chapter>
 
-    <chapter title="GroupCors" id="group-cors">
-        <note>It is only necessary to define GroupCors in one controller of a group.</note>
+    <chapter title="Cors" id="cors">
         <deflist type="narrow">
-            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="use-on-enumeration-or-case" from="attribute.topic"/>
             <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
         </deflist>
         <p>Defines CORS middleware to apply a group.</p>
+        <note>CORS Middleware is applied before all other middleware.</note>
         <table>
             <include element-id="table-header" from="attribute.topic"/>
             <tr>
@@ -79,10 +69,9 @@
         </table>
     </chapter>
 
-    <chapter title="GroupHost" id="group-host">
-        <note>It is only necessary to define GroupHost in one controller of a group.</note>
+    <chapter title="Host" id="host">
         <deflist type="narrow">
-            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="use-on-action-or-enumeration-or-case" from="attribute.topic"/>
             <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <p>Defines a host that all routes in a group are valid for.</p>
@@ -97,13 +86,13 @@
         </table>
     </chapter>
 
-    <chapter title="GroupMiddleware" id="group-middleware">
-        <note>It is only necessary to define GroupMiddleware in one controller of a group.</note>
+    <chapter title="Middleware" id="middleware">
         <deflist type="narrow">
-            <include element-id="use-on-class" from="attribute.topic"/>
+            <include element-id="use-on-action-or-enumeration-or-case" from="attribute.topic"/>
             <include element-id="cardinality-zero-or-more" from="attribute.topic"/>
         </deflist>
         <p>Defines a middleware to apply a group.</p>
+        <note>Middleware attributes are applied in the order defined.</note>
         <table>
             <include element-id="table-header" from="attribute.topic"/>
             <tr>
@@ -127,6 +116,29 @@
                     </code></p>
                     <p>All other strings are treated "<i>as is</i>".</p>
                 </td>
+                <include element-id="required-parameter" from="attribute.topic"/>
+            </tr>
+        </table>
+    </chapter>
+
+    <chapter title="Prefix">
+        <deflist type="narrow">
+            <include element-id="use-on-enumeration" from="attribute.topic"/>
+            <include element-id="cardinality-zero-or-one" from="attribute.topic"/>
+        </deflist>
+        <p>Defines the group route prefix.</p>
+        <p>When applied to a Group Enumeration it defines a common prefix for all groups in the Enumeration.</p>
+        <p>When applied to a Group Enumeration Case it defines the prefix for that Enumeration Case.</p>
+        <p>
+            If applied to both a Group Enumeration and a Group Enumeration Case,
+            the Group Enumeration Case prefix is appended to the Group Enumeration prefix.
+        </p>
+        <table>
+            <include element-id="table-header" from="attribute.topic"/>
+            <tr>
+                <td>prefix</td>
+                <td>array|string</td>
+                <td>Route prefix definition</td>
                 <include element-id="required-parameter" from="attribute.topic"/>
             </tr>
         </table>

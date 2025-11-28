@@ -5,8 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="HTTP Method Attributes" id="HTTP-Method-Attributes">
     <p>
-        Every route must define the <tooltip term="HTTP">HTTP</tooltip> method(s) it responds to.
-        This is done using one of the <tooltip term="HTTP">HTTP</tooltip> method attributes or the Route attribute.
+        Every route must define the <tooltip term="HTTP">HTTP</tooltip> method(s) it responds to
+        with one of the <tooltip term="HTTP">HTTP</tooltip> method attributes or the Route attribute.
     </p>
 
     <chapter title="Route" id="route">

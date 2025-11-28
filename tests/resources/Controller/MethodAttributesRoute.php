@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Tests\resources\Controller;
 
+use BeastBytes\Router\Register\Attribute\Group;
+use BeastBytes\Router\Register\Attribute\Prefix;
 use BeastBytes\Router\Register\Route\RouteInterface;
+use BeastBytes\Router\Register\Route\RouteTrait;
 
+#[Group('method-attributes')]
+#[Prefix('method-attributes')]
 enum MethodAttributesRoute: string implements RouteInterface
 {
+    use RouteTrait;
+
     case method1 = '';
     case method2 = '/method2';
     case method3 = '/method3/{testId}';

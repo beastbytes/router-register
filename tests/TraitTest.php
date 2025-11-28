@@ -2,9 +2,9 @@
 
 namespace BeastBytes\Router\Register\Tests;
 
-use BeastBytes\Router\Register\Tests\resources\Enum\TestGroup;
-use BeastBytes\Router\Register\Tests\resources\Enum\TestGroupWithPrefix;
-use BeastBytes\Router\Register\Tests\resources\Enum\TestRoute;
+use BeastBytes\Router\Register\Tests\resources\Enum\Group;
+use BeastBytes\Router\Register\Tests\resources\Enum\GroupWithPrefix;
+use BeastBytes\Router\Register\Tests\resources\Enum\RouteGroupWithPrefix;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -13,23 +13,20 @@ class TraitTest extends TestCase
     #[Test]
     public function group(): void
     {
-        self::assertSame('group1', TestGroup::group1->name);
-        self::assertSame('group1.', TestGroup::group1->getNamePrefix());
-        self::assertSame('/g1', TestGroup::group1->getRoutePrefix());
+        self::assertSame('group1', Group::group1->name);
+        self::assertSame('/g1', Group::group1->getPrefix());
     }
 
     #[Test]
     public function group_with_prefix(): void
     {
-        self::assertSame('group1', TestGroupWithPrefix::group1->name);
-        self::assertSame('group1.', TestGroupWithPrefix::group1->getNamePrefix());
-        self::assertSame('/example/{locale:[a-z]{2}}/g1', TestGroupWithPrefix::group1->getRoutePrefix());
+        self::assertSame('group1', GroupWithPrefix::group1->name);
+        self::assertSame('/example/{locale:[a-z]{2}}/g1', GroupWithPrefix::group1->getPrefix());
     }
 
     #[Test]
     public function route(): void
     {
-        self::assertSame('route_1', TestRoute::route_1->name);
-        self::assertSame('/route-1', TestRoute::route_1->value);
+        self::assertSame('/prefix', RouteGroupWithPrefix::route_1->getPrefix());
     }
 }

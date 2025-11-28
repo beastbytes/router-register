@@ -15,12 +15,7 @@ use BeastBytes\Router\Register\Tests\resources\Middleware\GroupLevelMiddleware;
 use BeastBytes\Router\Register\Tests\resources\Middleware\MethodLevelMiddleware;
 
 // Routes in this controller are in the default group and have some class attributes
-#[Group(prefix: false)]
-#[Host('https://www.example1.com')]
-#[Host('https://www.example2.com')]
-#[Middleware(ClassLevelMiddleware::class)]
-#[Middleware('fn (' . ClassLevelMiddleware::class . ' $middleware) => $middleware->withParameter("class")')]
-#[Middleware(GroupLevelMiddleware::class, Middleware::DISABLE)]
+
 class ClassAttributesController
 {
     #[Get(route: ClassAttributesRoute::method1)]

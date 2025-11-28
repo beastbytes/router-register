@@ -5,18 +5,17 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Groups" id="Groups">
 
-    <p>This section describes how to define and use Route Groups.</p>
     <p>
         Grouping routes simplifies route definitions and speeds up route matching in the application.
         <emphasis>RouterRegister</emphasis> supports route grouping at two levels;
-        the application level and controller level.
+        the application level and the controller level.
     </p>
+    <p>This section describes how to define and use route Groups.</p>
 
     <chapter title="Application Level Grouping">
         <p>
             If an application has a number of logical sections, for example
-            <emphasis>frontend</emphasis>, <emphasis>backend</emphasis>, and an <emphasis>API</emphasis>,
-            each can be a group.
+            <emphasis>API</emphasis>, <emphasis>backend</emphasis>, <emphasis>frontend</emphasis>, each can be a group.
         </p>
         <p>
             Application level groups are defined using a
@@ -35,25 +34,25 @@
                 As an example, for an application with a <emphasis>frontend</emphasis> and <emphasis>backend</emphasis>,
                 with the backend having the group prefix <emphasis>admin</emphasis>, the enumeration will be:
             </p>
-                <code-block lang="PHP">
+            <code-block lang="PHP">
                 enum GroupEnum: string implements GroupInterface
                 {
                     use GroupTrait;
 
-                    case backend => 'admin';
-                    case frontend => '';
+                    case backend = 'admin';
+                    case frontend = '';
                 }
             </code-block>
             <p>The generated groups will be:</p>
             <code-block lang="PHP">
                 return [
-                        Group::create()
-                                ->namePrefix('frontend.')
-                                ->routes(...(require __DIR__ . '/routes/frontend.php'))
+                    Group::create()
+                        ->namePrefix('frontend.')
+                        ->routes(...(require __DIR__ . '/routes/frontend.php'))
                     ,
-                        Group::create('/admin')
-                                ->namePrefix('backend.')
-                                ->routes(...(require __DIR__ . '/routes/backend.php'))
+                    Group::create('/admin')
+                        ->namePrefix('backend.')
+                        ->routes(...(require __DIR__ . '/routes/backend.php'))
                     ,
                 ];
             </code-block>
@@ -64,13 +63,14 @@
             </note>
         </chapter>
 
-        <chapter title="Route Prefix">
+        <chapter title="Group Prefix">
             <p>
-                A common prefix for all groups can be defined by defining <code>public const PREFIX</code>
-                in the enumeration.
+                A prefix common to all Groups can be defined by applying the <code>Prefix</code> Attribute
+                to the Enumeration. It is prepended to the Case prefixes - the Case value.
             </p>
             <p>
-                The value of the constant is an array whose keys are integers or strings and values are strings
+                The parameter passed to the attribute is either a string or an array. If a string it is the prefix,
+                if an array, the keys are integers or strings and values are strings:
                 <code>(non-empty-array&lt;int|string, string&gt;)</code>.
                 How the value is interpreted depends on the key type:
             </p>
@@ -89,28 +89,28 @@
                 {
                     use GroupTrait;
 
-                    public const PREFIX = [
-                            'example',
-                            'locale' => '[a-z]{2}'
-                    ];
-
-                    case backend => 'admin';
-                    case frontend => '';
+                    case backend = 'admin';
+                    #[Prefix(['example', 'locale' => '[a-z]{2}'])]
+                    case frontend = '';
                 }
             </code-block>
             <p>The generated groups will be:</p>
             <code-block lang="PHP">
                 return [
+                    Group::create('/admin')
+                        ->namePrefix('backend.')
+                        ->routes(...(require __DIR__ . '/routes/backend.php'))
+                    ,
                         Group::create('/example/{locale:[a-z]{2}}')
                                 ->namePrefix('frontend.')
                                 ->routes(...(require __DIR__ . '/routes/frontend.php'))
                     ,
-                        Group::create('/example/{locale:[a-z]{2}}/admin')
-                                ->namePrefix('backend.')
-                                ->routes(...(require __DIR__ . '/routes/backend.php'))
-                    ,
                 ];
             </code-block>
+            <note>
+                If the same <emphasis>Prefix</emphasis> is applied to the <code>backend</code> Group,
+                the resulting Group Prefix is <code>'/example/{locale:[a-z]{2}}'/example/{locale:[a-z]{2}}''</code>
+            </note>
         </chapter>
 
         <chapter title="GroupInterface and GroupTrait">
@@ -136,75 +136,103 @@
                 </p>
             </chapter>
         </chapter>
-
-        <chapter title="Assigning Controllers to Group">
-            <p>
-                If the application defines a Group Enumeration, each Controller must be allocated to a Group.
-            </p>
-            <p>
-                Controllers are allocated to a Group using the <code>group</code> parameter
-                of the <code><a href="Group-Attributes.topic#group"/></code> attribute.
-            </p>
-            <p>
-                The example below shows how to allocate a controller to a Group;
-                it uses the Group Enumeration without <code>PREFIX</code> defined above.
-                All routes for PostController will be in the <emphasis>backend</emphasis> group;
-                these will be in <emphasis>/routes/backend.php</emphasis>.
-            </p>
-            <code-block lang="PHP">
-                namespace App\Backend;
-
-                use App\GroupEnum;
-                use BeastBytes\RouterRegister\Attribute\Group;
-
-                #[Group(group: GroupEnum::backend)]
-                final class PostController
-                {
-                    public function index()
-                    {
-                    }
-                }
-            </code-block>
-        </chapter>
     </chapter>
 
     <chapter title="Controller Level Grouping">
-        <p><emphasis>RouterRegister</emphasis> groups routes at the controller level.</p>
         <p>
-            By default, the <emphasis>name</emphasis> and <emphasis>route prefix</emphasis> for a Controller Group
-            are based on the <emphasis>kebab-cased</emphasis> controller name (without Controller).
-            For example, for <code>PostController</code>,
-            the <emphasis>name</emphasis> and <emphasis>route prefix</emphasis> are
-            <code>post.</code> and <code>/post</code>.
+            <emphasis>RouterRegister</emphasis> implements Controller Level Grouping
+            by grouping routes defined in <emphasis>Route</emphasis> Enumerations
+            using the <emphasis>Group</emphasis> Attribute. The <emphasis>name</emphasis> parameter defines the group
+            name prefix; typically this is the name of the associated controller.
+            The optional <emphasis>parent</emphasis> parameter takes a <emphasis>Group</emphasis> Enumeration Case;
+            this places the route group in the parent group.
         </p>
         <p>
-            This can be changed using the <emphasis>name</emphasis> and <emphasis>prefix</emphasis> parameters of the
-            <code><a href="Group-Attributes.topic#group"/></code> attribute. For example:
+            Most controller level route groups will require a route prefix.
+            As with application groups, this is defined using the <emphasis>Prefix</emphasis> attribute.
+        </p>
+        <p>
+            The example below defines a <emphasis>Group</emphasis> with a name and route prefix of
+            <emphasis>post</emphasis> that belongs to the <emphasis>backend</emphasis> parent
+            <emphasis>Group</emphasis>.
         </p>
         <code-block lang="PHP">
-            namespace App\Backend;
-
-            use App\GroupEnum;
-            use BeastBytes\RouterRegister\Attribute\Group;
-
-            #[Group(group: GroupEnum::backend, name: 'posts', prefix: 'posts')]
-            final class PostController
+            #[Group(name: 'post', parent: GroupEnum::backend)]
+            #[Prefix('post')]
+            enum PostRoute: string implements RouteInterface
             {
-                public function index()
-                {
-                }
+                use RouteTrait;
+
+                case index = '';
+                case create = '/create';
+                case update = '/update/{id}';
+                case view = '/{id}';
             }
         </code-block>
         <p>
-            The <emphasis>name</emphasis> and <emphasis>route prefix</emphasis> are now
-            <code>posts.</code> and <code>/posts</code>.
+            The resulting <emphasis>post</emphasis> Group definition is;
+            this Group is a child of <emphasis>backend</emphasis> Group:
+            (how the HTTP methods and route patterns are determined are explained in the next section)
         </p>
-        <p>
-            The <emphasis>route prefix</emphasis> can be removed
-            by setting the <emphasis>prefix</emphasis> parameter <code>false</code>. This typically used in a group's
-            <emphasis>root</emphasis> controller so that, for example, the <tooltip term="URL">URL</tooltip>
-            for the backend home page, is <emphasis>/admin</emphasis>;
-            i.e. only the Application Level Group route is applied.
-        </p>
+        <code-block lang="PHP">
+            Group::create('/post')
+                ->namePrefix('post.')
+                ->routes(
+                    Route::methods(['GET'], '')
+                        ->name('index')
+                        ->action([PostController::class, 'index'])
+                    ,
+                    Route::methods(['GET', 'POST'], '/create')
+                        ->name('create')
+                        ->action([PostController::class, 'create'])
+                    ,
+                    Route::methods(['GET', 'POST'], '/update/{id: [1-9]\d*}')
+                        ->name('update')
+                        ->action([PostController::class, 'update'])
+                    ,
+                    Route::methods(['GET'], '/view/{id: [1-9]\d*}')
+                        ->name('view')
+                        ->action([PostController::class, 'view'])
+                    ,
+                )
+        </code-block>
+        <p>The route names and <tooltip term="URL">URL</tooltip>s are:</p>
+        <table>
+            <tr>
+                <td>Case</td>
+                <td>Name</td>
+                <td>URL</td>
+            </tr>
+            <tr>
+                <td>index</td>
+                <td>{group name prefix}post.index</td>
+                <td>{group route prefix}/post</td>
+            </tr>
+            <tr>
+                <td>create</td>
+                <td>{group name prefix}post.create</td>
+                <td>{group route prefix}/post/create</td>
+            </tr>
+            <tr>
+                <td>update</td>
+                <td>{group name prefix}post.update</td>
+                <td>{group route prefix}/post/update/&lt;id&gt;</td>
+            </tr>
+            <tr>
+                <td>view</td>
+                <td>{group name prefix}post.view</td>
+                <td>{group route prefix}/post/&lt;id&gt;</td>
+            </tr>
+        </table>
+    </chapter>
+    <chapter title="Other Attributes">
+        <p>Other Attributes that can be applied to Groups are:</p>
+        <deflist>
+            <def title="Cors">Cors defines <tooltip term="CORS">CORS</tooltip> middleware for a group</def>
+            <def title="Host">Host defines a host that routes in the group respond to</def>
+            <def title="Middleware">
+                Middleware defines middleware for a group or ancestor group middleware to disable for a group
+            </def>
+        </deflist>
     </chapter>
 </topic>

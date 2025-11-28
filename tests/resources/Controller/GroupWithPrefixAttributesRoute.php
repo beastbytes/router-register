@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace BeastBytes\Router\Register\Tests\resources\Controller;
 
-use BeastBytes\Router\Register\Attribute\Cors;
 use BeastBytes\Router\Register\Attribute\Group;
-use BeastBytes\Router\Register\Attribute\Host;
 use BeastBytes\Router\Register\Attribute\Middleware;
-use BeastBytes\Router\Register\Attribute\Prefix;
 use BeastBytes\Router\Register\Route\RouteInterface;
 use BeastBytes\Router\Register\Route\RouteTrait;
-use BeastBytes\Router\Register\Tests\resources\Enum\Group as GroupEnum;
+use BeastBytes\Router\Register\Tests\resources\Enum\GroupWithPrefix;
 use BeastBytes\Router\Register\Tests\resources\Middleware\ClassLevelMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Middleware\CorsMiddleware;
-use BeastBytes\Router\Register\Tests\resources\Middleware\GroupLevelMiddleware;
 
-#[Group('group-attributes', GroupEnum::group1)]
-#[Prefix('group-attributes')]
+#[Group('group-attributes', GroupWithPrefix::group1)]
 #[Middleware(ClassLevelMiddleware::class)]
-enum GroupAttributesRoute: string implements RouteInterface
+enum GroupWithPrefixAttributesRoute: string implements RouteInterface
 {
     use RouteTrait;
 
