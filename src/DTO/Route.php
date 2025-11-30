@@ -122,7 +122,9 @@ final class Route
 
     public function getName(): string
     {
-        return ($this->isHoisted() ? $this->group->getName() . '.' : '') . $this->route->getName();
+        return ($this->isHoisted() || $this->isFallback() ? $this->group->getName() . '.' : '')
+            . $this->route->getName()
+        ;
     }
 
     public function getPattern(): string

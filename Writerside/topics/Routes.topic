@@ -103,8 +103,8 @@
         </p>
         <p>
             A consequence of hoisting a route out of the class Group is that
-            <emphasis>Class Level Attributes</emphasis> are not applied to it.
-            If any of the <emphasis>Class Level Attributes</emphasis> should be applied to a hoisted route,
+            <emphasis>Route Enumeration Attributes</emphasis> are not applied to it.
+            If any of the <emphasis>Route Enumeration Attributes</emphasis> should be applied to a hoisted route,
             specify the required attributes at <emphasis>Method Level</emphasis>.
         </p>
         <code-block lang="PHP">
@@ -150,6 +150,19 @@
                 <td>{group route prefix}/post/view/{id}</td>
             </tr>
         </table>
+
+        <chapter title="Fallback Route">
+            <p>
+                <emphasis>RouterRegister</emphasis> allows one route in an <emphasis>application level group</emphasis>
+                to be designated as the <emphasis>Fallback</emphasis> route; this is route is placed last in the
+                application level group's route collection making it the last route that a router will attempt to match.
+            </p>
+            <p>
+                A <emphasis>Fallback</emphasis> route is hoisted out of its Controller level group.
+                As with other hoisted routes, a Controller level Route Prefix does <emphasis>not</emphasis> apply but
+                the Controller level Name Prefix does.
+            </p>
+        </chapter>
     </chapter>
 
     <chapter title="RouteInterface and RouteTrait">
