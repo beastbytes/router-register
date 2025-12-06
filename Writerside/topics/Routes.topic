@@ -177,6 +177,14 @@
         </chapter>
         <chapter title="RouteTrait">
             <p><code>RouteTrait</code> implements <code>RouteInterface</code> and can be used in Route Enumerations.</p>
+            <p>
+                <code>RouteTrait</code> also supports obtaining the fully qualified route name
+                by <emphasis>calling</emphasis> the Route Enumeration Case.
+            </p>
+            <p>
+                Example:
+                <code>PostRoute::index()</code> is the equivalent of <code>PostRoute::index->getRouteName()</code>
+            </p>
         </chapter>
     </chapter>
 </topic>

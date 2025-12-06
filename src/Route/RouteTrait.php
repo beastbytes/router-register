@@ -14,6 +14,15 @@ trait RouteTrait
     private const HOISTED_ROUTE = '//';
 
     /**
+     * Allow getting the route name by calling the route enumeration case.
+     * example: Route::index() returns the route name for the `index` case of the `Route` enumeration
+     */
+    public static function __callStatic(string $name, array $arguments): string
+    {
+        return self::{$name}->getRouteName();
+    }
+
+    /**
      * @internal
      */
     public function getPrefix(): ?string
