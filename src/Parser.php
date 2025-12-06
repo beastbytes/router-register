@@ -20,7 +20,7 @@ use ReflectionMethod;
  */
 final class Parser
 {
-    private const DEFAULT_GROUP_NAME = 'routes';
+    private const string DEFAULT_GROUP_NAME = 'routes';
 
     /**
      * @psalm-var array{string: Group}
